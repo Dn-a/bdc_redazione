@@ -12,16 +12,18 @@
 
     <header>
 
-        <button type="button" id="sidebarCollapse" class="btn btn-link">
-            <i class="fa fa-align-left"></i>
-        </button>
+        @auth
+            <button type="button" id="sidebarCollapse" class="btn btn-link">
+                <i class="fa fa-align-left"></i>
+            </button>
+        @endauth
 
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm pl-5">
 
             <div class="container-fluid">
 
                 <a class="navbar-brand" href="">
-                    <strong>Video</strong>Noleggio
+                    <strong>Redazione</strong> Rivista Culinaria
                 </a>
 
                 <div class="navbar-collapse d-table" id="navbarSupportedContent">
@@ -33,26 +35,18 @@
 
                     <ul class="navbar-nav ml-auto">
 
-                            <!--<li>Punto Vendita:
-                                <span style="color: rgba(0, 0, 0, 0.5); ">
-
-                                </span></li>-->
-
-                            <li class="nav-item mr-4 dropdown" >
-                                <a id="positionDropdown" class="nav-link dropdown-toggle d-inline-block" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre="false">
-                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                    {{Auth::user()}}
-                                </a>
-                                <div class="dropdown-menu px-3 dropdown-menu-right position-absolute" aria-labelledby="positionDropdown">
-                                    Punto Vendita:
-                                    <span style="color: rgba(0, 0, 0, 0.5); ">
-                                    
-                                    </span>
-                                </div>
+                        @guest
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
-
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
+                        @else
                             <li class="nav-item dropdown">
-                                <span>{{ Auth::user()->ruolo->titolo }}: </span>
+                                <span>{{ Auth::user() }}: </span>
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle d-inline-block" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre="false">
                                     {{ ucfirst(Auth::user()) }} {{ ucfirst(Auth::user()) }} <span class="caret"></span>
                                 </a>
@@ -67,6 +61,8 @@
                                     </form>
                                 </div>
                             </li>
+                        @endguest
+
                     </ul>
                 </div>
 
@@ -75,7 +71,7 @@
         </nav>
     </header>
 
-    <div id="noleggio">
+    <div id="redazione">
     </div>
 
     <!-- Scripts -->
