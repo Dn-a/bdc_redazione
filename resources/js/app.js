@@ -13,3 +13,30 @@ require('./bootstrap');
  */
 
 require('./components/Main');
+
+
+$(document).ready(function () {
+
+    let lts = localStorage.getItem('sideCollapse');
+    let sidebar = $('#sidebar');
+    let content = $('#content');
+
+    //localStorage.clear();
+    //console.log(lts);
+    if(lts=='active' || lts==null){
+        sidebar.addClass('active');
+        content.addClass('active');
+    }
+
+    $('#sidebarCollapse').on('click', function () {
+
+        sidebar.toggleClass('active');
+        content.toggleClass('active');
+
+        if(sidebar.hasClass('active')){
+            localStorage.setItem('sideCollapse', 'active');
+        }else
+            localStorage.setItem('sideCollapse','off');
+    });
+
+});

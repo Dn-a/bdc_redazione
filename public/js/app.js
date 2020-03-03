@@ -76116,6 +76116,27 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 __webpack_require__(/*! ./components/Main */ "./resources/js/components/Main.js");
 
+$(document).ready(function () {
+  var lts = localStorage.getItem('sideCollapse');
+  var sidebar = $('#sidebar');
+  var content = $('#content'); //localStorage.clear();
+  //console.log(lts);
+
+  if (lts == 'active' || lts == null) {
+    sidebar.addClass('active');
+    content.addClass('active');
+  }
+
+  $('#sidebarCollapse').on('click', function () {
+    sidebar.toggleClass('active');
+    content.toggleClass('active');
+
+    if (sidebar.hasClass('active')) {
+      localStorage.setItem('sideCollapse', 'active');
+    } else localStorage.setItem('sideCollapse', 'off');
+  });
+});
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -76291,16 +76312,16 @@ function (_Component) {
       var ruolo = config != null ? config.ruolo : null;
       var nome = config != null ? config.nome : '';
       var menu = config != null ? USER_CONFIG.menu : [];
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["BrowserRouter"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", null, ruolo != null && ruolo != '' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["BrowserRouter"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", null, ruolo != null && 1 == 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
         type: "button",
         id: "sidebarCollapse",
         className: "btn btn-link"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fa fa-align-left"
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", {
-        className: "navbar navbar-expand-md navbar-light bg-white shadow-sm pl-5"
+        className: "navbar navbar-expand-md navbar-light bg-white shadow-sm pl-5 "
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container-fluid"
+        className: "container-fluid constraint"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         className: "navbar-brand",
         href: ""
@@ -76354,7 +76375,7 @@ function (_Component) {
         type: "hidden",
         name: "_token",
         value: CSRF_TOKEN
-      }))))))))), ruolo != null && ruolo != '' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("aside", {
+      }))))))))), ruolo != null && 1 == 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("aside", {
         id: "sidebar",
         className: "shadow"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", {
@@ -76376,7 +76397,7 @@ function (_Component) {
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, name)));
       })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("main", {
         id: "content",
-        className: "py-4"
+        className: "py-4 constraint"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(MainTitle, null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, routes.map(function (_ref3, key) {
         var path = _ref3.path,
             Component = _ref3.Component;

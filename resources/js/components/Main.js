@@ -68,15 +68,15 @@ export default class Main extends Component {
                 
                 <header >
 
-                    {ruolo!=null && ruolo!='' &&
+                    {ruolo!=null && 1==0 &&
                         <button type="button" id="sidebarCollapse" className="btn btn-link">
                             <i className="fa fa-align-left"></i>
                         </button>
                     }
 
-                    <nav className="navbar navbar-expand-md navbar-light bg-white shadow-sm pl-5">
+                    <nav className="navbar navbar-expand-md navbar-light bg-white shadow-sm pl-5 ">
 
-                        <div className="container-fluid">
+                        <div className="container-fluid constraint">
 
                             <a className="navbar-brand" href="">
                                 <strong>Redazione</strong> Rivista Culinaria
@@ -135,7 +135,7 @@ export default class Main extends Component {
                     </nav>
                 </header>
 
-                {ruolo!=null && ruolo!='' &&
+                {ruolo!=null && 1==0 &&
                     <aside id="sidebar" className="shadow">
                         <nav className="menu py-3" >
                             <ul>
@@ -158,7 +158,7 @@ export default class Main extends Component {
                 }
 
 
-                <main id="content" className="py-4">
+                <main id="content" className="py-4 constraint">
 
                     <MainTitle />
 
