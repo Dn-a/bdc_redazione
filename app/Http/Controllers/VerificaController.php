@@ -25,25 +25,25 @@ class VerificaController extends Controller
     }
 
     
-    public function show(Autore $autore)
+    public function show(Verifica $autore)
     {
         //
     }
 
    
-    public function edit(Autore $autore)
+    public function edit(Verifica $autore)
     {
         //
     }
 
     
-    public function update(Request $request, Autore $autore)
+    public function update(Request $request, Verifica $autore)
     {
         //
     }
 
     
-    public function destroy(Autore $autore)
+    public function destroy(Verifica $autore)
     {
         //
     }

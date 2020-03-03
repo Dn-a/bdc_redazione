@@ -17,7 +17,7 @@ class CreateIngredientiTable extends Migration
             $table->increments('id');
             $table->string('titolo',50);
             $table->float('calorie');
-            $table->string('SI',5);
+            $table->string('unita_misura',5);
         });
     }
 

@@ -13,24 +13,19 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('redattori', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-
-            $table->string('nome',50);
-            $table->string("cognome",50);
             $table->string('email',50)->unique();
-            $table->string("matricola",20)->unique();
-            $table->string('password');
-
             $table->unsignedInteger('id_ruolo')->default(1);
 
+            $table->string('password');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
 
         });
 
-        Schema::table('redattori', function($table) {
+        Schema::table('users', function($table) {
         	$table->foreign('id_ruolo')->references('id')->on('ruoli')->onDelete('restrict');
         });
     }
@@ -42,6 +37,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('redattori');
+        Schema::dropIfExists('users');
     }
 }

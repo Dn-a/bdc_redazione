@@ -8,8 +8,10 @@ class Autore extends Model
 {
     protected $table = 'autori';
 
+    public $timestamps = false;
+    
     protected $fillable = [
-        'nome', 'cognome', 'cf', 'data_nascita','email','telefono',
+        'nome', 'cognome', 'data_nascita','id_users','telefono',
         'cellulare', 'indirizzo', 'id_comune','privacy'
     ];
    

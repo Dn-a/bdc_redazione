@@ -25,25 +25,25 @@ class RicettaController extends Controller
     }
 
     
-    public function show(Autore $autore)
+    public function show(Ricetta $autore)
     {
         //
     }
 
    
-    public function edit(Autore $autore)
+    public function edit(Ricetta $autore)
     {
         //
     }
 
     
-    public function update(Request $request, Autore $autore)
+    public function update(Request $request, Ricetta $autore)
     {
         //
     }
 
     
-    public function destroy(Autore $autore)
+    public function destroy(Ricetta $autore)
     {
         //
     }

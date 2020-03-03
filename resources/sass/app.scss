@@ -189,6 +189,9 @@ ul{
         }
     }
 /*--- LOGIN ---*/
+.login-modal .modal-content {
+    border-radius: 0;
+}
 #login .form-group i {
     position: absolute;
     left: 27px;

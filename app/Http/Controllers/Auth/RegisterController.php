@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Autore;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -49,8 +50,15 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'nome' => ['required', 'string', 'max:50'],
+            'cognome' => ['required', 'string', 'max:50'],            
+            'data_nascita' => ['required', 'date'],
+            'telefono' => ['required', 'string','max:12'],
+            'cellulare' => ['required', 'string','max:12'],
+            'indirizzo' => ['required', 'string','max:50'],
+            'id_comune' => ['required', 'integer'],
+            'privacy' => ['required', 'mimes:jpeg,bmp,png,pdf'],
+            'email' => ['required', 'string', 'email', 'max:50', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -63,10 +71,25 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
+        $user = User::create([            
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        Autore::create(
+            [
+                'nome' => $data['nome'],
+                'cognome' => $data['cognome'],
+                'data_nascita' => $data['data_nascita'],
+                'telefono' => $data['telefono'],
+                'cellulare' => $data['cellulare'],
+                'indirizzo' => $data['indirizzo'],
+                'id_comune' => $data['id_comune'],
+                'privacy' => $data['privacy'],
+                'id_users' => $user->id
+            ]
+        );
+
+        return $user;
     }
 }

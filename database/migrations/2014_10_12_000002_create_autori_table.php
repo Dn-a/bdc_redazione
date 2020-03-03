@@ -17,9 +17,8 @@ class CreateAutoriTable extends Migration
             $table->increments('id');
             $table->string('nome',50);
             $table->string('cognome',50);
-            $table->string('cf',16)->unique();
             $table->date('data_nascita');
-            $table->string('email',50)->unique();
+            $table->unsignedInteger('id_users');
             $table->string('telefono',12);
             $table->string('cellulare',12);
             $table->string('indirizzo',50);
@@ -28,6 +27,7 @@ class CreateAutoriTable extends Migration
         });
 
         Schema::table('autori', function($table) {
+        	$table->foreign('id_users')->references('id')->on('users')->onDelete('restrict');
         	$table->foreign('id_comune')->references('id')->on('comuni')->onDelete('restrict');
         });
     }

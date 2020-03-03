@@ -17,7 +17,7 @@ class CreateRicetteTable extends Migration
             $table->increments('id');
             $table->string('titolo',50);
             $table->integer('tempo_cottura');
-            $table->string('modalita_preparazione',50);
+            $table->string('modalita_preparazione');
             $table->integer('porzioni');
             $table->float('calorie');
             $table->enum('difficolta',['1','2','3','4','5'])->default('1');

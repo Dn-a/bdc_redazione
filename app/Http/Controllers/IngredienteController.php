@@ -25,25 +25,25 @@ class IngredienteController extends Controller
     }
 
     
-    public function show(Autore $autore)
+    public function show(Ingrediente $autore)
     {
         //
     }
 
    
-    public function edit(Autore $autore)
+    public function edit(Ingrediente $autore)
     {
         //
     }
 
     
-    public function update(Request $request, Autore $autore)
+    public function update(Request $request, Ingrediente $autore)
     {
         //
     }
 
     
-    public function destroy(Autore $autore)
+    public function destroy(Ingrediente $autore)
     {
         //
     }
