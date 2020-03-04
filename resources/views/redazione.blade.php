@@ -26,7 +26,7 @@
             $user = $ruolo=='autore' ? $user->autore : $user->redattore;
             $nome = $user->nome;// .' '. $user->cognome;
         
-            if($ruolo == 'caporedattore') $array = array_merge($array,['redattori']);
+            //if($ruolo == 'caporedattore') $array = array_merge($array,['redattori']);
 
             echo "<script>
                     let menu =".json_encode($menu).'; '.

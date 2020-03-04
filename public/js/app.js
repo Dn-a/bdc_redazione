@@ -76267,6 +76267,11 @@ var MainTitle = function MainTitle() {
   })));
 };
 
+var Breadcrumb = function Breadcrumb(_ref2) {
+  var children = _ref2.children;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, children);
+};
+
 var Main =
 /*#__PURE__*/
 function (_Component) {
@@ -76319,13 +76324,17 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fa fa-align-left"
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", {
-        className: "navbar navbar-expand-md navbar-light bg-white shadow-sm pl-5 "
+        className: "navbar navbar-expand-md navbar-light bg-white shadow-sm"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container-fluid constraint"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         className: "navbar-brand",
         href: ""
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Redazione"), " Rivista Culinaria"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "logo"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+        src: this.url + '/img/logo.png'
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "navbar-collapse d-table",
         id: "navbarSupportedContent"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
@@ -76380,10 +76389,10 @@ function (_Component) {
         className: "shadow"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", {
         className: "menu py-3"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, routes.map(function (_ref2, key) {
-        var path = _ref2.path,
-            name = _ref2.name,
-            icon = _ref2.icon;
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, routes.map(function (_ref3, key) {
+        var path = _ref3.path,
+            name = _ref3.name,
+            icon = _ref3.icon;
         if (menu.indexOf(name.toLowerCase()) == -1) return;
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
           key: key
@@ -76398,9 +76407,9 @@ function (_Component) {
       })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("main", {
         id: "content",
         className: "py-4 constraint"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(MainTitle, null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, routes.map(function (_ref3, key) {
-        var path = _ref3.path,
-            Component = _ref3.Component;
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, routes.map(function (_ref4, key) {
+        var path = _ref4.path,
+            Component = _ref4.Component;
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
           key: key,
           path: path,
@@ -76411,7 +76420,11 @@ function (_Component) {
             });
           }
         });
-      }))));
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("footer", {
+        className: "p-3 "
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container-fluid constraint"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Powered by"), " Di Natale Antonino")));
     }
   }]);
 
@@ -76521,6 +76534,7 @@ function (_Component) {
     _this._handleChangeLogin = _this._handleChangeLogin.bind(_assertThisInitialized(_this));
     _this._handleOnRegister = _this._handleOnRegister.bind(_assertThisInitialized(_this));
     _this._handleOnLogin = _this._handleOnLogin.bind(_assertThisInitialized(_this));
+    _this._handleSubmit = _this._handleSubmit.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -76609,21 +76623,22 @@ function (_Component) {
       var headers = {
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': "${CSRF_TOKEN}"
         }
       };
       var dataLogin = this.state.dataLogin;
-      dataLogin._token = CSRF_TOKEN;
+      dataLogin._token = CSRF_TOKEN; //console.log(dataLogin);return;
+
       this.setState({
         loaderLogin: true
       });
       return axios.post(url, dataLogin, headers).then(function (result) {
         //console.log(result.status);return;
-        if (result.status == 200) location.reload();
         return result;
       })["catch"](function (error) {
         if (error === undefined) return;
-        if (error.response.status == 422) _this3.setState({
+        if (error.response !== undefined && error.response.status == 422) _this3.setState({
           errorLoginMessage: error.response.data.errors,
           loaderLogin: false
         }); //console.error(error.response);          
@@ -76732,7 +76747,15 @@ function (_Component) {
   }, {
     key: "_handleOnLogin",
     value: function _handleOnLogin() {
-      this.remoteLogin();
+      this.remoteLogin().then(function (result) {
+        //this.submitForm.click();
+        if (result.status == 200) location.reload();
+      });
+    }
+  }, {
+    key: "_handleSubmit",
+    value: function _handleSubmit(event) {
+      event.preventDefault();
     }
   }, {
     key: "showError",
@@ -76956,7 +76979,9 @@ function (_Component) {
         "aria-labelledby": "nav-login-tab"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group mb-5 text-center"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Hai gi\xE0 un profilo?")), "Entra nel mondo della Cucina"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h2", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Sei gi\xE0 registrato?")), "Effettua il login"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        onSubmit: this._handleSubmit
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group mb-5"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_6__["default"], {
         name: "email",
@@ -76978,7 +77003,15 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_11__["AddButton"], {
         disabled: !this.state.checkedLogin,
         onClick: this._handleOnLogin
-      }, "ACCEDI", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+      }, "ACCEDI", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        style: {
+          display: "none"
+        },
+        ref: function ref(e) {
+          return _this5.submitForm = e;
+        },
+        type: "submit"
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
         className: "loader-2" + (this.state.loaderLogin == true ? ' d-inline-block' : ''),
         src: "../img/loader_2.gif"
       }))), _typeof(errorLoginMessage) === 'object' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -77711,16 +77744,16 @@ var InputField = function InputField(_ref) {
 
 /***/ }),
 
-/***/ "./resources/js/components/view/Home.js":
+/***/ "./resources/js/components/view/Blog.js":
 /*!**********************************************!*\
-  !*** ./resources/js/components/view/Home.js ***!
+  !*** ./resources/js/components/view/Blog.js ***!
   \**********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Home; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Blog; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -77742,6 +77775,132 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 
+var FIELDS = [{
+  titolo: 'ricette',
+  type: []
+}];
+
+var Blog =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Blog, _Component);
+
+  function Blog(props) {
+    var _this;
+
+    _classCallCheck(this, Blog);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Blog).call(this, props));
+    var data = {};
+    FIELDS.map(function (fd, id) {
+      data[fd.titolo] = fd.type;
+    });
+    _this.state = {
+      data: data,
+      loader: false
+    };
+    return _this;
+  }
+
+  _createClass(Blog, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.getRemoteData();
+    }
+  }, {
+    key: "getRemoteData",
+    value: function getRemoteData(type, id) {
+      var _this2 = this;
+
+      var urlType = {
+        ptVendita: 'punti-vendita',
+        incassi: 'incassi' + (id != null ? '?id_pt_vendita=' + id : '')
+      };
+      var url = this.props.url + '/ricette';
+      var headers = {
+        headers: {
+          'Accept': 'application/json'
+        }
+      };
+      this.setState({
+        loader: true
+      });
+      return axios.get(url, headers).then(function (res) {
+        console.log(res.data);
+
+        _this2.setState({
+          loader: false
+        });
+      })["catch"](function (error) {
+        if (error.response === undefined) return;
+        if (error.response.data !== undefined) console.log(error.response.data);else console.log(error.response);
+        throw error;
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var data = this.state.data; //console.log(this.props);
+
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", {
+        className: "container-fluid"
+      }, data.ricette.map(function (rc, key) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "card",
+          key: key
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          className: "card-img-top",
+          src: rc.img,
+          alt: "Card image cap"
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "card-body"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+          className: "card-text"
+        }, rc.difficolta)));
+      }));
+    }
+  }]);
+
+  return Blog;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/view/Home.js":
+/*!**********************************************!*\
+  !*** ./resources/js/components/view/Home.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Home; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Blog__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Blog */ "./resources/js/components/view/Blog.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
 
 var Home =
 /*#__PURE__*/
@@ -77756,14 +77915,7 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Home).call(this, props));
     _this.state = {
       rows: '',
-      loader: false,
-      incassi: {
-        dipendenti: [],
-        pt_vendita: []
-      },
-      lstPtVendita: {},
-      idPtVenditaSelected: -1,
-      reloadInfiniteTable: 0
+      loader: false
     };
     return _this;
   }
@@ -77772,8 +77924,18 @@ function (_Component) {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container-fluid py-1"
-      }, "Home");
+        className: "container-fluid "
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "slider "
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+        src: this.props.url + '/img/home.jpg'
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "constraint "
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "text"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Redazione"), " Rivista culinaria")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Blog__WEBPACK_IMPORTED_MODULE_1__["default"], {
+        url: this.props.url
+      }));
     }
   }]);
 

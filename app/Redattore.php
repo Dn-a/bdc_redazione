@@ -11,6 +11,6 @@ class Redattore extends Model
     public $timestamps = false;
     
     protected $fillable = [
-        'nome', 'cognome', 'cf', 'matricola','id_users'
+        'nome', 'cognome', 'matricola','id_users'
     ];
 }

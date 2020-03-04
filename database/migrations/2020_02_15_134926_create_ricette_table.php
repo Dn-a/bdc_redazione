@@ -16,6 +16,7 @@ class CreateRicetteTable extends Migration
         Schema::create('ricette', function (Blueprint $table) {
             $table->increments('id');
             $table->string('titolo',50);
+            $table->integer('tempo_preparazione');
             $table->integer('tempo_cottura');
             $table->string('modalita_preparazione');
             $table->integer('porzioni');
@@ -24,7 +25,8 @@ class CreateRicetteTable extends Migration
             $table->enum('stato',['attesa','scartata','idonea','approvata'])->default('attesa');
             $table->unsignedInteger('id_autore');
             $table->unsignedInteger('id_tipologia');
-            $table->string('note');
+            $table->string('note')->nullable();
+            $table->string('img',2048);
             $table->timestamp('data_creazione')->useCurrent();
         });
 

@@ -18,6 +18,7 @@ class CreateIngredientiTable extends Migration
             $table->string('titolo',50);
             $table->float('calorie');
             $table->string('unita_misura',5);
+            $table->string('img',2048);
         });
     }
 

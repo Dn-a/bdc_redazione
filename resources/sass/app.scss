@@ -35,7 +35,7 @@ ul{
     overflow: hidden;
 }
 .logo {
-    width: 75px;
+    width: 150px;
     margin: auto;
 }
 .logo img {
@@ -165,8 +165,7 @@ ul{
 /*--- CONTENT ---*/
     #content {
         position: relative;
-        top: 56px;
-        padding-left: 42px;
+        top: 56px;        
         overflow: auto;
         height: 88%;
         width: 100%;
@@ -179,17 +178,33 @@ ul{
     .breadcrumb{
         padding:5px 0 5px 58px;
     }
+/*--- HOME ---*/
+.slider {
+    max-height: 200px;
+    overflow: hidden;
+    position: fixed;
+    left: 0;
+    width: 100%;
+    top: 56px;
+}
+.slider img {
+    filter: brightness(70%) opacity(90%) grayscale(10%) contrast(110%);
+    width: 100%;
+}
+.slider .text{
+    color:#fff;
+    position: absolute;
+    top: 0;
+    padding: 74px 16px;
+}
 /*--- FOOTER ---*/
     footer {
         position: absolute;
-        height: 100px;
+        color:#cbcdce;        
         bottom: 0;
         width: 100%;
         display: inline-table;
-        background-color: #eee;
-        &:hover{
-            background:#aaa;
-        }
+        background-color: #31383d;        
     }
 /*--- LOGIN ---*/
 .login-modal .modal-content {

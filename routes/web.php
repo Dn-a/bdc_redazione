@@ -13,8 +13,8 @@
 
 Auth::routes([
     'register' => false, // Registration Routes...
-    //'reset' => false, // Password Reset Routes...
-    //'verify' => false, // Email Verification Routes...
+    'reset' => false, // Password Reset Routes...
+    'verify' => false, // Email Verification Routes...
   ]);
 
 if(request()->header('accept')=='application/json'){
@@ -26,6 +26,12 @@ if(request()->header('accept')=='application/json'){
 if(request()->header('accept')!='application/json')
     Route::get('/{name}', 'HomeController@index')->name('home')
     ->where('name','(|home|clienti|dipendenti|video|magazzino|noleggi|prenotazioni|restituzioni|incassi|setting)');
+
+
+
+// Ricette
+Route::get('ricette', 'RicettaController@index')->name('ricette');
+Route::get('ricette/{ricetta}', 'RicettaController@show');
 
 
 // Comuni

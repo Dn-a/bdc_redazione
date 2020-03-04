@@ -1,5 +1,6 @@
 import React, { Component , Fragment } from 'react';
 
+import Blog from './Blog';
 
 export default class Home extends Component {
 
@@ -8,14 +9,7 @@ export default class Home extends Component {
 
         this.state = {
             rows: '',
-            loader: false,
-            incassi:{
-                dipendenti:[],
-                pt_vendita:[]
-            },
-            lstPtVendita:{},
-            idPtVenditaSelected:-1,
-            reloadInfiniteTable:0
+            loader: false,           
         };
     }
 
@@ -24,8 +18,18 @@ export default class Home extends Component {
        
         return (
 
-            <div className="container-fluid py-1">
-                    Home
+            <div className="container-fluid ">
+                    <div className="slider " >                        
+                        <img src={this.props.url+'/img/home.jpg'} />
+                        <div className='constraint '>
+                            <div className="text">
+                                <h1>
+                                    <strong>Redazione</strong> Rivista culinaria
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                    <Blog url={this.props.url} />
             </div>
 
         );

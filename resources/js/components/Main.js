@@ -13,24 +13,28 @@ const routes = [
 
 const MainTitle = ()  => {
     return(
-    <div className="px-2 ml-4 mb-4 ">
-        <Switch>
-            {
-            routes.map(({path, title, icon},key) => {
-            return(
-            <Route key={key} exact path={path} >
-                <h3>
-                    <i className={"fa "+icon} aria-hidden="true"> </i>
-                    <strong> {title}</strong>
-                </h3>
-            </Route>
-            )
-            })
-            }
-        </Switch>
-    </div>
 
+        <div className="px-2 ml-4 mb-4 ">
+            <Switch>
+                {
+                routes.map(({path, title, icon},key) => {
+                return(
+                <Route key={key} exact path={path} >
+                    <h3>
+                        <i className={"fa "+icon} aria-hidden="true"> </i>
+                        <strong> {title}</strong>
+                    </h3>
+                </Route>
+                )
+                })
+                }
+            </Switch>
+        </div>
     );
+}
+
+const Breadcrumb = ({ children }) => {
+    return <div>{children}</div>
 }
 
 export default class Main extends Component {
@@ -64,6 +68,7 @@ export default class Main extends Component {
         let menu = config!=null ? USER_CONFIG.menu: [];
 
         return (
+
             <Router>
                 
                 <header >
@@ -74,12 +79,12 @@ export default class Main extends Component {
                         </button>
                     }
 
-                    <nav className="navbar navbar-expand-md navbar-light bg-white shadow-sm pl-5 ">
+                    <nav className="navbar navbar-expand-md navbar-light bg-white shadow-sm">
 
                         <div className="container-fluid constraint">
 
                             <a className="navbar-brand" href="">
-                                <strong>Redazione</strong> Rivista Culinaria
+                                <div className='logo'><img src={this.url+'/img/logo.png'} /></div>                                
                             </a>
 
                             <div className="navbar-collapse d-table" id="navbarSupportedContent">
@@ -131,8 +136,8 @@ export default class Main extends Component {
                             </div>
 
                         </div>
-
                     </nav>
+
                 </header>
 
                 {ruolo!=null && 1==0 &&
@@ -159,9 +164,7 @@ export default class Main extends Component {
 
 
                 <main id="content" className="py-4 constraint">
-
-                    <MainTitle />
-
+                    
                     <Switch>
                         {
                             routes.map(({path, Component},key) => {
@@ -175,6 +178,10 @@ export default class Main extends Component {
                     </Switch>
 
                 </main>
+
+                <footer className="p-3 ">
+                    <div className="container-fluid constraint"><strong>Powered by</strong> Di Natale Antonino</div>
+                </footer>
 
             </Router>
 

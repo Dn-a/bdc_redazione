@@ -64,6 +64,7 @@ export default class LoginRegister extends Component {
         this._handleChangeLogin = this._handleChangeLogin.bind(this);
         this._handleOnRegister = this._handleOnRegister.bind(this);
         this._handleOnLogin = this._handleOnLogin.bind(this);
+        this._handleSubmit = this._handleSubmit.bind(this);
     }
 
 
@@ -148,7 +149,8 @@ export default class LoginRegister extends Component {
         let url = this.props.url+'/login';
 
         let headers = {headers: {'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': "${CSRF_TOKEN}"
             }
         };
 
@@ -156,20 +158,20 @@ export default class LoginRegister extends Component {
 
         dataLogin._token = CSRF_TOKEN;
 
+        //console.log(dataLogin);return;
+
         this.setState({loaderLogin:true});
 
         return axios.post(url,dataLogin,headers)
         .then(result => {
             
             //console.log(result.status);return;
-            if(result.status==200)
-                location.reload();
-            
+
             return result;
         }).catch((error) => {
           if(error===undefined) return;
           
-          if(error.response.status==422)
+          if(error.response!==undefined &&  error.response.status==422)
             this.setState({errorLoginMessage :error.response.data.errors,loaderLogin:false});
 
           //console.error(error.response);          
@@ -284,8 +286,15 @@ export default class LoginRegister extends Component {
         this.remoteStore();
     }
 
-    _handleOnLogin(){
-        this.remoteLogin();
+    _handleOnLogin(){        
+        this.remoteLogin().then( result => {
+            //this.submitForm.click();
+            if(result.status==200) location.reload();        
+        });
+    }
+
+    _handleSubmit(event) {
+        event.preventDefault();
     }
 
     showError(field){
@@ -304,7 +313,7 @@ export default class LoginRegister extends Component {
         },2000);
 
     }
-
+    
     render(){
 
         //let objFid = {'1':'Start - 0%','2':'Plus - 10%','3':'Revolution - 20%'};
@@ -443,12 +452,12 @@ export default class LoginRegister extends Component {
                             
                             <div className="form-group mb-5 text-center">    
                                 <h2>
-                                    <strong>Hai già un profilo?</strong>
+                                    <strong>Sei già registrato?</strong>
                                 </h2>
-                                Entra nel mondo della Cucina
+                                Effettua il login
                             </div>
 
-                            <form>
+                            <form onSubmit={this._handleSubmit}>
                                 <div className="form-group mb-5">
                                     <InputField name="email" divClassName={divClassName} className="form-control" placeholder="Email"
                                     helperText={this.showError('email')} handleChange={this._handleChangeLogin} />
@@ -462,6 +471,11 @@ export default class LoginRegister extends Component {
                                         onClick={this._handleOnLogin}
                                     >
                                         ACCEDI
+                                        <input
+                                        style={{ display: "none" }}
+                                        ref={e => (this.submitForm = e)}
+                                        type="submit"
+                                        />                            
                                         <img className={"loader-2"+(this.state.loaderLogin==true?' d-inline-block':'')} src="../img/loader_2.gif"></img>
                                     </AddButton>
                                     {/*&nbsp; <a target='_blank' href={this.props.url+'/password/reset'}>Password dimenticata?</a>*/}
