@@ -11358,6 +11358,11 @@ a.text-dark:focus {
 
 body {
   background-color: #ecf3f7;
+  height: 100vh;
+}
+
+#redazione {
+  height: 100vh;
 }
 
 .constraint {
@@ -11454,6 +11459,21 @@ ul {
   border-color: #a8abae;
 }
 
+.btn.add {
+  background: #af6919;
+  border-color: #af6919;
+}
+
+.btn.add:hover {
+  background: #8c5617 !important;
+}
+
+.btn.add:active,
+.btn.add:focus {
+  background: #ce8f48 !important;
+  border-color: #ce8f48 !important;
+}
+
 /*--- SIDEBAR ---*/
 
 #sidebar {
@@ -11465,7 +11485,7 @@ ul {
   height: 100vh;
   overflow: hidden;
   z-index: 10;
-  background: #3490dc;
+  background: #30a681;
   color: #fff;
   margin-left: 0px;
   -webkit-transition: all 0.3s;
@@ -11501,7 +11521,7 @@ ul {
 }
 
 .menu a.active {
-  background-color: #80baea;
+  background-color: #af6919;
 }
 
 .menu li span {
@@ -11542,6 +11562,10 @@ a[data-toggle=collapse] {
   border-color: transparent;
 }
 
+.fa-align-left {
+  color: #30a681 !important;
+}
+
 /*--- HEADER ---*/
 
 header {
@@ -11559,12 +11583,9 @@ header {
   overflow: auto;
   height: 88%;
   width: 100%;
+  display: inline-table;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
-}
-
-#content.active {
-  padding-left: 135px;
 }
 
 /*--- Breadcrumb ---*/
@@ -11578,10 +11599,10 @@ header {
 .slider {
   max-height: 200px;
   overflow: hidden;
-  position: fixed;
+  position: absolute;
   left: 0;
   width: 100%;
-  top: 56px;
+  top: 0px;
 }
 
 .slider img {
@@ -11590,22 +11611,27 @@ header {
   width: 100%;
 }
 
-.slider .text {
+.slider-text {
   color: #fff;
   position: absolute;
   top: 0;
-  padding: 74px 16px;
+  padding-top: 40px;
+  position: relative;
+  padding-bottom: 120px;
 }
 
 /*--- FOOTER ---*/
 
 footer {
-  position: absolute;
+  position: relative;
   color: #cbcdce;
-  bottom: 0;
+  bottom: -56px;
   width: 100%;
   display: inline-table;
   background-color: #31383d;
+  z-index: 0;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
 }
 
 /*--- LOGIN ---*/
@@ -11840,5 +11866,27 @@ footer {
 
 .rv-xy-plot__grid-lines__line {
   stroke: #e6e6e9;
+}
+
+@media (max-width: 1150px) {
+  .logged .logo {
+    margin-left: 26px;
+  }
+
+  #content.logged {
+    padding-left: 42px;
+  }
+
+  #content.logged.active {
+    padding-left: 135px !important;
+  }
+
+  footer.logged {
+    padding-left: 45px !important;
+  }
+
+  footer.logged.active {
+    padding-left: 135px !important;
+  }
 }
 

@@ -16,7 +16,6 @@ class RicettaController extends Controller
 
         // view che mostra lo storico noleggi
         $only = $request->input('only') ?: '';
-        $storico = in_array('storico', explode('-',$only));
         
         //$user = Auth::user();
         //$ruolo = $user->ruolo->titolo;

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Autore;
+use App\Http\Resources\AutoreCollection;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,10 +11,67 @@ use Illuminate\Support\Facades\Hash;
 
 class AutoreController extends Controller
 {
+    private $lmtSearch = 15;
     
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $page = $request->input('per-page') ?: 10;
+
+        // view che mostra lo storico noleggi
+        $only = $request->input('only') ?: '';
+        
+        $user = Auth::user();
+        $ruolo = $user->ruolo->titolo;
+        
+        if($ruolo=='autore') return response()->json([],404);
+
+        $redattore = Autore::orderBy('id','DESC')->paginate($page);
+
+        return new AutoreCollection(
+            $redattore, 
+            true
+            //$this->moreField($ruolo) 
+        );
+    }
+
+
+    public function search(Request $request, $val)
+    {
+        $arr = explode(' ',$val);
+
+        $only = $request->input('only') ?: '';
+        //$noleggi = in_array('noleggi', explode('-',$only));
+        
+        $user = Auth::user(); $ruolo = $user->ruolo->titolo;
+
+        if($ruolo=='autore') return response()->json([],404);
+
+        $redattore = Autore::
+        where(function($query) use($arr) {
+            $query->where('nome',$arr[0])
+            ->orWhere('cognome',$arr[0])
+            ->orWhere('nome','like',$arr[0].'%')
+            ->orWhere('cognome','like',$arr[0].'%')
+            ->orWhere(function($query) use($arr) {
+                if(count($arr)==2)
+                    $query->where('cognome','like',$arr[0].' '.$arr[1].'%');
+            })
+            ->orWhere(function($query) use($arr) {
+                if(isset($arr[1]))
+                    $query->where('cognome','like',$arr[1].'%')
+                    ->where('nome','like',$arr[0].'%');
+            })
+            ->orWhere('telefono','like',"$arr[0]%")
+            ->orWhere('cellulare','like',"$arr[0]%");
+            //->orWhereHas('email','like',"$arr[0]%")
+        })    
+        ->limit($this->lmtSearch)->get();
+
+
+        return  new AutoreCollection(
+            $redattore,
+            false
+        );
     }
 
     
@@ -39,7 +97,7 @@ class AutoreController extends Controller
                 'id_comune' => 'required|integer',
                 'privacy' => 'required|mimes:jpeg,bmp,png,pdf',
                 'email' => 'required|string|email|max:50|unique:users',
-                'password' => 'required|string|min:8',
+                'password' => 'required|string|min:8'
             ]);
             
             //return response()->json($request->all(),201);exit;
@@ -65,7 +123,7 @@ class AutoreController extends Controller
                     'indirizzo' => $data['indirizzo'],
                     'id_comune' => $data['id_comune'],
                     'privacy' => $data['privacy'],
-                    'id_users' => $user->id
+                    'id_user' => $user->id
                 ]
             );
 

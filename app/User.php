@@ -46,11 +46,11 @@ class User extends Authenticatable
 
     public function autore()
     {   
-        return $this->hasOne('App\Autore','id_users');
+        return $this->hasOne('App\Autore','id_user');
     }
 
     public function redattore()
     {   
-        return $this->hasOne('App\Redattore','id_users');
+        return $this->hasOne('App\Redattore','id_user');
     }
 }

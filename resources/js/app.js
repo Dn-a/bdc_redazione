@@ -20,18 +20,21 @@ $(document).ready(function () {
     let lts = localStorage.getItem('sideCollapse');
     let sidebar = $('#sidebar');
     let content = $('#content');
+    let footer = $('footer');
 
     //localStorage.clear();
     //console.log(lts);
     if(lts=='active' || lts==null){
         sidebar.addClass('active');
         content.addClass('active');
+        footer.addClass('active');
     }
 
     $('#sidebarCollapse').on('click', function () {
 
         sidebar.toggleClass('active');
         content.toggleClass('active');
+        footer.toggleClass('active');
 
         if(sidebar.hasClass('active')){
             localStorage.setItem('sideCollapse', 'active');

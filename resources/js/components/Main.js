@@ -1,40 +1,66 @@
-import React, { Component , Fragment } from 'react';
+import React, { Component , Fragment, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Switch, Route, Link, NavLink} from "react-router-dom";
-
-import Home from './view/Home';
-
-import LoginRegister from './modal/LoginRegister';
 import { Button } from './utils/Button';
 
+import LoginRegister from './modal/LoginRegister';
+import Home from './view/Home';
+import Redattori from './view/Redattori';
+import Autori from './view/Autori';
+
 const routes = [
-    {path: "/", name:"Home",title:'Home', icon:'fa-home', Component:Home},   
+    {path: "/", name:"Home",title:'Home', icon:'fa-home', Component:Home},
+    {path: "/redattori", name:"Redattori",title:'Gestione Redattori', icon:'fa-users', Component: Redattori},   
+    {path: "/autori", name:"Autori",title:'Gestione Autori', icon:'fa-address-card-o', Component: Autori}
 ];
 
 const MainTitle = ()  => {
-    return(
-
-        <div className="px-2 ml-4 mb-4 ">
-            <Switch>
-                {
-                routes.map(({path, title, icon},key) => {
-                return(
-                <Route key={key} exact path={path} >
+    return(    
+        <Switch>
+            {
+            routes.map(({path, title, icon},key) => {
+                if(title=='Home') return;
+            return(
+            <Route key={key} exact path={path} >
+                <div className="px-2 pl-4 mt-2 mb-5 constraint">
                     <h3>
                         <i className={"fa "+icon} aria-hidden="true"> </i>
                         <strong> {title}</strong>
                     </h3>
-                </Route>
-                )
-                })
-                }
-            </Switch>
-        </div>
+                </div>
+            </Route>
+            )
+            })
+            }
+        </Switch>
     );
 }
 
 const Breadcrumb = ({ children }) => {
     return <div>{children}</div>
+}
+
+const LoginButton = (props) =>{
+
+    const [show, setValue] = useState(false);
+
+    const _handleShow = () => setValue(true);
+
+    const _handleHide = () => setValue(false);
+
+    return (
+        <Fragment>
+            <li className="nav-item">
+            <Button className="nav-link" onClick={_handleShow} >Accedi</Button>
+            </li>
+
+            <LoginRegister 
+                url={props.url}                            
+                show={show} onHide={_handleHide}
+                callback={ (a) => console.log(a) }
+            />
+        </Fragment>     
+    );
 }
 
 export default class Main extends Component {
@@ -62,6 +88,7 @@ export default class Main extends Component {
     }
 
     render() {
+               
         let config = typeof USER_CONFIG!== 'undefined' ? USER_CONFIG : null;
         let ruolo = config!=null? config.ruolo : null;
         let nome = config!=null? config.nome : '';
@@ -71,18 +98,18 @@ export default class Main extends Component {
 
             <Router>
                 
-                <header >
-
-                    {ruolo!=null && 1==0 &&
-                        <button type="button" id="sidebarCollapse" className="btn btn-link">
-                            <i className="fa fa-align-left"></i>
-                        </button>
-                    }
+                <header className={config!=null?'logged':''}>
 
                     <nav className="navbar navbar-expand-md navbar-light bg-white shadow-sm">
 
                         <div className="container-fluid constraint">
-
+                            
+                            {config!=null  &&
+                                <button type="button" id="sidebarCollapse" className="btn btn-link">
+                                    <i className="fa fa-align-left"></i>
+                                </button>
+                            }
+                            
                             <a className="navbar-brand" href="">
                                 <div className='logo'><img src={this.url+'/img/logo.png'} /></div>                                
                             </a>
@@ -95,22 +122,8 @@ export default class Main extends Component {
 
                                 <ul className="navbar-nav ml-auto">
 
-                                    {ruolo==null || ruolo=='' ?
-
-                                        (
-                                            <Fragment>
-                                                <li className="nav-item">
-                                                    <Button className="nav-link" onClick={this._handleShowLogin} >Accedi</Button>
-                                                </li>
-                                                
-                                                <LoginRegister 
-                                                url={this.url}                            
-                                                show={this.state.showLogin} onHide={this._handleCloseLogin}
-                                                callback={ (a) => console.log(a) }
-                                                />
-
-                                            </Fragment>
-                                        )
+                                    {ruolo==null || ruolo=='' ?                                                
+                                        <LoginButton url={this.url} />
                                         :
                                         (
                                             <li className="nav-item dropdown">
@@ -140,7 +153,7 @@ export default class Main extends Component {
 
                 </header>
 
-                {ruolo!=null && 1==0 &&
+                {config!=null &&
                     <aside id="sidebar" className="shadow">
                         <nav className="menu py-3" >
                             <ul>
@@ -161,10 +174,11 @@ export default class Main extends Component {
                         </nav>
                     </aside>
                 }
-
-
-                <main id="content" className="py-4 constraint">
+                
+                <main id="content" className={"py-4 "+(config!=null?'logged':'')}>
                     
+                    <MainTitle />
+
                     <Switch>
                         {
                             routes.map(({path, Component},key) => {
@@ -179,7 +193,7 @@ export default class Main extends Component {
 
                 </main>
 
-                <footer className="p-3 ">
+                <footer className={"p-3 "+(config!=null?'logged':'')}>
                     <div className="container-fluid constraint"><strong>Powered by</strong> Di Natale Antonino</div>
                 </footer>
 

@@ -34,6 +34,8 @@ export default class SearchField extends Component {
     }
 
     _getRemoteData(val){
+        
+        if(this.props.url===undefined) return;
 
         let query = this.props.query !== undefined ? this.props.query :'';
         let qStrings = '';

@@ -17,7 +17,7 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     @php
-        $menu = array('home', 'ingredienti', 'ricette');
+        $menu = array('home', 'ricette');
         $user = Auth::user();
         $ruolo = $nome = '';
         
@@ -26,7 +26,8 @@
             $user = $ruolo=='autore' ? $user->autore : $user->redattore;
             $nome = $user->nome;// .' '. $user->cognome;
         
-            //if($ruolo == 'caporedattore') $array = array_merge($array,['redattori']);
+            if($ruolo == 'caporedattore') $menu = array_merge($menu,['redattori']);
+            if($ruolo != 'autore') $menu = array_merge($menu,['autori','ingredienti']);
 
             echo "<script>
                     let menu =".json_encode($menu).'; '.

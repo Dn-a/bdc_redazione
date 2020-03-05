@@ -18,11 +18,11 @@ class CreateRedattoriTable extends Migration
             $table->string('nome',50);
             $table->string("cognome",50);
             $table->string("matricola",20)->unique();
-            $table->unsignedInteger('id_users');
+            $table->unsignedInteger('id_user');
         });
 
         Schema::table('redattori', function($table) {
-        	$table->foreign('id_users')->references('id')->on('users')->onDelete('restrict');
+        	$table->foreign('id_user')->references('id')->on('users')->onDelete('restrict');
         });
     }
 
