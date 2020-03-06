@@ -1,7 +1,8 @@
 import React, { Component , Fragment } from 'react';
 
+import {User} from './../Env';
+
 import SearchField from '../utils/SearchField';
-import DropDownSelect from '../utils/form/DropdownSelect';
 import { Button, AddButton } from '../utils/Button';
 import InfiniteTable from '../utils/InfiniteTable';
 import RedattoriModal from './../modal/RedattoriModal';
@@ -66,8 +67,7 @@ export default class Redattori extends Component {
 
     render() {
 
-        let user = USER_CONFIG;
-        let ruolo = user.ruolo;
+        let user = User();
 
         return (
             <div className="container-fluid pl-3 constraint">

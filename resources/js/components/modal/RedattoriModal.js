@@ -101,7 +101,7 @@ export default class RedattoriModal extends Component {
 
         }).catch((error) => {
           console.error(error.response);
-          if(error.response!==undefined &&  error.response.status==422)
+          if(error.response!==undefined &&  error.response.data.errors)
             this.setState({errorRegMessage: error.response.data.errors,loader:false}); 
           throw error;
         });

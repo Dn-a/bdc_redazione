@@ -1,4 +1,7 @@
 import React, { Component , Fragment } from 'react';
+import { Link } from 'react-router-dom'
+import parse from 'html-react-parser';
+
 
 const FIELDS = [
     {titolo: 'ricette', type:[]}
@@ -32,12 +35,7 @@ export default class Blog extends Component {
 
     getRemoteData(type,id){
 
-        let urlType = {
-            ptVendita: 'punti-vendita',
-            incassi: 'incassi'+(id!=null?'?id_pt_vendita='+id:'')
-        }
-
-        let url = this.props.url+'/ricette';
+        let url = this.props.url+'/ricette?only=blog';
 
         let headers = {headers: {'Accept': 'application/json'}};
 
@@ -71,25 +69,51 @@ export default class Blog extends Component {
                 throw error;
 			});
     }
- 
+
     render() {
         let data = this.state.data;
         
         //console.log(this.props);
 
         return (
-            <section className="container-fluid">
+            <section className="container-fluid blog">
                 <div className="row">
                     {data.ricette.map((rc,key) =>{
-                        return(
-                            <div className="col-md-4" key={key}>
-                                <div className="card" >
-                                    <img className="card-img-top" src={rc.img} alt="Card image cap" />
-                                    <div className="card-body">
-                                        <p className="card-text">{rc.modalita_preparazione}</p>
+                        return(                            
+                                <div className="col-md-4" key={key}>
+                                    
+                                    <div className="card mb-4 box-shadow">
+                                        <Link to={this.props.url+'/blog/'+rc.id}>
+                                            <img className="card-img-top" src={rc.img} alt="Card image cap" />
+                                        </Link>
+                                        <div className="card-body">
+                                            <Link to={this.props.url+'/blog/'+rc.id}>
+                                                <h5 className="card-title">{rc.titolo}</h5>
+                                            </Link>
+                                            <p className="card-text">{parse(rc.intro)}</p>
+                                        </div>
+                                        <div className="card-footer bg-transparent">
+                                            
+                                            <div className="row">
+                                                <div className="info col-sm-3 col-md-3 text-center px-1">
+                                                    <i className="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                                                    &nbsp;{rc.difficolta}
+                                                </div>
+                                                <div className="info col-sm-3 col-md-4 text-center px-1">
+                                                    <i className="fa fa-clock-o" aria-hidden="true"> </i>
+                                                    &nbsp;{(rc.tempo_preparazione+rc.tempo_preparazione)} min
+                                                </div>
+                                                <div className="info col-sm-6 col-md-5 text-center px-1">
+                                                    <i className="fa fa-free-code-camp" aria-hidden="true"></i>
+                                                    &nbsp;{rc.calorie} Kcal
+                                                </div>
+                                            </div>
+
+                                        </div>
                                     </div>
+                                    
                                 </div>
-                            </div>
+                            
                         )
                     })}
                 </div>

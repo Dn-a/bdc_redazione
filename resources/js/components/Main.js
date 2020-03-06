@@ -1,17 +1,30 @@
 import React, { Component , Fragment, useState} from 'react';
 import ReactDOM from 'react-dom';
+
 import {BrowserRouter as Router, Switch, Route, Link, NavLink} from "react-router-dom";
+import history from './history';
+
 import { Button } from './utils/Button';
+
+import {User} from './Env';
 
 import LoginRegister from './modal/LoginRegister';
 import Home from './view/Home';
 import Redattori from './view/Redattori';
 import Autori from './view/Autori';
+import Ricetta from './view/Ricetta';
+import Ricette from './view/Ricette';
 
 const routes = [
     {path: "/", name:"Home",title:'Home', icon:'fa-home', Component:Home},
-    {path: "/redattori", name:"Redattori",title:'Gestione Redattori', icon:'fa-users', Component: Redattori},   
-    {path: "/autori", name:"Autori",title:'Gestione Autori', icon:'fa-address-card-o', Component: Autori}
+    {path: "/blog/:ricetta", name:"Ricetta", title:'Ricetta', icon:'fa-home', Component:Ricetta},
+    {path: "/gestione-ricette", name:"Ricette", title:'Gestione Ricette', icon:'fa-list-ol', Component: Ricette},   
+    {path: "/gestione-ricette/:ricetta", name:"Gestione-Ricetta", title:'Gestione Ricetta', icon:'fa-list-ol', Component: Ricetta},   
+    {path: "/gestione-ricette/new", name:"Nuova-Ricetta", title:'Nuova Ricetta', icon:'fa-list-ol', Component: Ricetta},   
+    {path: "/gestione-ricette/edit/.ricetta", name:"Modifica-Ricetta", title:'Modifica Ricetta', icon:'fa-list-ol', Component: Ricetta},   
+    {path: "/redattori", name:"Redattori", title:'Gestione Redattori', icon:'fa-users', Component: Redattori},   
+    {path: "/autori", name:"Autori", title:'Gestione Autori', icon:'fa-address-card-o', Component: Autori},    
+    {path: "/validazioni", name:"Validazioni", title:'Validazioni Ricette', icon:'fa-address-card-o', Component: Autori}
 ];
 
 const MainTitle = ()  => {
@@ -19,7 +32,7 @@ const MainTitle = ()  => {
         <Switch>
             {
             routes.map(({path, title, icon},key) => {
-                if(title=='Home') return;
+                if(title=='Home' || title=='Ricetta') return;
             return(
             <Route key={key} exact path={path} >
                 <div className="px-2 pl-4 mt-2 mb-5 constraint">
@@ -89,22 +102,23 @@ export default class Main extends Component {
 
     render() {
                
-        let config = typeof USER_CONFIG!== 'undefined' ? USER_CONFIG : null;
-        let ruolo = config!=null? config.ruolo : null;
-        let nome = config!=null? config.nome : '';
-        let menu = config!=null ? USER_CONFIG.menu: [];
+        let user = User();
 
+        let ruolo = user.ruolo;
+        let nome = user.nome;
+        let menu = user.menu;
+        
         return (
-
-            <Router>
+            
+            <Router history={history} >
                 
-                <header className={config!=null?'logged':''}>
+                <header className={ruolo!=''?'logged':''}>
 
                     <nav className="navbar navbar-expand-md navbar-light bg-white shadow-sm">
 
                         <div className="container-fluid constraint">
                             
-                            {config!=null  &&
+                            {ruolo!=''  &&
                                 <button type="button" id="sidebarCollapse" className="btn btn-link">
                                     <i className="fa fa-align-left"></i>
                                 </button>
@@ -122,7 +136,7 @@ export default class Main extends Component {
 
                                 <ul className="navbar-nav ml-auto">
 
-                                    {ruolo==null || ruolo=='' ?                                                
+                                    {ruolo=='' ?                                                
                                         <LoginButton url={this.url} />
                                         :
                                         (
@@ -153,7 +167,7 @@ export default class Main extends Component {
 
                 </header>
 
-                {config!=null &&
+                {ruolo!='' &&
                     <aside id="sidebar" className="shadow">
                         <nav className="menu py-3" >
                             <ul>
@@ -175,7 +189,7 @@ export default class Main extends Component {
                     </aside>
                 }
                 
-                <main id="content" className={"py-4 "+(config!=null?'logged':'')}>
+                <main id="content" className={"py-4 "+(ruolo!=''?'logged':'')}>
                     
                     <MainTitle />
 
@@ -184,7 +198,7 @@ export default class Main extends Component {
                             routes.map(({path, Component},key) => {
                                 return(
                                     <Route key={key} path={path} exact
-                                        component={() => <Component url={this.url} />}
+                                        component={(router) => <Component router={router} url={this.url} />}
                                     />
                                 )
                             })
@@ -193,7 +207,7 @@ export default class Main extends Component {
 
                 </main>
 
-                <footer className={"p-3 "+(config!=null?'logged':'')}>
+                <footer className={"p-3 "+(ruolo!=''?'logged':'')}>
                     <div className="container-fluid constraint"><strong>Powered by</strong> Di Natale Antonino</div>
                 </footer>
 

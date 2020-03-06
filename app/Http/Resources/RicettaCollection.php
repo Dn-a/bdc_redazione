@@ -9,15 +9,12 @@ class RicettaCollection extends ResourceCollection
     protected $withFields = [
         'id',
         'titolo',
+        'tempo_preparazione',
         'tempo_cottura',
-        'modalita_preparazione',
-        'porzioni',
+        'intro',   
         'calorie',
-        'difficolta',
-        'autore',
-        'tipologia',
-        'img',
-        'data_creazione'   
+        'difficolta',        
+        'img'   
     ];
     protected $withPagination;
 

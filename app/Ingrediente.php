@@ -8,8 +8,10 @@ class Ingrediente extends Model
 {
     protected $table = 'ingredienti';
 
+    public $timestamps = false;
+
     protected $fillable = [
-        'titolo', 'calorie', 'SI'
+        'titolo', 'calorie', 'unita_misura', 'img'
     ];
 
 }

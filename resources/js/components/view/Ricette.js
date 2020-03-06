@@ -1,45 +1,36 @@
 import React, { Component , Fragment } from 'react';
-
+import { Link} from 'react-router-dom';
 import {User} from './../Env';
 
 import SearchField from '../utils/SearchField';
+import { Button, AddButton } from '../utils/Button';
 import InfiniteTable from '../utils/InfiniteTable';
 
 
 const COLUMNS = [
     { title: 'id', field: 'id' , align:'right'},
-    { title: 'Nome', field: 'nome', style: {textTransform:'capitalize'}  },
-    { title: 'Cognome', field: 'cognome', style: {textTransform:'capitalize'} },
-    { title: 'Data di Nascita', field:'data_nascita',
-        render: cell  =>  new Date(cell).toLocaleDateString("it-IT",{year:"numeric",month:"2-digit", day:"2-digit"})
-    },
-    { title: 'Email', field: 'email' },
-    { title: 'Recapiti', field: 'recapiti' },
-    { title: 'Residenza', field: 'Residenza', style: {textTransform:'capitalize'} },
-    { title: 'Privacy', field: 'privacy', render:
-        (cell,row) => {
-
-            if(cell==null ) return;
-
-            let linkSource = 'data:application/pdf;base64,'+cell;
-            //let downloadLink = document.createElement("a");
-            let fileName = 'privacy_'+row.nome+'_'+row.cognome+'.pdf';
-
+    { title: 'Titolo', field: 'titolo',img:''},
+    User().ruolo !='autore'?
+        ({ title: 'Autore', field: 'autore', style: {textTransform:'capitalize'}})
+    :null,
+    { title: 'Tipologia', field: 'tipologia', style: {textTransform:'capitalize'}},
+    { title: 'Difficoltà', field: 'difficolta', style: {textTransform:'capitalize'}},
+    { title: 'Tempi', field: 'tempo_cottura', render:(cell,row) => 
+        {
             return(
-                <a className="privacy-file" href={linkSource} download={fileName}>
-                    <i className="fa fa-file-pdf-o" aria-hidden="true"></i>
-                </a>
-            );
-            //downloadLink.href = linkSource;
-            //downloadLink.download = fileName;
-            //downloadLink.click();
+                <Fragment>
+                    <div><strong>Preparazione:</strong> {row.tempo_preparazione} min</div>
+                    <div><strong>Cottura:</strong> {row.tempo_cottura} min</div>
+                </Fragment>
+            )
         }
     },
+    { title: 'Stato', field: 'stato', style: {textTransform:'capitalize'}},
     { title: 'Creato il', field:'data_creazione', render: cell => new Date(cell).toLocaleDateString("it-IT",{year:"numeric",month:"2-digit", day:"2-digit"})},
-  ];
+  ].map((a) => { if(a!=null) return a; return false; } );;
 
 
-export default class Autori extends Component {
+export default  class Ricette extends Component {
 
     constructor(props){
         super(props);
@@ -51,7 +42,7 @@ export default class Autori extends Component {
             reloadInfiniteTable:0
         };
 
-        this.url = this.props.url+'/autori';
+        this.url = this.props.url+'/ricette';
         this._handleCloseModal = this._handleCloseModal.bind(this);
         this._handleShowModal = this._handleShowModal.bind(this);
         this._handleSearchFieldCallback = this._handleSearchFieldCallback.bind(this);   
@@ -89,6 +80,7 @@ export default class Autori extends Component {
     render() {
 
         let user = User();
+        let history = this.props.router.history;
 
         return (
             <div className="container-fluid pl-3 constraint">
@@ -96,21 +88,35 @@ export default class Autori extends Component {
                 <div className="row mb-3 px-2">
 
                     <div className="col-md-6">
-                        <SearchField showList={false} patternList={{id:'id',fields:['nome','cognome']}}
+                        <SearchField showList={false} 
+                        //patternList={{id:'id',fields:['titolo','cognome']}}
                         url={this.url+'/search'}
+                        //query={idPtVendita!=-1 ? 'id_pt_vendita='+idPtVendita : ''}
                         callback={this._handleSearchFieldCallback}
                         />
+                    </div>
+
+                    <div className="col-md-6 text-right">
+                        {user.ruolo=='autore' &&
+                            <AddButton onClick={this._handleShowModal}>
+                            <i className="fa fa-plus-circle" aria-hidden="true"></i>
+                            &nbsp;Nuovo Ricetta</AddButton>
+                        }
                     </div>
 
                 </div>
                 <div className="row">
                     <div className="col-md-12">
                         <InfiniteTable
-                            id='tb-autori'
+                            id='tb-ricette'
                             reload={this.state.reloadInfiniteTable}
                             url={this.url}
+                            //query={idPtVendita!=-1 ? 'id_pt_vendita='+idPtVendita : ''}
                             columns={COLUMNS}
                             externalRows={this.state.rows}
+                            onClick={(row) =>                                 
+                                    history.push(this.props.url+'/gestione-ricette/'+row.id)
+                            }
                         />
                     </div>
                 </div>

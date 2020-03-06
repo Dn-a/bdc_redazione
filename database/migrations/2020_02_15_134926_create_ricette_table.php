@@ -18,11 +18,12 @@ class CreateRicetteTable extends Migration
             $table->string('titolo',50);
             $table->integer('tempo_preparazione');
             $table->integer('tempo_cottura');
+            $table->string('intro');
             $table->string('modalita_preparazione');
             $table->integer('porzioni');
             $table->float('calorie');
-            $table->enum('difficolta',['1','2','3','4','5'])->default('1');
-            $table->enum('stato',['attesa','scartata','idonea','approvata'])->default('attesa');
+            $table->enum('difficolta',['facile','media','difficile'])->default('facile');
+            $table->enum('stato',['bozza','inviata','validazione','idonea','scartata','approvazione','approvata'])->default('bozza');
             $table->unsignedInteger('id_autore');
             $table->unsignedInteger('id_tipologia');
             $table->string('note')->nullable();

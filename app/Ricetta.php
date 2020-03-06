@@ -11,7 +11,7 @@ class Ricetta extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'titolo', 'tempo_cottura', 'modalita_preparazione', 'porzioni','calorie',
+        'titolo', 'tempo_cottura', 'intro', 'modalita_preparazione', 'porzioni','calorie',
         'difficolta', 'stato', 'id_autore', 'id_tipologia', 'note', 'img'
     ];
 
@@ -23,6 +23,11 @@ class Ricetta extends Model
     public function tipologia()
     {
         return $this->belongsTo('App\Tipologia','id_tipologia');
+    }
+
+    public function ingredienti()
+	{
+        return $this->belongsToMany('App\Ingrediente','ricette_ingredienti','id_ricetta','id_ingrediente');
     }
 
 }

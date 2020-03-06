@@ -27,14 +27,26 @@ if(request()->header('accept')=='application/json'){
 
 // browser request
   if(request()->header('accept')!='application/json')
+   {
       Route::get('/{name}', 'HomeController@index')->name('home')
-      ->where('name','(|home|autori|redattori|ricette|ingredienti|verifiche|setting)');
+      ->where('name', '|home|autori|redattori|blog|gestione-ricette|ingredienti|verifiche|setting');
+
+      Route::get('/{name}/{id}', 'HomeController@index')->name('home')
+      ->where(
+        [
+          'name' =>'|home|autori|redattori|blog|gestione-ricette|ingredienti|verifiche|setting',
+          'id' => '[0-9]+'
+        ]
+      );
+  }
+      
 
 
 
 // Ricette
-  Route::get('ricette', 'RicettaController@index')->name('ricette');
   Route::get('ricette/{ricetta}', 'RicettaController@show');
+  Route::get('ricette/search/{val}', 'RicettaController@search')->name('ricette.search');
+  Route::get('ricette', 'RicettaController@index')->name('ricette');  
 
 // Comuni
   Route::get('comuni/search/{val}', 'ComuneController@search')->name('comuni.search');
