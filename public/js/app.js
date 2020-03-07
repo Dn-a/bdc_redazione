@@ -78061,8 +78061,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _view_Home__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./view/Home */ "./resources/js/components/view/Home.js");
 /* harmony import */ var _view_Redattori__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./view/Redattori */ "./resources/js/components/view/Redattori.js");
 /* harmony import */ var _view_Autori__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./view/Autori */ "./resources/js/components/view/Autori.js");
-/* harmony import */ var _view_Ricetta__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./view/Ricetta */ "./resources/js/components/view/Ricetta.js");
-/* harmony import */ var _view_Ricette__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./view/Ricette */ "./resources/js/components/view/Ricette.js");
+/* harmony import */ var _view_AddEditRicetta__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./view/AddEditRicetta */ "./resources/js/components/view/AddEditRicetta.js");
+/* harmony import */ var _view_Ricetta__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./view/Ricetta */ "./resources/js/components/view/Ricetta.js");
+/* harmony import */ var _view_Ricette__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./view/Ricette */ "./resources/js/components/view/Ricette.js");
+/* harmony import */ var _view_Validazioni__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./view/Validazioni */ "./resources/js/components/view/Validazioni.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -78101,6 +78103,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
+
 var routes = [{
   path: "/",
   name: "Home",
@@ -78108,35 +78112,41 @@ var routes = [{
   icon: 'fa-home',
   Component: _view_Home__WEBPACK_IMPORTED_MODULE_7__["default"]
 }, {
+  path: "/validazioni",
+  name: "Validazioni",
+  title: 'Validazioni Ricette',
+  icon: 'fa-gavel',
+  Component: _view_Validazioni__WEBPACK_IMPORTED_MODULE_13__["default"]
+}, {
   path: "/blog/:ricetta",
   name: "Ricetta",
   title: 'Ricetta',
   icon: 'fa-home',
-  Component: _view_Ricetta__WEBPACK_IMPORTED_MODULE_10__["default"]
-}, {
-  path: "/gestione-ricette",
-  name: "Ricette",
-  title: 'Gestione Ricette',
-  icon: 'fa-list-ol',
-  Component: _view_Ricette__WEBPACK_IMPORTED_MODULE_11__["default"]
-}, {
-  path: "/gestione-ricette/:ricetta",
-  name: "Gestione-Ricetta",
-  title: 'Gestione Ricetta',
-  icon: 'fa-list-ol',
-  Component: _view_Ricetta__WEBPACK_IMPORTED_MODULE_10__["default"]
+  Component: _view_Ricetta__WEBPACK_IMPORTED_MODULE_11__["default"]
 }, {
   path: "/gestione-ricette/new",
   name: "Nuova-Ricetta",
   title: 'Nuova Ricetta',
   icon: 'fa-list-ol',
-  Component: _view_Ricetta__WEBPACK_IMPORTED_MODULE_10__["default"]
+  Component: _view_AddEditRicetta__WEBPACK_IMPORTED_MODULE_10__["default"]
 }, {
-  path: "/gestione-ricette/edit/.ricetta",
+  path: "/gestione-ricette/:ricetta/edit",
   name: "Modifica-Ricetta",
   title: 'Modifica Ricetta',
   icon: 'fa-list-ol',
-  Component: _view_Ricetta__WEBPACK_IMPORTED_MODULE_10__["default"]
+  Component: _view_Ricetta__WEBPACK_IMPORTED_MODULE_11__["default"]
+}, {
+  path: "/gestione-ricette",
+  name: "Ricette",
+  title: 'Gestione Ricette',
+  icon: 'fa-list-ol',
+  Component: _view_Ricette__WEBPACK_IMPORTED_MODULE_12__["default"]
+}, {
+  path: "/gestione-ricette/:ricetta",
+  name: "Gestione-Ricetta",
+  title: 'Gestione Ricetta',
+  icon: 'fa-list-ol',
+  Component: _view_Ricetta__WEBPACK_IMPORTED_MODULE_11__["default"]
 }, {
   path: "/redattori",
   name: "Redattori",
@@ -78147,12 +78157,6 @@ var routes = [{
   path: "/autori",
   name: "Autori",
   title: 'Gestione Autori',
-  icon: 'fa-address-card-o',
-  Component: _view_Autori__WEBPACK_IMPORTED_MODULE_9__["default"]
-}, {
-  path: "/validazioni",
-  name: "Validazioni",
-  title: 'Validazioni Ricette',
   icon: 'fa-address-card-o',
   Component: _view_Autori__WEBPACK_IMPORTED_MODULE_9__["default"]
 }];
@@ -78271,7 +78275,7 @@ function (_Component) {
         className: "fa fa-align-left"
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         className: "navbar-brand",
-        href: ""
+        href: '/' + this.url
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "logo"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
@@ -78384,6 +78388,272 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var history__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! history */ "./node_modules/history/esm/history.js");
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(history__WEBPACK_IMPORTED_MODULE_0__["createBrowserHistory"])());
+
+/***/ }),
+
+/***/ "./resources/js/components/modal/IngredienteModal.js":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/modal/IngredienteModal.js ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return IngredienteModal; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Env__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Env */ "./resources/js/components/Env.js");
+/* harmony import */ var _utils_AddEditModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/AddEditModal */ "./resources/js/components/utils/AddEditModal.js");
+/* harmony import */ var _utils_form_InputField__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/form/InputField */ "./resources/js/components/utils/form/InputField.js");
+/* harmony import */ var _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/form/InfoError */ "./resources/js/components/utils/form/InfoError.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+
+var email_reg_exp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+var whitespace_reg_ex = /^[^\s].*/;
+var FIELDS = ['titolo', 'calorie', 'unita_misura', 'img'];
+var HIDE_FIELD = [];
+
+var IngredienteModal =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(IngredienteModal, _Component);
+
+  function IngredienteModal(props) {
+    var _this;
+
+    _classCallCheck(this, IngredienteModal);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(IngredienteModal).call(this, props));
+    var data = {};
+    var error = {};
+    FIELDS.map(function (fd, id) {
+      data[fd] = error[fd] = '';
+    });
+    _this.state = {
+      data: data,
+      error: error,
+      checked: false,
+      loader: false,
+      errorRegMessage: ''
+    };
+    _this.home = _Env__WEBPACK_IMPORTED_MODULE_1__["URL_HOME"];
+    _this._handleChange = _this._handleChange.bind(_assertThisInitialized(_this));
+    _this._handleOnSave = _this._handleOnSave.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(IngredienteModal, [{
+    key: "_resetAfterClose",
+    value: function _resetAfterClose() {
+      var data = {};
+      var error = {};
+      FIELDS.map(function (fd, id) {
+        data[fd] = error[fd] = '';
+      });
+      this.state.data = data;
+      this.state.error = error;
+      this.state.loader = false;
+      this.state.checked = false;
+    }
+  }, {
+    key: "setRemoteStore",
+    value: function setRemoteStore() {
+      var _this2 = this;
+
+      var url = this.props.url + '/ingredienti';
+      var headers = {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      };
+      var data = this.state.data;
+      data['_token'] = CSRF_TOKEN; //console.log(data);return;
+
+      this.setState({
+        loader: true
+      });
+      return axios.post(url, data, headers).then(function (result) {
+        //console.log(result);
+        if (_this2.props.callback !== undefined) _this2.props.callback(data);
+
+        _this2.props.onHide();
+
+        _this2._resetAfterClose();
+
+        return result;
+      })["catch"](function (error) {
+        console.error(error.response);
+        var msg = '';
+        if (error.response !== undefined) if (error.response.data.errors !== undefined) msg = error.response.data.errors;else if (error.response.data.message !== undefined) msg = error.response.data.message;
+
+        _this2.setState({
+          errorRegMessage: msg,
+          loader: false
+        });
+
+        throw error;
+      });
+    }
+  }, {
+    key: "_handleOnSave",
+    value: function _handleOnSave() {
+      console.log("save");
+      this.setRemoteStore();
+    }
+  }, {
+    key: "_handleChange",
+    value: function _handleChange(e) {
+      var _this3 = this;
+
+      var value = e.target.value.toLowerCase();
+      var field = e.target.name;
+      var error = this.state.error;
+      var data = this.state.data;
+      if (value == '') error[field] = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['vuoto'];else error[field] = '';
+
+      switch (field) {
+        case 'titolo':
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.titolo = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['caratteri'];
+          break;
+
+        case 'calorie':
+          if (isNaN(value) || !whitespace_reg_ex.test(value)) error.calorie = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['numero'];
+          break;
+
+        case 'unita_misura':
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.unita_misura = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['caratteri'];
+          break;
+
+        case 'img':
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.img = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['caratteri'];
+      }
+
+      data[field] = value.trim();
+      this.setState({
+        data: data,
+        error: error
+      }, function () {
+        return _this3.checked();
+      });
+    }
+  }, {
+    key: "checked",
+    value: function checked() {
+      var data = this.state.data;
+      var error = this.state.error;
+      var checked = true;
+      Object.keys(error).map(function (k, id) {
+        if (error[k] != '' || data[k] == '') checked = false;
+      });
+      this.setState({
+        checked: checked
+      });
+    }
+  }, {
+    key: "showError",
+    value: function showError(field) {
+      var error = this.state.error[field] !== undefined ? this.state.error[field] : '';
+      if (error != '') return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "error-div"
+      }, error);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this4 = this;
+
+      var divClassName = 'mb-3';
+      var errorRegMessage = this.state.errorRegMessage;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_AddEditModal__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        size: "md",
+        show: this.props.show,
+        onHide: function onHide(a) {
+          _this4.props.onHide(a);
+
+          _this4._resetAfterClose();
+        },
+        loader: this.state.loader,
+        onConfirm: this._handleOnSave,
+        disabledConfirmButton: !this.state.checked,
+        error: this.state.remoteError,
+        title: "Ingrediente",
+        type: "Nuovo"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        name: "titolo",
+        divClassName: divClassName,
+        className: "form-control",
+        label: "Titolo",
+        helperText: this.showError('titolo'),
+        handleChange: this._handleChange
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        name: "calorie",
+        divClassName: divClassName,
+        className: "form-control",
+        label: "Calorie (kcal)",
+        helperText: this.showError('calorie'),
+        handleChange: this._handleChange
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        name: "unita_misura",
+        divClassName: divClassName,
+        className: "form-control",
+        label: "Unit\xE0 di misura",
+        helperText: this.showError('unita_misura'),
+        handleChange: this._handleChange
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        name: "img",
+        autocomplete: "on",
+        className: "form-control",
+        label: "Link Immagine",
+        helperText: this.showError('img'),
+        handleChange: this._handleChange
+      })), _typeof(errorRegMessage) === 'object' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "alert alert-danger",
+        role: "alert"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Attenzione!"), Object.keys(errorRegMessage).map(function (a, k1) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          key: k1
+        }, errorRegMessage[a].map(function (s, k2) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            key: k2
+          }, s, " ");
+        }));
+      }))));
+    }
+  }]);
+
+  return IngredienteModal;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+
 
 /***/ }),
 
@@ -78554,10 +78824,14 @@ function (_Component) {
         return result;
       })["catch"](function (error) {
         if (error === undefined) return;
-        if (error.response.status == 422) _this2.setState({
-          errorRegMessage: error.response.data.errors,
+        var msg = '';
+        if (error.response !== undefined) if (error.response.data.errors !== undefined) msg = error.response.data.errors;else if (error.response.data.message !== undefined) msg = error.response.data.message;
+
+        _this2.setState({
+          errorRegMessage: msg,
           loader: false
         });
+
         console.error(error.response);
         throw error;
       });
@@ -78607,23 +78881,23 @@ function (_Component) {
 
       switch (field) {
         case 'nome':
-          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.nome = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['caratteri'];
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.nome = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['caratteri'];
           break;
 
         case 'cognome':
-          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.cognome = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['caratteri'];
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.cognome = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['caratteri'];
           break;
 
         case 'indirizzo':
-          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.indirizzo = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['caratteri'];
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.indirizzo = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['caratteri'];
           break;
 
         case 'telefono':
-          if (isNaN(value)) error.telefono = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['numero'];
+          if (isNaN(value) || !whitespace_reg_ex.test(value)) error.telefono = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['numero'];
           break;
 
         case 'cellulare':
-          if (isNaN(value)) error.cellulare = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['numero'];
+          if (isNaN(value) || !whitespace_reg_ex.test(value)) error.cellulare = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['numero'];
           break;
 
         case 'email':
@@ -78631,11 +78905,11 @@ function (_Component) {
           break;
 
         case 'password':
-          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['caratteri'];else if (value.length > 0 && value.length < 8) error.password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['password'];else if (this.state.data.confirm_password != '' && value != this.state.data.confirm_password) error.confirm_password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['confirm_password'];else error.confirm_password = '';
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['caratteri'];else if (value.length > 0 && value.length < 8) error.password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['password'];else if (this.state.data.confirm_password != '' && value != this.state.data.confirm_password) error.confirm_password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['confirm_password'];else error.confirm_password = '';
           break;
 
         case 'confirm_password':
-          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.confirm_password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['caratteri'];else if (value.length > 0 && value.length < 8 || value != this.state.data.password) error.confirm_password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['confirm_password'];
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.confirm_password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['caratteri'];else if (value.length > 0 && value.length < 8 || value != this.state.data.password) error.confirm_password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_9__["default"]['confirm_password'];
           break;
 
         case 'data_nascita':
@@ -79105,10 +79379,14 @@ function (_Component) {
         return result;
       })["catch"](function (error) {
         console.error(error.response);
-        if (error.response !== undefined && error.response.data.errors) _this2.setState({
-          errorRegMessage: error.response.data.errors,
+        var msg = '';
+        if (error.response !== undefined) if (error.response.data.errors !== undefined) msg = error.response.data.errors;else if (error.response.data.message !== undefined) msg = error.response.data.message;
+
+        _this2.setState({
+          errorRegMessage: msg,
           loader: false
         });
+
         throw error;
       });
     }
@@ -79131,16 +79409,16 @@ function (_Component) {
 
       switch (field) {
         case 'nome':
-          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.nome = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['caratteri'];
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.nome = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['caratteri'];
           break;
 
         case 'cognome':
-          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.cognome = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['caratteri'];
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.cognome = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['caratteri'];
           break;
 
         case 'matricola':
           value = value.toUpperCase();
-          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.matricola = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['caratteri'];
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.matricola = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['caratteri'];
           break;
 
         case 'email':
@@ -79148,11 +79426,11 @@ function (_Component) {
           break;
 
         case 'password':
-          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['caratteri'];else if (value.length > 0 && value.length < 8) error.password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['password'];else if (this.state.data.confirm_password != '' && value != this.state.data.confirm_password) error.confirm_password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['confirm_password'];else error.confirm_password = '';
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['caratteri'];else if (value.length > 0 && value.length < 8) error.password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['password'];else if (this.state.data.confirm_password != '' && value != this.state.data.confirm_password) error.confirm_password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['confirm_password'];else error.confirm_password = '';
           break;
 
         case 'confirm_password':
-          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.confirm_password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['caratteri'];else if (value.length > 0 && value.length < 8 || value != this.state.data.password) error.confirm_password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['confirm_password'];
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.confirm_password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['caratteri'];else if (value.length > 0 && value.length < 8 || value != this.state.data.password) error.confirm_password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['confirm_password'];
           break;
       }
 
@@ -80148,6 +80426,7 @@ function (_Component) {
         });
       });
       if (this.props.onClick !== undefined) this.props.onClick(val);
+      if (this.props.showList !== undefined && this.props.resetAfterClick !== undefined && this.props.resetAfterClick) this._handleReset();
     } // Richiama getRemoteData dopo un certo tempo T
 
   }, {
@@ -80529,6 +80808,527 @@ var InputField = function InputField(_ref) {
 
 /***/ }),
 
+/***/ "./resources/js/components/utils/form/TextAreaField.js":
+/*!*************************************************************!*\
+  !*** ./resources/js/components/utils/form/TextAreaField.js ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var TextAreaField = function TextAreaField(_ref) {
+  var name = _ref.name,
+      value = _ref.value,
+      placeholder = _ref.placeholder,
+      required = _ref.required,
+      handleChange = _ref.handleChange,
+      label = _ref.label,
+      _ref$divClassName = _ref.divClassName,
+      divClassName = _ref$divClassName === void 0 ? '' : _ref$divClassName,
+      _ref$className = _ref.className,
+      className = _ref$className === void 0 ? '' : _ref$className,
+      style = _ref.style,
+      helperText = _ref.helperText;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "input-field " + divClassName
+  }, label != null ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    className: "",
+    htmlFor: name
+  }, label) : '', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
+    type: "text",
+    name: name,
+    value: value,
+    required: required,
+    className: className,
+    style: style != undefined ? style : {
+      height: "80px"
+    },
+    autoComplete: "off",
+    placeholder: placeholder,
+    onChange: handleChange
+  }), helperText);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (TextAreaField);
+
+/***/ }),
+
+/***/ "./resources/js/components/view/AddEditRicetta.js":
+/*!********************************************************!*\
+  !*** ./resources/js/components/view/AddEditRicetta.js ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return AddEditRicetta; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var html_react_parser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! html-react-parser */ "./node_modules/html-react-parser/index.js");
+/* harmony import */ var html_react_parser__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(html_react_parser__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _Env__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../Env */ "./resources/js/components/Env.js");
+/* harmony import */ var _utils_SearchField__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/SearchField */ "./resources/js/components/utils/SearchField.js");
+/* harmony import */ var _utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/form/InputField */ "./resources/js/components/utils/form/InputField.js");
+/* harmony import */ var _utils_form_DataField__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/form/DataField */ "./resources/js/components/utils/form/DataField.js");
+/* harmony import */ var _utils_form_DropdownSelect__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/form/DropdownSelect */ "./resources/js/components/utils/form/DropdownSelect.js");
+/* harmony import */ var _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/form/InfoError */ "./resources/js/components/utils/form/InfoError.js");
+/* harmony import */ var _utils_form_FileField__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/form/FileField */ "./resources/js/components/utils/form/FileField.js");
+/* harmony import */ var _utils_Button__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../utils/Button */ "./resources/js/components/utils/Button.js");
+/* harmony import */ var _utils_form_TextAreaField__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../utils/form/TextAreaField */ "./resources/js/components/utils/form/TextAreaField.js");
+/* harmony import */ var _modal_IngredienteModal__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../modal/IngredienteModal */ "./resources/js/components/modal/IngredienteModal.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var whitespace_reg_ex = /^[^\s].*/;
+var FIELDS = ['titolo', 'tempo_preparazione', 'tempo_cottura', 'intro', 'modalita_preparazione', 'porzioni', 'calorie', 'difficolta', 'id_tipologia', 'id_ingredienti', 'note', 'img'];
+
+var AddEditRicetta =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(AddEditRicetta, _Component);
+
+  function AddEditRicetta(props) {
+    var _this;
+
+    _classCallCheck(this, AddEditRicetta);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(AddEditRicetta).call(this, props));
+    var data = {};
+    var error = {};
+    FIELDS.map(function (fd, id) {
+      data[fd] = error[fd] = '';
+    });
+    _this.state = {
+      data: data,
+      error: error,
+      show: false,
+      checked: false,
+      loader: false,
+      errorRegMessage: ''
+    };
+    _this.home = _Env__WEBPACK_IMPORTED_MODULE_2__["URL_HOME"];
+    _this._handleChange = _this._handleChange.bind(_assertThisInitialized(_this));
+    _this._handleCloseModal = _this._handleCloseModal.bind(_assertThisInitialized(_this));
+    _this._handleShowModal = _this._handleShowModal.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(AddEditRicetta, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {//console.log(this.props.router.match.params.ricetta)        
+    }
+  }, {
+    key: "_handleCloseModal",
+    value: function _handleCloseModal() {
+      this.setState({
+        show: false
+      });
+    }
+  }, {
+    key: "_handleShowModal",
+    value: function _handleShowModal() {
+      this.setState({
+        show: true
+      });
+    }
+  }, {
+    key: "setRemoteStore",
+    value: function setRemoteStore() {
+      var _this2 = this;
+
+      var url = this.props.url + '/ricette';
+      var headers = {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      };
+      var data = this.state.data;
+      var formData = new FormData();
+      Object.keys(data).map(function (k, id) {
+        if (!HIDE_FIELD.includes(k)) {
+          formData.append(k, data[k]);
+        }
+      }); //console.log(FormData);return;
+
+      formData.append('_token', CSRF_TOKEN);
+      this.setState({
+        loader: true
+      });
+      return axios.post(url, formData, headers).then(function (result) {
+        console.log(result);
+        return result;
+      })["catch"](function (error) {
+        console.error(error.response);
+        if (error.response !== undefined && error.response.data.errors) _this2.setState({
+          errorRegMessage: error.response.data.errors,
+          loader: false
+        });
+        throw error;
+      });
+    }
+  }, {
+    key: "_handleOnSave",
+    value: function _handleOnSave() {
+      console.log("save");
+      this.setRemoteStore();
+    }
+  }, {
+    key: "_handleChange",
+    value: function _handleChange(e) {
+      var _this3 = this;
+
+      var value = e.target.value.toLowerCase();
+      var field = e.target.name;
+      var error = this.state.error;
+      var data = this.state.data;
+      if (value == '') error[field] = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['vuoto'];else error[field] = '';
+
+      switch (field) {
+        case 'nome':
+          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.nome = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['caratteri'];
+          break;
+
+        case 'cognome':
+          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.cognome = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['caratteri'];
+          break;
+
+        case 'matricola':
+          value = value.toUpperCase();
+          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.matricola = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['caratteri'];
+          break;
+
+        case 'email':
+          if (value.length < 8) error.email = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['email_1'];else if (!email_reg_exp.test(value)) error.email = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['email_2'];
+          break;
+
+        case 'password':
+          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['caratteri'];else if (value.length > 0 && value.length < 8) error.password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['password'];else if (this.state.data.confirm_password != '' && value != this.state.data.confirm_password) error.confirm_password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['confirm_password'];else error.confirm_password = '';
+          break;
+
+        case 'confirm_password':
+          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.confirm_password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['caratteri'];else if (value.length > 0 && value.length < 8 || value != this.state.data.password) error.confirm_password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['confirm_password'];
+          break;
+      }
+
+      data[field] = value.trim();
+      this.setState({
+        data: data,
+        error: error
+      }, function () {
+        return _this3.checked();
+      });
+    }
+  }, {
+    key: "checked",
+    value: function checked() {
+      var data = this.state.data;
+      var error = this.state.error;
+      var checked = true;
+      Object.keys(error).map(function (k, id) {
+        if (error[k] != '' || data[k] == '') checked = false;
+      });
+      this.setState({
+        checked: checked
+      });
+    }
+  }, {
+    key: "showError",
+    value: function showError(field) {
+      var error = this.state.error[field] !== undefined ? this.state.error[field] : '';
+      if (error != '') return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "error-div"
+      }, error);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this4 = this;
+
+      var divClassName = 'mb-3';
+      var data = this.state.data;
+      var router = this.props.router;
+      var history = router.history;
+      var user = Object(_Env__WEBPACK_IMPORTED_MODULE_2__["User"])();
+      var bread = 'gestione-ricette';
+      var errorRegMessage = this.state.errorRegMessage;
+      var objFid = {
+        'facile': 'Facile',
+        'media': 'Media',
+        'difficile': 'Difficile'
+      };
+      var objFid2 = {
+        1: 'Primo',
+        2: 'Secondo',
+        3: 'Contorno',
+        4: 'Dolce',
+        5: 'Antipasto'
+      };
+      var styleHR = {
+        margin: '35px 0 20px'
+      }; //console.log(url)
+
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("article", {
+        className: "col-md-12 constraint"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+        className: "breadcrumbs mb-2"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        href: "",
+        onClick: function onClick(e) {
+          e.preventDefault();
+          history.goBack();
+        }
+      }, bread, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fa fa-angle-right",
+        "aria-hidden": "true"
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, "nuova ricetta")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+        className: "py-5 px-4 bg-light"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group mb-0"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        label: "Titolo",
+        name: "titolo",
+        divClassName: divClassName,
+        className: "form-control",
+        placeholder: "max 50 caratteri",
+        helperText: this.showError('titolo'),
+        handleChange: this._handleChange
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_TextAreaField__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        label: "Breve Introduzione",
+        name: "intro",
+        divClassName: divClassName,
+        className: "form-control",
+        placeholder: "max 255 caratteri",
+        helperText: this.showError('intro'),
+        handleChange: this._handleChange
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
+        style: styleHR
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group row mb-0"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_DropdownSelect__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        placeholder: "Scegli un valore",
+        name: "difficolta",
+        className: "form-control",
+        divClassName: "col-md-5 " + divClassName,
+        label: "Difficolt\xE0",
+        values: objFid,
+        defaultSelected: "Scegli un valore",
+        handleChange: this._handleChange
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_DropdownSelect__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        placeholder: "Scegli un valore",
+        name: "tipologia",
+        className: "form-control",
+        divClassName: "col-md-5 " + divClassName,
+        label: "Tipologia",
+        values: objFid2,
+        defaultSelected: "Scegli un valore",
+        handleChange: this._handleChange
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
+        style: styleHR
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group row mb-0"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        label: "Tempo Preparazione",
+        name: "tempo_preparazione",
+        divClassName: "col-md-5 " + divClassName,
+        className: "form-control",
+        placeholder: "Tempo preparazione",
+        helperText: this.showError('tempo_preparazione'),
+        handleChange: this._handleChange
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        label: "Tempo Cottura",
+        name: "tempo_cottura",
+        divClassName: "col-md-5 " + divClassName,
+        className: "form-control ",
+        placeholder: "Tempo cottura",
+        helperText: this.showError('tempo_cottura'),
+        handleChange: this._handleChange
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        label: "Porzioni",
+        name: "porzioni",
+        divClassName: "col-md-5 " + divClassName,
+        className: "form-control ",
+        placeholder: "Porzioni",
+        helperText: this.showError('porzioni'),
+        handleChange: this._handleChange
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        label: "Calorie",
+        name: "calorie",
+        divClassName: "col-md-5 " + divClassName,
+        className: "form-control ",
+        placeholder: "Calorie",
+        helperText: this.showError('calorie'),
+        handleChange: this._handleChange
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
+        style: styleHR
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group mb-0"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        label: "Link immagine",
+        name: "img",
+        divClassName: divClassName,
+        className: "form-control ",
+        placeholder: "es: https://.../image.jpg",
+        helperText: this.showError('img'),
+        handleChange: this._handleChange
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
+        style: styleHR
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group mb-5"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_TextAreaField__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        label: "Modalit\xE0 preparazione",
+        style: {
+          height: '200px'
+        },
+        name: "modalita_preparazione",
+        divClassName: divClassName,
+        className: "form-control",
+        placeholder: "",
+        helperText: this.showError('modalita_preparazione'),
+        handleChange: this._handleChange
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
+        style: styleHR
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group mb-0 row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "md-col-4 pl-3 pr-2"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_SearchField__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        label: "Ingredienti",
+        placeholder: "Cerca un Ingrediente",
+        searchClassName: "w-100",
+        showList: true,
+        url: this.props.url + '/ingredienti/search',
+        patternList: {
+          id: 'id',
+          fields: {
+            titolo: []
+          }
+        } //id di ritorno; i fields vengono usati come titolo
+        ,
+        reloadOnClick: false,
+        resetAfterClick: true,
+        onClick: function onClick(val) {
+          console.log(val);
+          var data = _this4.state.data;
+          var error = _this4.state.error; //data.id_comune = val.id;
+          //error.id_comune = '';
+          //this.setState({data,error},() => this.checked());
+        },
+        callback: function callback(val) {
+          //console.log(val);
+          var data = _this4.state.data;
+          var error = _this4.state.error; //data.id_comune = '';
+
+          if (val.length == 0) {} //error.id_comune = INFO_ERROR['comune'];
+          //this.setState({data,error},() => this.checked());
+
+        }
+      }), this.showError('id_ingredienti')), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-8 ",
+        style: {
+          paddingTop: '34px'
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "mr-4"
+      }, "Se non trovi un ingrediente, crealo!"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_9__["Button"], {
+        className: "btn-primary",
+        onClick: this._handleShowModal
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fa fa-plus-circle",
+        "aria-hidden": "true"
+      }), "\xA0Nuovo Ingrediente"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modal_IngredienteModal__WEBPACK_IMPORTED_MODULE_11__["default"], {
+        url: this.props.url,
+        show: this.state.show,
+        onHide: this._handleCloseModal,
+        callback: function callback(row) {//this.setState({reloadInfiniteTable:++(this.state.reloadInfiniteTable)});
+        }
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
+        style: styleHR
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group mb-5"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_TextAreaField__WEBPACK_IMPORTED_MODULE_10__["default"], {
+        label: "Note",
+        name: "note",
+        divClassName: divClassName,
+        className: "form-control",
+        placeholder: "max 255 caratteri",
+        helperText: this.showError('note'),
+        handleChange: this._handleChange
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group mb-5 text-right"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_9__["Button"], {
+        className: "btn-warning mr-3",
+        disabled: !this.state.checked //onClick={this._handleOnRegister}
+
+      }, "SALVA COME BOZZA", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+        className: "loader-2" + (this.state.loader == true ? ' d-inline-block' : ''),
+        src: "../img/loader_2.gif"
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_9__["AddButton"], {
+        className: "",
+        disabled: !this.state.checked //onClick={this._handleOnRegister}
+
+      }, "INVIA RICETTA", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+        className: "loader-2" + (this.state.loader == true ? ' d-inline-block' : ''),
+        src: "../img/loader_2.gif"
+      }))), this.state.confirmedRegMessage != '' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "alert alert-success",
+        role: "alert"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.state.confirmedRegMessage)), _typeof(errorRegMessage) === 'object' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "alert alert-danger",
+        role: "alert"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Attenzione!"), Object.keys(errorRegMessage).map(function (a, k1) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          key: k1
+        }, errorRegMessage[a].map(function (s, k2) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            key: k2
+          }, s, " ");
+        }));
+      }))));
+    }
+  }]);
+
+  return AddEditRicetta;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/view/Autori.js":
 /*!************************************************!*\
   !*** ./resources/js/components/view/Autori.js ***!
@@ -80860,7 +81660,13 @@ function (_Component) {
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", {
         className: "container-fluid blog"
+      }, this.state.loader ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "text-center"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "img-loader active"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+        src: this.props.url + '/img/loader.gif'
+      }))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, data.ricette.map(function (rc, key) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -81361,7 +82167,13 @@ function (_Component) {
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, errorRegMessage != '' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, errorRegMessage) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row constraint article"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("article", {
+      }, this.state.loader ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-8 text-center"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "img-loader active"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+        src: this.props.url + '/img/loader.gif'
+      }))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("article", {
         className: "col-md-8 pr-4"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
         className: "breadcrumbs"
@@ -81416,7 +82228,7 @@ function (_Component) {
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row mb-3 "
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-4 info px-4"
+        className: "col-sm-4 info px-4 pl-5"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: ""
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
@@ -81479,7 +82291,7 @@ var Impostazioni = function Impostazioni(props) {
     className: "gestione p-4"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
     className: "mb-3"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Impostazioni")), user.ruolo == 'autore' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_2__["EditButton"], {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Impostazioni")), user.ruolo == 'autore' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_2__["EditButton"], {
     className: "w-100",
     onClick: function onClick(a) {
       return console.log(a);
@@ -81488,7 +82300,9 @@ var Impostazioni = function Impostazioni(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
     className: "fa fa-pencil-square-o",
     "aria-hidden": "true"
-  }), "\xA0Modifica"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }), "\xA0Modifica"), (data.stato != 'bozza' || data.stato != 'inviata') && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "error-div"
+  }, "non puoi effettuare modifiche")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "my-4"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Stato")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
     className: "mt-1 mb-4"
@@ -81510,7 +82324,7 @@ var ValoriNutrizionali = function ValoriNutrizionali(props) {
     className: "blog border border-dark p-4"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
     className: "mb-3 "
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Valori Nutrozionali")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Valori Nutrizionali")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "mb-2 info"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
     className: "fa fa-cutlery",
@@ -81642,13 +82456,204 @@ function (_Component) {
       reloadInfiniteTable: 0
     };
     _this.url = _this.props.url + '/ricette';
+    _this._handleSearchFieldCallback = _this._handleSearchFieldCallback.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(Ricette, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {//this.getRemoteData();
+    }
+  }, {
+    key: "_handleSearchFieldCallback",
+    value: function _handleSearchFieldCallback(data, reset) {
+      //console.log(rows);
+      var rows = this.state.rows;
+      rows = data.data;
+      this.setState({
+        rows: rows
+      });
+
+      if (reset) {
+        rows = '';
+        this.setState({
+          rows: rows
+        });
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var user = Object(_Env__WEBPACK_IMPORTED_MODULE_2__["User"])();
+      var history = this.props.router.history;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container-fluid pl-3 constraint"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row mb-3 px-2"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_SearchField__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        showList: false //patternList={{id:'id',fields:['titolo','cognome']}}
+        ,
+        url: this.url + '/search' //query={idPtVendita!=-1 ? 'id_pt_vendita='+idPtVendita : ''}
+        ,
+        callback: this._handleSearchFieldCallback
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-6 text-right"
+      }, user.ruolo == 'autore' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_4__["AddButton"], {
+        onClick: function onClick() {
+          return history.push(_this2.props.url + '/gestione-ricette/new');
+        }
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fa fa-plus-circle",
+        "aria-hidden": "true"
+      }), "\xA0Nuova Ricetta"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-12"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_InfiniteTable__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        id: "tb-ricette",
+        reload: this.state.reloadInfiniteTable,
+        url: this.url //query={idPtVendita!=-1 ? 'id_pt_vendita='+idPtVendita : ''}
+        ,
+        columns: COLUMNS,
+        externalRows: this.state.rows,
+        onClick: function onClick(row) {
+          return history.push(_this2.props.url + '/gestione-ricette/' + row.id);
+        }
+      }))));
+    }
+  }]);
+
+  return Ricette;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/view/Validazioni.js":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/view/Validazioni.js ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Validazioni; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _Env__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../Env */ "./resources/js/components/Env.js");
+/* harmony import */ var _utils_SearchField__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/SearchField */ "./resources/js/components/utils/SearchField.js");
+/* harmony import */ var _utils_Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/Button */ "./resources/js/components/utils/Button.js");
+/* harmony import */ var _utils_InfiniteTable__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/InfiniteTable */ "./resources/js/components/utils/InfiniteTable.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+
+
+var COLUMNS = [{
+  title: 'id',
+  field: 'id',
+  align: 'right'
+}, {
+  title: 'Titolo',
+  field: 'titolo',
+  img: ''
+}, Object(_Env__WEBPACK_IMPORTED_MODULE_2__["User"])().ruolo != 'autore' ? {
+  title: 'Autore',
+  field: 'autore',
+  style: {
+    textTransform: 'capitalize'
+  }
+} : null, {
+  title: 'Tipologia',
+  field: 'tipologia',
+  style: {
+    textTransform: 'capitalize'
+  }
+}, {
+  title: 'Difficoltà',
+  field: 'difficolta',
+  style: {
+    textTransform: 'capitalize'
+  }
+}, {
+  title: 'Tempi',
+  field: 'tempo_cottura',
+  render: function render(cell, row) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Preparazione:"), " ", row.tempo_preparazione, " min"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Cottura:"), " ", row.tempo_cottura, " min"));
+  }
+}, {
+  title: 'Stato',
+  field: 'stato',
+  style: {
+    textTransform: 'capitalize'
+  }
+}, {
+  title: 'Creato il',
+  field: 'data_creazione',
+  render: function render(cell) {
+    return new Date(cell).toLocaleDateString("it-IT", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    });
+  }
+}].map(function (a) {
+  if (a != null) return a;
+  return false;
+});
+;
+
+var Validazioni =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Validazioni, _Component);
+
+  function Validazioni(props) {
+    var _this;
+
+    _classCallCheck(this, Validazioni);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Validazioni).call(this, props));
+    _this.state = {
+      rows: '',
+      loader: false,
+      show: false,
+      reloadInfiniteTable: 0
+    };
+    _this.url = _this.props.url + '/ricette';
     _this._handleCloseModal = _this._handleCloseModal.bind(_assertThisInitialized(_this));
     _this._handleShowModal = _this._handleShowModal.bind(_assertThisInitialized(_this));
     _this._handleSearchFieldCallback = _this._handleSearchFieldCallback.bind(_assertThisInitialized(_this));
     return _this;
   }
 
-  _createClass(Ricette, [{
+  _createClass(Validazioni, [{
     key: "componentDidMount",
     value: function componentDidMount() {//this.getRemoteData();
     }
@@ -81704,12 +82709,7 @@ function (_Component) {
         callback: this._handleSearchFieldCallback
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-6 text-right"
-      }, user.ruolo == 'autore' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_4__["AddButton"], {
-        onClick: this._handleShowModal
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-plus-circle",
-        "aria-hidden": "true"
-      }), "\xA0Nuovo Ricetta"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-12"
@@ -81727,7 +82727,7 @@ function (_Component) {
     }
   }]);
 
-  return Ricette;
+  return Validazioni;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
 

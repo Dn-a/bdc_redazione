@@ -12,19 +12,24 @@ import LoginRegister from './modal/LoginRegister';
 import Home from './view/Home';
 import Redattori from './view/Redattori';
 import Autori from './view/Autori';
+import AddEditRicetta from './view/AddEditRicetta';
 import Ricetta from './view/Ricetta';
 import Ricette from './view/Ricette';
+import Validazioni from './view/Validazioni';
 
 const routes = [
     {path: "/", name:"Home",title:'Home', icon:'fa-home', Component:Home},
+    {path: "/validazioni", name:"Validazioni", title:'Validazioni Ricette', icon:'fa-gavel', Component: Validazioni},
     {path: "/blog/:ricetta", name:"Ricetta", title:'Ricetta', icon:'fa-home', Component:Ricetta},
+
+    {path: "/gestione-ricette/new", name:"Nuova-Ricetta", title:'Nuova Ricetta', icon:'fa-list-ol', Component: AddEditRicetta},   
+    {path: "/gestione-ricette/:ricetta/edit", name:"Modifica-Ricetta", title:'Modifica Ricetta', icon:'fa-list-ol', Component: Ricetta},   
+
     {path: "/gestione-ricette", name:"Ricette", title:'Gestione Ricette', icon:'fa-list-ol', Component: Ricette},   
     {path: "/gestione-ricette/:ricetta", name:"Gestione-Ricetta", title:'Gestione Ricetta', icon:'fa-list-ol', Component: Ricetta},   
-    {path: "/gestione-ricette/new", name:"Nuova-Ricetta", title:'Nuova Ricetta', icon:'fa-list-ol', Component: Ricetta},   
-    {path: "/gestione-ricette/edit/.ricetta", name:"Modifica-Ricetta", title:'Modifica Ricetta', icon:'fa-list-ol', Component: Ricetta},   
+
     {path: "/redattori", name:"Redattori", title:'Gestione Redattori', icon:'fa-users', Component: Redattori},   
     {path: "/autori", name:"Autori", title:'Gestione Autori', icon:'fa-address-card-o', Component: Autori},    
-    {path: "/validazioni", name:"Validazioni", title:'Validazioni Ricette', icon:'fa-address-card-o', Component: Autori}
 ];
 
 const MainTitle = ()  => {
@@ -124,7 +129,7 @@ export default class Main extends Component {
                                 </button>
                             }
                             
-                            <a className="navbar-brand" href="">
+                            <a className="navbar-brand" href={'/'+this.url}>
                                 <div className='logo'><img src={this.url+'/img/logo.png'} /></div>                                
                             </a>
 

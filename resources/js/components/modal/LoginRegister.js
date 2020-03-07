@@ -133,12 +133,18 @@ export default class LoginRegister extends Component {
             //console.log(result);return;           
             return result;
         }).catch((error) => {
-          if(error===undefined) return;
-          
-          if(error.response.status==422)
-            this.setState({errorRegMessage:error.response.data.errors,loader:false});
+            if(error===undefined) return;
+            
+            let msg ='';
+            if(error.response!==undefined)
+                if(error.response.data.errors!==undefined)
+                    msg = error.response.data.errors;
+                else if(error.response.data.message!==undefined)
+                    msg = error.response.data.message;
+                
+            this.setState({errorRegMessage: msg, loader:false}); 
 
-          console.error(error.response);
+            console.error(error.response);
           
           throw error;
         });
@@ -193,23 +199,23 @@ export default class LoginRegister extends Component {
 
         switch(field){
             case 'nome':
-                if( value.length > 1 && !whitespace_reg_ex.test(value))
+                if( value.length > 0 && !whitespace_reg_ex.test(value))
                     error.nome = INFO_ERROR['caratteri'];
                 break;
             case 'cognome':
-                if(value.length > 1 && !whitespace_reg_ex.test(value))
+                if(value.length > 0 && !whitespace_reg_ex.test(value))
                     error.cognome = INFO_ERROR['caratteri'];
                 break;            
             case 'indirizzo':
-                if(value.length > 1 && !whitespace_reg_ex.test(value))
+                if(value.length > 0 && !whitespace_reg_ex.test(value))
                     error.indirizzo = INFO_ERROR['caratteri'];
                 break;
             case 'telefono':
-                if(isNaN(value))
+                if(isNaN(value) || !whitespace_reg_ex.test(value))
                    error.telefono = INFO_ERROR['numero'];
                 break;
             case 'cellulare':
-                if(isNaN(value))
+                if(isNaN(value) || !whitespace_reg_ex.test(value))
                    error.cellulare = INFO_ERROR['numero'];
                 break;
             case 'email':
@@ -219,7 +225,7 @@ export default class LoginRegister extends Component {
                     error.email = INFO_ERROR['email_2'];
                 break;
             case 'password':
-                if(value.length > 1 && !whitespace_reg_ex.test(value))
+                if(value.length > 0 && !whitespace_reg_ex.test(value))
                     error.password = INFO_ERROR['caratteri'];
                 else if(value.length > 0 && value.length < 8)
                     error.password = INFO_ERROR['password'];
@@ -229,7 +235,7 @@ export default class LoginRegister extends Component {
                     error.confirm_password = '';
                 break;
             case 'confirm_password':
-                if(value.length > 1 && !whitespace_reg_ex.test(value))
+                if(value.length > 0 && !whitespace_reg_ex.test(value))
                     error.confirm_password = INFO_ERROR['caratteri'];
                 else if( value.length > 0 && value.length < 8 || value != this.state.data.password)
                     error.confirm_password = INFO_ERROR['confirm_password'];

@@ -30,7 +30,7 @@ const COLUMNS = [
   ].map((a) => { if(a!=null) return a; return false; } );;
 
 
-export default  class Ricette extends Component {
+export default  class Validazioni extends Component {
 
     constructor(props){
         super(props);
@@ -43,7 +43,8 @@ export default  class Ricette extends Component {
         };
 
         this.url = this.props.url+'/ricette';
-        
+        this._handleCloseModal = this._handleCloseModal.bind(this);
+        this._handleShowModal = this._handleShowModal.bind(this);
         this._handleSearchFieldCallback = this._handleSearchFieldCallback.bind(this);   
 
     }
@@ -52,7 +53,13 @@ export default  class Ricette extends Component {
         //this.getRemoteData();
     }
     
-    
+    _handleCloseModal () {
+        this.setState({show : false});
+    }
+    _handleShowModal (){
+        this.setState({show : true});
+    }
+
     _handleSearchFieldCallback(data,reset){
 
         //console.log(rows);
@@ -90,11 +97,7 @@ export default  class Ricette extends Component {
                     </div>
 
                     <div className="col-md-6 text-right">
-                        {user.ruolo=='autore' &&
-                            <AddButton onClick={() => history.push(this.props.url+'/gestione-ricette/new')}>
-                            <i className="fa fa-plus-circle" aria-hidden="true"></i>
-                            &nbsp;Nuova Ricetta</AddButton>
-                        }
+                       
                     </div>
 
                 </div>

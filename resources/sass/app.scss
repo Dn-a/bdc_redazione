@@ -81,6 +81,7 @@ ul{
 }
 /*--- BUTTON ---*/
     .btn-info,
+    .btn-primary,
     .btn-secondary,
     .btn-danger,
     .btn-success
@@ -237,29 +238,16 @@ ul{
         padding-bottom: 120px;
     }
 /*--- BLOG ---*/
-.blog .info,
-.article .info {
-    font-size: 1.0em;
-}
-.blog .info > i,
-.article .info > i {
-    margin-right: 5px;
-    font-size: 1.4em;
-}
-.article .content .info {
-    margin-bottom: 20px;
-}
-.article .content .info > div{  
-    float: left;
-    font-size: 1.0em;
-}
-.article .content .info > div div.title{
-    text-transform: uppercase;
-}
-.article .content .info i{    
-    font-size: 2.5em;
-    margin-right: 15px;
-}
+    .blog .info,
+    .article .info {
+        font-size: 1.0em;
+    }
+    .blog .info > i,
+    .article .info > i {
+        margin-right: 5px;
+        font-size: 1.4em;
+    }
+    
 /*---ARTICLE---*/
     article img {
         width: 100%;
@@ -274,6 +262,27 @@ ul{
     .approvata.active > div {
         color: #fff;
         background-color: #30a681;
+    }
+    .article .content .info {
+        margin-bottom: 20px;
+    }
+    .article .content .info > div{  
+        float: left;
+        font-size: 1.0em;
+    }
+    .article .content .info > div div.title{
+        text-transform: uppercase;
+    }
+    .article .content .info i{    
+        font-size: 2.5em;
+        margin-right: 15px;
+    }
+    .blog .img-loader,
+    .article .img-loader {
+        width: 45px;
+        height: 45px;
+        right: inherit;
+        bottom: inherit;
     }
 /*--- FOOTER ---*/
     footer {
@@ -350,7 +359,7 @@ ul{
     display: none;
     position: absolute;
     right: 4px;
-    bottom: 5px;
+    bottom: 6.5px;
     &.active{
         display: inline-block;
     }

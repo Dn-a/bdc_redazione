@@ -126,8 +126,11 @@ export default class SearchField extends Component {
         else
             this._timeOut(txt,0).then((data) => { if(data!=null) this.setState({ data:[], loader:false })} );
 
-        if(this.props.onClick!== undefined)
+        if(this.props.onClick!== undefined)                
             this.props.onClick(val);
+                    
+        if(this.props.showList!==undefined && this.props.resetAfterClick!==undefined && this.props.resetAfterClick)
+            this._handleReset();
     }
 
     // Richiama getRemoteData dopo un certo tempo T

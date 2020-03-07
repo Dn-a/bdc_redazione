@@ -7972,7 +7972,7 @@ CREATE TABLE IF NOT EXISTS `ingredienti` (
   `unita_misura` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL,
   `img` varchar(2048) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dump dei dati della tabella redazione.ingredienti: ~6 rows (circa)
 /*!40000 ALTER TABLE `ingredienti` DISABLE KEYS */;
@@ -7982,7 +7982,8 @@ REPLACE INTO `ingredienti` (`id`, `titolo`, `calorie`, `unita_misura`, `img`) VA
 	(3, 'tuorlo di uova', 322.00, 'gr', 'https://www.orticaweb.it/wp-content/uploads/2017/09/TuorloUovo.jpg'),
 	(4, 'pecorino romano', 387.00, 'gr', 'https://www.volpetti.com/wp-content/uploads/2018/04/12-pecorino-romano_001.jpg'),
 	(5, 'sale fino', 0.00, 'q.b.', 'https://www.isaporidibau.it/wp-content/uploads/2015/02/sale-600x450.jpg'),
-	(6, 'pepe nero', 251.00, 'q.b.', 'https://file.cure-naturali.it/site/image/content/18441.jpg?format=jpg');
+	(6, 'pepe nero', 251.00, 'q.b.', 'https://file.cure-naturali.it/site/image/content/18441.jpg?format=jpg'),
+	(7, 'patate', 77.00, 'gr', 'https://www.dissapore.com/wp-content/uploads/2019/12/patate-a-pasta-gialla-800x531.jpg');
 /*!40000 ALTER TABLE `ingredienti` ENABLE KEYS */;
 
 -- Dump della struttura di tabella redazione.migrations
@@ -8047,11 +8048,12 @@ CREATE TABLE IF NOT EXISTS `ricette` (
   `titolo` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tempo_preparazione` int(11) NOT NULL DEFAULT '0',
   `tempo_cottura` int(11) NOT NULL DEFAULT '0',
+  `intro` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `modalita_preparazione` varchar(1024) COLLATE utf8mb4_unicode_ci NOT NULL,
   `porzioni` int(11) NOT NULL,
   `calorie` double(8,2) NOT NULL,
-  `difficolta` enum('1','2','3','4','5') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
-  `stato` enum('attesa','scartata','idonea','approvata') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'attesa',
+  `difficolta` enum('facile','media','difficile') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'facile',
+  `stato` enum('bozza','inviata','validazione','idonea','scartata','approvazione','approvata') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'bozza',
   `id_autore` int(10) unsigned NOT NULL,
   `id_tipologia` int(10) unsigned NOT NULL,
   `note` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -8064,10 +8066,10 @@ CREATE TABLE IF NOT EXISTS `ricette` (
   CONSTRAINT `ricette_id_tipologia_foreign` FOREIGN KEY (`id_tipologia`) REFERENCES `tipologie` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dump dei dati della tabella redazione.ricette: ~1 rows (circa)
+-- Dump dei dati della tabella redazione.ricette: ~0 rows (circa)
 /*!40000 ALTER TABLE `ricette` DISABLE KEYS */;
-REPLACE INTO `ricette` (`id`, `titolo`, `tempo_preparazione`, `tempo_cottura`, `modalita_preparazione`, `porzioni`, `calorie`, `difficolta`, `stato`, `id_autore`, `id_tipologia`, `note`, `img`, `data_creazione`) VALUES
-	(1, 'Spaghetti alla carbonara', 15, 10, 'Per preparare gli spaghetti alla carbonara cominciate mettendo sul fuoco una pentola con l’acqua salata per cuocere la pasta. Nel frattempo eliminate la cotenna dal guanciale 1 e tagliatelo prima a fette e poi a striscioline spesse circa 1cm 2. La cotenna avanzata potrà essere riutilizzata per insaporire altre preparazioni. Versate i pezzetti in una padella antiaderente 3 e rosolate per circa 15 minuti a fiamma media, fate attenzione a non bruciarlo altrimenti rilascerà un aroma troppo forte.', 4, 680.00, '1', 'approvata', 8, 1, '', 'https://images.lacucinaitaliana.it/gallery/82287/Big/f80628f9-ec45-4ac9-8963-e54d9775ddf1.jpg', '2020-03-04 02:24:14');
+REPLACE INTO `ricette` (`id`, `titolo`, `tempo_preparazione`, `tempo_cottura`, `intro`, `modalita_preparazione`, `porzioni`, `calorie`, `difficolta`, `stato`, `id_autore`, `id_tipologia`, `note`, `img`, `data_creazione`) VALUES
+	(1, 'Spaghetti alla carbonara', 15, 10, 'Gli spaghetti alla carbonara, o più semplicemente <strong>la Carbonara</strong> è uno dei primi piatti più amati della cucina italiana. Nonostante la sua giovane età la carbonara è considerata un classico della cucina romana.', 'Per preparare gli spaghetti alla carbonara cominciate mettendo sul fuoco una pentola con l’acqua salata per cuocere la pasta. Nel frattempo eliminate la cotenna dal guanciale 1 e tagliatelo prima a fette e poi a striscioline spesse circa 1cm 2. La cotenna avanzata potrà essere riutilizzata per insaporire altre preparazioni. Versate i pezzetti in una padella antiaderente 3 e rosolate per circa 15 minuti a fiamma media, fate attenzione a non bruciarlo altrimenti rilascerà un aroma troppo forte.', 4, 680.00, 'facile', 'approvata', 8, 1, '', 'https://images.lacucinaitaliana.it/gallery/82287/Big/f80628f9-ec45-4ac9-8963-e54d9775ddf1.jpg', '2020-03-04 02:24:14');
 /*!40000 ALTER TABLE `ricette` ENABLE KEYS */;
 
 -- Dump della struttura di tabella redazione.ricette_ingredienti
@@ -8137,11 +8139,11 @@ CREATE TABLE IF NOT EXISTS `users` (
   CONSTRAINT `users_id_ruolo_foreign` FOREIGN KEY (`id_ruolo`) REFERENCES `ruoli` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dump dei dati della tabella redazione.users: ~2 rows (circa)
+-- Dump dei dati della tabella redazione.users: ~3 rows (circa)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 REPLACE INTO `users` (`id`, `email`, `id_ruolo`, `password`, `email_verified_at`, `remember_token`, `created_at`, `updated_at`) VALUES
-	(9, 'antonino.dinatale@email.com', 3, '$2y$10$LrLJ8qEkCG4Kj0n9bSww5uIU06Wlg8o8gIT1ejttu/b5GH.EpFUQW', NULL, 'CXfXJcuGkD33F8qCXO9JDvEq812kt7mUg2699JHmLOSFCT8k9TBnNNka1JdK', '2020-03-02 23:21:37', '2020-03-02 23:21:37'),
-	(10, 'mario.rossi@email.com', 1, '$2y$10$Vjb7yyV9yWlvWqcBFN5W2O187cY3TOFRmForU.Nz55brbXSgGpzbi', NULL, '7lf96GY7LIbqGvOtBYUJIcCLno5HcmUDezOMG1P5OPJb4uSlOYPEzDgfdXxo', '2020-03-03 23:17:37', '2020-03-03 23:17:37'),
+	(9, 'antonino.dinatale@email.com', 3, '$2y$10$LrLJ8qEkCG4Kj0n9bSww5uIU06Wlg8o8gIT1ejttu/b5GH.EpFUQW', NULL, 'Uvuif1KKennX8tRyw6xAOjmDdROEae5CK544of8xQGjmp9xOKXPg3FG23WjE', '2020-03-02 23:21:37', '2020-03-02 23:21:37'),
+	(10, 'mario.rossi@email.com', 1, '$2y$10$Vjb7yyV9yWlvWqcBFN5W2O187cY3TOFRmForU.Nz55brbXSgGpzbi', NULL, '4YMEq0CwASVCHuTfu7HbH3jTziaXNw88AOO7bCgJJWT9wGG5JPbFEOjAhlNB', '2020-03-03 23:17:37', '2020-03-03 23:17:37'),
 	(12, 'franco.sole@email.com', 2, '$2y$10$igh.Rmd0x5l8ofr1x/WfQOhWD6LuvSSLU10NahGEqqSBrGx6qSeC6', NULL, NULL, '2020-03-05 00:00:20', '2020-03-05 00:00:20');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 

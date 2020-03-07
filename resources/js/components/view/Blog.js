@@ -77,46 +77,50 @@ export default class Blog extends Component {
 
         return (
             <section className="container-fluid blog">
-                <div className="row">
-                    {data.ricette.map((rc,key) =>{
-                        return(                            
-                                <div className="col-md-4" key={key}>
-                                    
-                                    <div className="card mb-4 box-shadow">
-                                        <Link to={this.props.url+'/blog/'+rc.id}>
-                                            <img className="card-img-top" src={rc.img} alt="Card image cap" />
-                                        </Link>
-                                        <div className="card-body">
+                {this.state.loader?
+                    (<div className="text-center"><div className="img-loader active"><img src={this.props.url+'/img/loader.gif'} /></div></div>)
+                :
+                    (<div className="row">
+                        {data.ricette.map((rc,key) =>{
+                            return(                            
+                                    <div className="col-md-4" key={key}>
+                                        
+                                        <div className="card mb-4 box-shadow">
                                             <Link to={this.props.url+'/blog/'+rc.id}>
-                                                <h5 className="card-title">{rc.titolo}</h5>
+                                                <img className="card-img-top" src={rc.img} alt="Card image cap" />
                                             </Link>
-                                            <p className="card-text">{parse(rc.intro)}</p>
-                                        </div>
-                                        <div className="card-footer bg-transparent">
-                                            
-                                            <div className="row">
-                                                <div className="info col-sm-3 col-md-3 text-center px-1">
-                                                    <i className="fa fa-thumbs-o-up" aria-hidden="true"></i>
-                                                    &nbsp;{rc.difficolta}
-                                                </div>
-                                                <div className="info col-sm-3 col-md-4 text-center px-1">
-                                                    <i className="fa fa-clock-o" aria-hidden="true"> </i>
-                                                    &nbsp;{(rc.tempo_preparazione+rc.tempo_preparazione)} min
-                                                </div>
-                                                <div className="info col-sm-6 col-md-5 text-center px-1">
-                                                    <i className="fa fa-free-code-camp" aria-hidden="true"></i>
-                                                    &nbsp;{rc.calorie} Kcal
-                                                </div>
+                                            <div className="card-body">
+                                                <Link to={this.props.url+'/blog/'+rc.id}>
+                                                    <h5 className="card-title">{rc.titolo}</h5>
+                                                </Link>
+                                                <p className="card-text">{parse(rc.intro)}</p>
                                             </div>
+                                            <div className="card-footer bg-transparent">
+                                                
+                                                <div className="row">
+                                                    <div className="info col-sm-3 col-md-3 text-center px-1">
+                                                        <i className="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                                                        &nbsp;{rc.difficolta}
+                                                    </div>
+                                                    <div className="info col-sm-3 col-md-4 text-center px-1">
+                                                        <i className="fa fa-clock-o" aria-hidden="true"> </i>
+                                                        &nbsp;{(rc.tempo_preparazione+rc.tempo_preparazione)} min
+                                                    </div>
+                                                    <div className="info col-sm-6 col-md-5 text-center px-1">
+                                                        <i className="fa fa-free-code-camp" aria-hidden="true"></i>
+                                                        &nbsp;{rc.calorie} Kcal
+                                                    </div>
+                                                </div>
 
+                                            </div>
                                         </div>
+                                        
                                     </div>
-                                    
-                                </div>
-                            
-                        )
-                    })}
-                </div>
+                                
+                            )
+                        })}
+                    </div>)
+                }
             </section>
 
         );

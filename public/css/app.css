@@ -11455,6 +11455,7 @@ ul {
 /*--- BUTTON ---*/
 
 .btn-info,
+.btn-primary,
 .btn-secondary,
 .btn-danger,
 .btn-success {
@@ -11656,24 +11657,6 @@ header {
   font-size: 1.4em;
 }
 
-.article .content .info {
-  margin-bottom: 20px;
-}
-
-.article .content .info > div {
-  float: left;
-  font-size: 1em;
-}
-
-.article .content .info > div div.title {
-  text-transform: uppercase;
-}
-
-.article .content .info i {
-  font-size: 2.5em;
-  margin-right: 15px;
-}
-
 /*---ARTICLE---*/
 
 article img {
@@ -11692,6 +11675,32 @@ article img {
 .approvata.active > div {
   color: #fff;
   background-color: #30a681;
+}
+
+.article .content .info {
+  margin-bottom: 20px;
+}
+
+.article .content .info > div {
+  float: left;
+  font-size: 1em;
+}
+
+.article .content .info > div div.title {
+  text-transform: uppercase;
+}
+
+.article .content .info i {
+  font-size: 2.5em;
+  margin-right: 15px;
+}
+
+.blog .img-loader,
+.article .img-loader {
+  width: 45px;
+  height: 45px;
+  right: inherit;
+  bottom: inherit;
 }
 
 /*--- FOOTER ---*/
@@ -11785,7 +11794,7 @@ footer {
   display: none;
   position: absolute;
   right: 4px;
-  bottom: 5px;
+  bottom: 6.5px;
 }
 
 .img-loader.active {

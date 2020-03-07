@@ -9,19 +9,16 @@ const email_reg_exp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".
 const whitespace_reg_ex = /^[^\s].*/;
 
 const FIELDS = [
-    'nome',
-    'cognome',
-    'matricola',
-    'email',
-    'password',
-    'confirm_password'
+    'titolo',
+    'calorie',
+    'unita_misura',
+    'img'
 ];
 
-const HIDE_FIELD = [
-    'confirm_password'
+const HIDE_FIELD = [    
 ]
 
-export default class RedattoriModal extends Component {
+export default class IngredienteModal extends Component {
 
     constructor(props){
         super(props);
@@ -63,7 +60,7 @@ export default class RedattoriModal extends Component {
 
     setRemoteStore() {
 
-        let url = this.props.url+'/redattori';
+        let url = this.props.url+'/ingredienti';
 
         let headers = {headers: {'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -72,22 +69,13 @@ export default class RedattoriModal extends Component {
 
         let data = this.state.data;
 
-
-        let formData = new FormData();
-
-        Object.keys(data).map((k,id) => {
-            if(!HIDE_FIELD.includes(k)){
-                formData.append(k,data[k]);
-            }
-        });
-
-        //console.log(FormData);return;
-
-        formData.append('_token',CSRF_TOKEN);
-
+        data['_token'] = CSRF_TOKEN;
+        
+        //console.log(data);return;
+        
         this.setState({loader:true});
 
-        return axios.post(url,formData,headers)
+        return axios.post(url,data,headers)
         .then(result => {
             //console.log(result);
 
@@ -100,8 +88,8 @@ export default class RedattoriModal extends Component {
             return result;
 
         }).catch((error) => {
-          console.error(error.response);
-            
+            console.error(error.response);
+
             let msg ='';
             if(error.response!==undefined)
                 if(error.response.data.errors!==undefined)
@@ -110,7 +98,7 @@ export default class RedattoriModal extends Component {
                     msg = error.response.data.message;
                 
             this.setState({errorRegMessage: msg, loader:false}); 
-
+              
             throw error;
         });
     }
@@ -134,41 +122,21 @@ export default class RedattoriModal extends Component {
             error[field] = '';
 
         switch(field){
-            case 'nome':
+            case 'titolo':
                 if( value.length > 0 && !whitespace_reg_ex.test(value))
-                    error.nome = INFO_ERROR['caratteri'];
+                    error.titolo = INFO_ERROR['caratteri'];
                 break;
-            case 'cognome':
-                if(value.length > 0 && !whitespace_reg_ex.test(value))
-                    error.cognome = INFO_ERROR['caratteri'];
+            case 'calorie':
+                if(isNaN(value) ||  !whitespace_reg_ex.test(value))
+                   error.calorie = INFO_ERROR['numero'];
                 break;
-            case 'matricola':
-                value = value.toUpperCase();
-                if(value.length > 0 && !whitespace_reg_ex.test(value))
-                    error.matricola = INFO_ERROR['caratteri'];
+            case 'unita_misura':
+                if( value.length > 0 && !whitespace_reg_ex.test(value))
+                    error.unita_misura = INFO_ERROR['caratteri'];
                 break;
-            case 'email':
-                if(value.length < 8 )
-                    error.email = INFO_ERROR['email_1'];
-                else if(!email_reg_exp.test(value))
-                    error.email = INFO_ERROR['email_2'];
-                break;
-            case 'password':
-                if(value.length > 0 && !whitespace_reg_ex.test(value))
-                    error.password = INFO_ERROR['caratteri'];
-                else if(value.length > 0 && value.length < 8)
-                    error.password = INFO_ERROR['password'];
-                else if(this.state.data.confirm_password!='' && value != this.state.data.confirm_password)
-                    error.confirm_password = INFO_ERROR['confirm_password'];
-                else
-                    error.confirm_password = '';
-                break;
-            case 'confirm_password':
-                if(value.length > 0 && !whitespace_reg_ex.test(value))
-                    error.confirm_password = INFO_ERROR['caratteri'];
-                else if( value.length > 0 && value.length < 8 || value != this.state.data.password)
-                    error.confirm_password = INFO_ERROR['confirm_password'];
-                break;
+            case 'img':
+                if( value.length > 0 && !whitespace_reg_ex.test(value))
+                    error.img = INFO_ERROR['caratteri'];                
         }
 
         data[field] = value.trim();
@@ -213,30 +181,26 @@ export default class RedattoriModal extends Component {
                 onConfirm={this._handleOnSave}
                 disabledConfirmButton={!this.state.checked}
                 error = {this.state.remoteError}
-                title="Redattore" type="Nuovo"
+                title="Ingrediente" type="Nuovo"
             >
 
                 <form>
 
                     <div className="form-group">
-                        <InputField name="nome" divClassName={divClassName} className="form-control" label="Nome"
-                        helperText={this.showError('nome')} handleChange={this._handleChange} />
-                        <InputField name="cognome" divClassName={divClassName} className="form-control" label="Cognome"
-                        helperText={this.showError('cognome')} handleChange={this._handleChange} />
+                        <InputField name="titolo" divClassName={divClassName} className="form-control" label="Titolo"
+                        helperText={this.showError('titolo')} handleChange={this._handleChange} />
+                        <InputField name="calorie" divClassName={divClassName} className="form-control" label="Calorie (kcal)"
+                        helperText={this.showError('calorie')} handleChange={this._handleChange} />
                     </div>
                     
                     <div className="form-group">
-                        <InputField name="matricola" divClassName={divClassName} className="form-control" label="Matricola"
-                        helperText={this.showError('matricola')} handleChange={this._handleChange} />
-                        <InputField name="email" autocomplete='on' className="form-control" label="E-mail"
-                        helperText={this.showError('email')} handleChange={this._handleChange} />
+                        <InputField name="unita_misura" divClassName={divClassName} className="form-control" label="Unità di misura"
+                        helperText={this.showError('unita_misura')} handleChange={this._handleChange} />                        
                     </div>
 
                     <div className="form-group">
-                        <InputField type="password" name='password' divClassName={divClassName} className="form-control"
-                        helperText={this.showError('password')} handleChange={this._handleChange} label="Password" />
-                        <InputField type="password" name='confirm_password' divClassName={divClassName} className="form-control"
-                        helperText={this.showError('confirm_password')} handleChange={this._handleChange} label="Conferma Password" />
+                        <InputField name="img" autocomplete='on' className="form-control" label="Link Immagine"
+                        helperText={this.showError('img')} handleChange={this._handleChange} />
                     </div>
 
                     { typeof errorRegMessage ==='object' && 

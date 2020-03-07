@@ -107,98 +107,102 @@ export default class Ricetta extends Component {
                 :
                     <div className="row constraint article">
 
-                        <article className="col-md-8 pr-4">
+                        {this.state.loader?
+                            (<div className="col-md-8 text-center"><div className="img-loader active"><img src={this.props.url+'/img/loader.gif'} /></div></div>)
+                        :
+                            (<article className="col-md-8 pr-4">
+                        
+                                <ul className="breadcrumbs">
+                                    <li><a href="" onClick={(e)=> {e.preventDefault();history.goBack()}}>{bread} <i className="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                                    <li>Ricetta</li>
+                                </ul>
 
-                            <ul className="breadcrumbs">
-                                <li><a href="" onClick={(e)=> {e.preventDefault();history.goBack()}}>{bread} <i className="fa fa-angle-right" aria-hidden="true"></i></a></li>
-                                <li>Ricetta</li>
-                            </ul>
+                                <h1 className="font-weight-bold mb-4">{data.titolo}</h1>
 
-                            <h1 className="font-weight-bold mb-4">{data.titolo}</h1>
-
-                            <div className="row mb-3 content">
-                                <div className="col-sm-4 info">
-                                    <div className="pl-2">
-                                        <i className="fa fa-user-circle" aria-hidden="true"></i>
-                                    </div>
-                                    <div >
-                                        <div className="title"><strong>Autore</strong></div>
-                                        <div>{data.autore}</div>
-                                    </div>                                        
-                                </div>
-                                <div className="col-sm-4 info">
-                                    <div className="pl-2">
-                                    <i className="fa fa-folder-open-o" aria-hidden="true"></i>
-                                    </div>
-                                    <div >
-                                        <div className="title"><strong>Tipologia</strong></div>
-                                        <div>{data.tipologia}</div>
-                                    </div>                                        
-                                </div>
-                                <div className="col-sm-4 info">
-                                    <div className="pl-2">
-                                        <i className="fa fa-thumbs-o-up" aria-hidden="true"> </i>
-                                    </div>
-                                    <div >
-                                        <div className="title"><strong>Difficoltà</strong></div>
-                                        <div>{data.difficolta}</div>
-                                    </div>                                        
-                                </div>                                
-                            </div>
-
-                            <div className="content">
-                                <div className="intro mb-3">{parse(data.intro)}</div>
-                                <div className="image mb-4">
-                                    <img src={data.img} />
-                                </div>
-                                <div className="row mb-3 " >
-                                    <div className="col-sm-4 info px-4">
-                                        <div className="">
-                                            <i className="fa fa-cutlery" aria-hidden="true"></i>
+                                <div className="row mb-3 content">
+                                    <div className="col-sm-4 info">
+                                        <div className="pl-2">
+                                            <i className="fa fa-user-circle" aria-hidden="true"></i>
                                         </div>
                                         <div >
-                                            <div className="title"><strong>porzioni</strong></div>
-                                            <div>{data.porzioni}</div>
+                                            <div className="title"><strong>Autore</strong></div>
+                                            <div>{data.autore}</div>
                                         </div>                                        
                                     </div>
-                                    <div className="col-sm-4 info px-3">
-                                        <div className="">
+                                    <div className="col-sm-4 info">
+                                        <div className="pl-2">
+                                        <i className="fa fa-folder-open-o" aria-hidden="true"></i>
+                                        </div>
+                                        <div >
+                                            <div className="title"><strong>Tipologia</strong></div>
+                                            <div>{data.tipologia}</div>
+                                        </div>                                        
+                                    </div>
+                                    <div className="col-sm-4 info">
+                                        <div className="pl-2">
+                                            <i className="fa fa-thumbs-o-up" aria-hidden="true"> </i>
+                                        </div>
+                                        <div >
+                                            <div className="title"><strong>Difficoltà</strong></div>
+                                            <div>{data.difficolta}</div>
+                                        </div>                                        
+                                    </div>                                
+                                </div>
+
+                                <div className="content">
+                                    <div className="intro mb-3">{parse(data.intro)}</div>
+                                    <div className="image mb-4">
+                                        <img src={data.img} />
+                                    </div>
+                                    <div className="row mb-3 " >
+                                        <div className="col-sm-4 info px-4 pl-5">
+                                            <div className="">
+                                                <i className="fa fa-cutlery" aria-hidden="true"></i>
+                                            </div>
+                                            <div >
+                                                <div className="title"><strong>porzioni</strong></div>
+                                                <div>{data.porzioni}</div>
+                                            </div>                                        
+                                        </div>
+                                        <div className="col-sm-4 info px-3">
+                                            <div className="">
+                                                <i className="fa fa-clock-o" aria-hidden="true"></i>
+                                            </div>
+                                            <div >
+                                                <div className="title"><strong>preparazione</strong></div>
+                                                <div>{data.tempo_preparazione} min</div>
+                                            </div>                                        
+                                        </div>
+                                        <div className="col-sm-4 info px-4">
+                                            <div className="">
                                             <i className="fa fa-clock-o" aria-hidden="true"></i>
+                                            </div>
+                                            <div >
+                                                <div className="title"><strong>cottura</strong></div>
+                                                <div>{data.tempo_cottura} min</div>
+                                            </div>                                        
                                         </div>
-                                        <div >
-                                            <div className="title"><strong>preparazione</strong></div>
-                                            <div>{data.tempo_preparazione} min</div>
-                                        </div>                                        
                                     </div>
-                                    <div className="col-sm-4 info px-4">
-                                        <div className="">
-                                        <i className="fa fa-clock-o" aria-hidden="true"></i>
-                                        </div>
-                                        <div >
-                                            <div className="title"><strong>cottura</strong></div>
-                                            <div>{data.tempo_cottura} min</div>
-                                        </div>                                        
+                                    <div>
+                                        <ul>
+                                            {data.ingredienti.map((i,k) => {
+                                            return <li>{i}</li>  
+                                            })}
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <p>
+                                            {data.modalita_preparazione}
+                                        </p>
                                     </div>
                                 </div>
-                                <div>
-                                    <ul>
-                                        {data.ingredienti.map((i,k) => {
-                                        return <li>{i}</li>  
-                                        })}
-                                    </ul>
-                                </div>
-                                <div>
-                                    <p>
-                                        {data.modalita_preparazione}
-                                    </p>
-                                </div>
-                            </div>
-                            
-                            {user.ruolo!='autore' && user.stato!='approvata' &&
-                                <Validazione className="my-3"/>
-                            }
+                                
+                                {user.ruolo!='autore' && user.stato!='approvata' &&
+                                    <Validazione className="my-3"/>
+                                }
 
-                        </article>
+                            </article>)
+                        }   
                         
                         <aside className="col-md-4 ">
                             {bread=='gestione ricette'?
@@ -240,12 +244,16 @@ const Impostazioni = (props) => {
             <h3 className="mb-3"><strong>Impostazioni</strong></h3>
             
             {user.ruolo=='autore' &&
-                <EditButton className="w-100"
-                onClick={(a) => console.log(a)}
-                disabled={data.stato!='bozza' || data.stato!='inviata'}
-                >
-                <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
-                &nbsp;Modifica</EditButton>
+                <Fragment>
+                    <EditButton className="w-100"
+                    onClick={(a) => console.log(a)}
+                    disabled={data.stato!='bozza' || data.stato!='inviata'}
+                    >
+                    <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    &nbsp;Modifica</EditButton>
+
+                    {(data.stato!='bozza' || data.stato!='inviata') && <div className="error-div">non puoi effettuare modifiche</div>}
+                </Fragment>
             }
             
             <div className="my-4" >
@@ -275,7 +283,7 @@ const ValoriNutrizionali = (props) => {
     let data = props.data;
     return(
         <div className="blog border border-dark p-4">                                
-            <h3 className="mb-3 "><strong>Valori Nutrozionali</strong></h3>        
+            <h3 className="mb-3 "><strong>Valori Nutrizionali</strong></h3>        
             <div className="mb-2 info" ><i className="fa fa-cutlery" aria-hidden="true"></i> {data.porzioni} porzioni</div>
             <hr style={{borderTop: '1rem solid #333'}} />
             <div className="mb-2 info" ><i className="fa fa-free-code-camp" aria-hidden="true"></i> {data.calorie} Kcal</div>

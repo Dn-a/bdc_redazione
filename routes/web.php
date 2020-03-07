@@ -29,18 +29,37 @@ if(request()->header('accept')=='application/json'){
   if(request()->header('accept')!='application/json')
    {
       Route::get('/{name}', 'HomeController@index')->name('home')
-      ->where('name', '|home|autori|redattori|blog|gestione-ricette|ingredienti|verifiche|setting');
+      ->where('name', '|home|autori|redattori|blog|gestione-ricette|ingredienti|validazioni|setting');
 
       Route::get('/{name}/{id}', 'HomeController@index')->name('home')
       ->where(
         [
-          'name' =>'|home|autori|redattori|blog|gestione-ricette|ingredienti|verifiche|setting',
+          'name' =>'blog|gestione-ricette|ingredienti|validazioni',
           'id' => '[0-9]+'
         ]
       );
+
+      Route::get('/{name}/{name2}', 'HomeController@index')->name('home')
+      ->where(
+        [
+          'name' =>'gestione-ricette',
+          'name2' =>'new'
+        ]
+      );
+
+      /*Route::get('/{name}/{id}/{name2}', 'HomeController@index')->name('home')
+      ->where(
+        [
+          'name' =>'gestione-ricette',
+          'name2' =>'edit',
+          'id' => '[0-9]+'
+        ]
+      );*/
   }
       
 
+// Ingredienti
+  Route::get('ingredienti/search/{val}', 'IngredienteController@search')->name('ingredienti.search');
 
 
 // Ricette
@@ -83,8 +102,7 @@ Route::middleware(['auth','ruolo:admin|caporedattore|redattore'])->group( functi
 //
 Route::middleware(['auth','ruolo:admin|caporedattore|redattore|autore'])->group( function () {
 
-  // Ingredienti
-    Route::get('ingredienti/search/{val}', 'IngredienteController@search')->name('ingredienti.search');
+  // Ingredienti    
     Route::resource('ingredienti', 'IngredienteController',['as' => 'ingredienti']);
 
   // Ricette
