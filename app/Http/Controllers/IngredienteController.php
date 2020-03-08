@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\IngredienteCollection;
 use App\Ingrediente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +25,7 @@ class IngredienteController extends Controller
         $ingrediente = Ingrediente::
             orderBy('id','DESC')->paginate($this->lmtSearch);
 
-        return $ingrediente;
+        return new IngredienteCollection($ingrediente);
     }
 
 
@@ -42,7 +43,7 @@ class IngredienteController extends Controller
         })    
         ->limit($this->lmtSearch)->get();
 
-        return  $ingrediente;
+        return  new IngredienteCollection($ingrediente);
     }
     
 

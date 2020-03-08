@@ -78114,7 +78114,7 @@ var routes = [{
 }, {
   path: "/validazioni",
   name: "Validazioni",
-  title: 'Validazioni Ricette',
+  title: 'Validazione Ricette',
   icon: 'fa-gavel',
   Component: _view_Validazioni__WEBPACK_IMPORTED_MODULE_13__["default"]
 }, {
@@ -78259,7 +78259,7 @@ function (_Component) {
       var ruolo = user.ruolo;
       var nome = user.nome;
       var menu = user.menu;
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["BrowserRouter"], {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Router"], {
         history: _history__WEBPACK_IMPORTED_MODULE_3__["default"]
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("header", {
         className: ruolo != '' ? 'logged' : ''
@@ -78850,12 +78850,15 @@ function (_Component) {
         }
       };
       var dataLogin = this.state.dataLogin;
-      dataLogin._token = CSRF_TOKEN; //console.log(dataLogin);return;
+      var data = {};
+      data.email = dataLogin.email_login;
+      data.password = dataLogin.password_login;
+      data._token = CSRF_TOKEN; //console.log(data);return;
 
       this.setState({
         loaderLogin: true
       });
-      return axios.post(url, dataLogin, headers).then(function (result) {
+      return axios.post(url, data, headers).then(function (result) {
         //console.log(result.status);return;
         return result;
       })["catch"](function (error) {
@@ -78941,7 +78944,7 @@ function (_Component) {
       var dataLogin = this.state.dataLogin;
       var checkedLogin = true;
       dataLogin[field] = value;
-      if (dataLogin.email == '' || dataLogin.password == '') checkedLogin = false;
+      if (dataLogin.email_login == null || dataLogin.email_login == '' || dataLogin.password_login == null || dataLogin.password_login == '') checkedLogin = false;
       this.setState({
         dataLogin: dataLogin,
         checkedLogin: checkedLogin
@@ -79206,19 +79209,19 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group mb-5"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_6__["default"], {
-        name: "email",
+        name: "email_login",
         divClassName: divClassName,
         className: "form-control",
         placeholder: "Email",
-        helperText: this.showError('email'),
+        helperText: this.showError('email_login'),
         handleChange: this._handleChangeLogin
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_6__["default"], {
-        name: "password",
+        name: "password_login",
         type: "password",
         divClassName: divClassName,
         className: "form-control",
         placeholder: "Password",
-        helperText: this.showError('password'),
+        helperText: this.showError('password_login'),
         handleChange: this._handleChangeLogin
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group"
@@ -80723,6 +80726,8 @@ var InfoError = {
   'regista': 'Inserire un Regista valido',
   'attore': 'Inserire un Attore valido',
   'caratteri': 'Inserire caratteri validi',
+  'img': 'Inserire un URL valido',
+  'limite_caratteri': 'Superato il limite massimo di caratteri consentiti',
   'password': 'Inserire almeno 8 caratteri',
   'confirm_password': 'Le password non corrispondono',
   'comune': 'Inserire un comune valido',
@@ -80738,7 +80743,8 @@ var InfoError = {
   'numero': 'Inserire un numero valido',
   'numero_2': 'Inserire un numero maggiore di zero',
   'email_1': 'l\'email in genere è composta da almeno 8 caratteri',
-  'email_2': 'email non valida'
+  'email_2': 'email non valida',
+  'ingredienti': 'Inserire almeno un ingrediente'
 };
 /* harmony default export */ __webpack_exports__["default"] = (InfoError);
 
@@ -80914,7 +80920,8 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 var whitespace_reg_ex = /^[^\s].*/;
-var FIELDS = ['titolo', 'tempo_preparazione', 'tempo_cottura', 'intro', 'modalita_preparazione', 'porzioni', 'calorie', 'difficolta', 'id_tipologia', 'id_ingredienti', 'note', 'img'];
+var url_reg_ex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
+var FIELDS = ['titolo', 'tempo_preparazione', 'tempo_cottura', 'intro', 'modalita_preparazione', 'porzioni', 'calorie', 'difficolta', 'id_tipologia', 'ingredienti', 'note', 'img'];
 
 var AddEditRicetta =
 /*#__PURE__*/
@@ -80930,7 +80937,18 @@ function (_Component) {
     var data = {};
     var error = {};
     FIELDS.map(function (fd, id) {
-      data[fd] = error[fd] = '';
+      if (fd == 'ingredienti') {
+        data[fd] = {
+          titolo: [],
+          unita_misura: [],
+          id: [],
+          quantita: []
+        };
+        error[fd] = {};
+      } else {
+        data[fd] = '';
+        error[fd] = '';
+      }
     });
     _this.state = {
       data: data,
@@ -81009,49 +81027,64 @@ function (_Component) {
     }
   }, {
     key: "_handleChange",
-    value: function _handleChange(e) {
-      var _this3 = this;
-
+    value: function _handleChange(e, id) {
       var value = e.target.value.toLowerCase();
       var field = e.target.name;
       var error = this.state.error;
       var data = this.state.data;
-      if (value == '') error[field] = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['vuoto'];else error[field] = '';
+
+      if (value == '') {
+        if (id != null) error.ingredienti['ingrediente_' + id] = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['vuoto'];else error[field] = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['vuoto'];
+      } else {
+        if (id != null) error.ingredienti['ingrediente_' + id] = '';else error[field] = '';
+      }
 
       switch (field) {
-        case 'nome':
-          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.nome = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['caratteri'];
+        case 'titolo':
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.titolo = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['caratteri'];else if (value.length > 50) error.titolo = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['limite_caratteri'];
           break;
 
-        case 'cognome':
-          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.cognome = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['caratteri'];
+        case 'intro':
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.intro = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['caratteri'];else if (value.length > 255) error.intro = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['limite_caratteri'];
           break;
 
-        case 'matricola':
-          value = value.toUpperCase();
-          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.matricola = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['caratteri'];
+        case 'tempo_preparazione':
+          if (isNaN(value) || value.length > 0 && !whitespace_reg_ex.test(value)) error.tempo_preparazione = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['numero'];
           break;
 
-        case 'email':
-          if (value.length < 8) error.email = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['email_1'];else if (!email_reg_exp.test(value)) error.email = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['email_2'];
+        case 'tempo_cottura':
+          if (isNaN(value) || value.length > 0 && !whitespace_reg_ex.test(value)) error.tempo_cottura = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['numero'];
           break;
 
-        case 'password':
-          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['caratteri'];else if (value.length > 0 && value.length < 8) error.password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['password'];else if (this.state.data.confirm_password != '' && value != this.state.data.confirm_password) error.confirm_password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['confirm_password'];else error.confirm_password = '';
+        case 'porzioni':
+          if (isNaN(value) || value.length > 0 && !whitespace_reg_ex.test(value)) error.porzioni = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['numero'];
           break;
 
-        case 'confirm_password':
-          if (value.length > 1 && !whitespace_reg_ex.test(value)) error.confirm_password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['caratteri'];else if (value.length > 0 && value.length < 8 || value != this.state.data.password) error.confirm_password = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['confirm_password'];
+        case 'calorie':
+          if (isNaN(value) || value.length > 0 && !whitespace_reg_ex.test(value)) error.calorie = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['numero'];
+          break;
+
+        case 'img':
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.img = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['caratteri'];else if (value.length > 2048) error.img = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['limite_caratteri'];else if (!url_reg_ex.test(value)) error.img = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['img'];
+          break;
+
+        case 'modalita_preparazione':
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.modalita_preparazione = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['caratteri'];else if (value.length > 1024) error.modalita_preparazione = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['limite_caratteri'];
+          break;
+
+        case 'ingrediente_' + id:
+          if (isNaN(value) || value.length > 0 && !whitespace_reg_ex.test(value)) error.ingredienti['ingrediente_' + id] = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['numero'];
+          break;
+
+        case 'note':
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.note = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['caratteri'];else if (value.length > 255) error.note = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['limite_caratteri'];
           break;
       }
 
-      data[field] = value.trim();
-      this.setState({
-        data: data,
-        error: error
-      }, function () {
-        return _this3.checked();
-      });
+      if (id != null) data.ingredienti.quantita[id] = value;else data[field] = value.trim();
+      this.state.data = data;
+      this.state.error = error;
+      this.checked(); //this.setState({data,error},()  => this.checked());
     }
   }, {
     key: "checked",
@@ -81059,17 +81092,31 @@ function (_Component) {
       var data = this.state.data;
       var error = this.state.error;
       var checked = true;
-      Object.keys(error).map(function (k, id) {
-        if (error[k] != '' || data[k] == '') checked = false;
-      });
+      Object.keys(error).map(function (key, id) {
+        //console.log(key)
+        //console.log(data[key])
+        if (key == 'ingredienti') {
+          if (_typeof(error[key]) === 'object') {
+            var obj = Object.keys(error[key]);
+            if (obj.length == 0) checked = false;else Object.keys(error[key]).some(function (k2, id2) {
+              if (error[key][k2] != '' || data.ingredienti.quantita[id2] == 0 || data.ingredienti.quantita[id2] == '') {
+                checked = false;
+                return true;
+              }
+            });
+          }
+        } else if (error[key] != '' || data[key] == '') checked = false;
+      }); //console.log(checked);
+
       this.setState({
         checked: checked
       });
     }
   }, {
     key: "showError",
-    value: function showError(field) {
+    value: function showError(field, id) {
       var error = this.state.error[field] !== undefined ? this.state.error[field] : '';
+      if (id === undefined && field == 'ingredienti' && Object.keys(error).length == 0) error = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['ingredienti'];else if (_typeof(error) === 'object' && Object.keys(error).length > 0) error = error['ingrediente_' + id];
       if (error != '') return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "error-div"
       }, error);
@@ -81077,14 +81124,14 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this4 = this;
+      var _this3 = this;
 
       var divClassName = 'mb-3';
       var data = this.state.data;
       var router = this.props.router;
       var history = router.history;
       var user = Object(_Env__WEBPACK_IMPORTED_MODULE_2__["User"])();
-      var bread = 'gestione-ricette';
+      var breadcrumbs = 'gestione-ricette';
       var errorRegMessage = this.state.errorRegMessage;
       var objFid = {
         'facile': 'Facile',
@@ -81100,7 +81147,7 @@ function (_Component) {
       };
       var styleHR = {
         margin: '35px 0 20px'
-      }; //console.log(url)
+      }; //console.log(data.ingredienti)        
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("article", {
         className: "col-md-12 constraint"
@@ -81112,7 +81159,7 @@ function (_Component) {
           e.preventDefault();
           history.goBack();
         }
-      }, bread, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      }, breadcrumbs, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fa fa-angle-right",
         "aria-hidden": "true"
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, "nuova ricetta")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
@@ -81150,7 +81197,7 @@ function (_Component) {
         handleChange: this._handleChange
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_DropdownSelect__WEBPACK_IMPORTED_MODULE_6__["default"], {
         placeholder: "Scegli un valore",
-        name: "tipologia",
+        name: "id_tipologia",
         className: "form-control",
         divClassName: "col-md-5 " + divClassName,
         label: "Tipologia",
@@ -81202,7 +81249,7 @@ function (_Component) {
         name: "img",
         divClassName: divClassName,
         className: "form-control ",
-        placeholder: "es: https://.../image.jpg",
+        placeholder: "es: https://www.images.com/image.jpg",
         helperText: this.showError('img'),
         handleChange: this._handleChange
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
@@ -81228,44 +81275,44 @@ function (_Component) {
         className: "md-col-4 pl-3 pr-2"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_SearchField__WEBPACK_IMPORTED_MODULE_3__["default"], {
         label: "Ingredienti",
-        placeholder: "Cerca un Ingrediente",
+        placeholder: "Cerca e aggiungi un Ingrediente",
         searchClassName: "w-100",
         showList: true,
         url: this.props.url + '/ingredienti/search',
         patternList: {
           id: 'id',
           fields: {
-            titolo: []
+            titolo: [],
+            calorie: []
           }
         } //id di ritorno; i fields vengono usati come titolo
         ,
         reloadOnClick: false,
         resetAfterClick: true,
         onClick: function onClick(val) {
-          console.log(val);
-          var data = _this4.state.data;
-          var error = _this4.state.error; //data.id_comune = val.id;
-          //error.id_comune = '';
-          //this.setState({data,error},() => this.checked());
-        },
-        callback: function callback(val) {
-          //console.log(val);
-          var data = _this4.state.data;
-          var error = _this4.state.error; //data.id_comune = '';
+          var data = _this3.state.data;
+          var error = _this3.state.error;
+          data.ingredienti.id.push(val.id);
+          data.ingredienti.titolo.push(val.titolo);
+          data.ingredienti.unita_misura.push(val.unita_misura);
+          data.ingredienti.quantita.push(0);
+          var id = Object.keys(error.ingredienti).length;
+          error.ingredienti['ingrediente_' + id] = '';
+          _this3.state.data = data;
+          _this3.state.error = error;
 
-          if (val.length == 0) {} //error.id_comune = INFO_ERROR['comune'];
-          //this.setState({data,error},() => this.checked());
+          _this3.checked(); //this.setState({data,error},() => this.checked());
 
         }
-      }), this.showError('id_ingredienti')), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-8 ",
+      }), this.showError('ingredienti')), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-8 mb-5",
         style: {
           paddingTop: '34px'
         }
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "mr-4"
       }, "Se non trovi un ingrediente, crealo!"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_9__["Button"], {
-        className: "btn-primary",
+        className: "btn-light",
         onClick: this._handleShowModal
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fa fa-plus-circle",
@@ -81276,7 +81323,52 @@ function (_Component) {
         onHide: this._handleCloseModal,
         callback: function callback(row) {//this.setState({reloadInfiniteTable:++(this.state.reloadInfiniteTable)});
         }
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "ml-4"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, data.ingredienti.id.map(function (id, key) {
+        var titolo = data.ingredienti.titolo[key];
+        var unita = data.ingredienti.unita_misura[key];
+        var quantita = data.ingredienti.quantita[key];
+        var cnt = key + 1;
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          key: key,
+          className: "mb-3"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, cnt, "."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          name: "ingrediente_" + key,
+          value: quantita,
+          placeholder: "quantit\xE0",
+          divClassName: "d-inline-block mx-1 px-1 col-sm-3",
+          className: " form-control d-inline",
+          helperText: _this3.showError("ingredienti", key),
+          handleChange: function handleChange(e) {
+            return _this3._handleChange(e, key);
+          }
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          style: {
+            color: '#aaa'
+          },
+          className: "mr-3"
+        }, unita), "\xA0", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, titolo.charAt(0).toUpperCase() + titolo.slice(1)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "btn-clear d-inline-block ml-3 p-1",
+          onClick: function onClick(a) {
+            var data = _this3.state.data;
+            var error = _this3.state.error;
+            data.ingredienti.id.splice(key, 1);
+            data.ingredienti.titolo.splice(key, 1);
+            data.ingredienti.unita_misura.splice(key, 1);
+            data.ingredienti.quantita.splice(key, 1);
+            delete error.ingredienti['ingrediente_' + key]; //console.log(error.ingredienti)
+
+            _this3.state.data = data;
+            _this3.state.error = error;
+
+            _this3.checked();
+          }
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fa fa-times",
+          "aria-hidden": "true"
+        })));
+      })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
         style: styleHR
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group mb-5"

@@ -1,7 +1,7 @@
 import React, { Component , Fragment, useState} from 'react';
 import ReactDOM from 'react-dom';
 
-import {BrowserRouter as Router, Switch, Route, Link, NavLink} from "react-router-dom";
+import {Router, Switch, Route, Link, NavLink} from "react-router-dom";
 import history from './history';
 
 import { Button } from './utils/Button';
@@ -19,7 +19,7 @@ import Validazioni from './view/Validazioni';
 
 const routes = [
     {path: "/", name:"Home",title:'Home', icon:'fa-home', Component:Home},
-    {path: "/validazioni", name:"Validazioni", title:'Validazioni Ricette', icon:'fa-gavel', Component: Validazioni},
+    {path: "/validazioni", name:"Validazioni", title:'Validazione Ricette', icon:'fa-gavel', Component: Validazioni},
     {path: "/blog/:ricetta", name:"Ricetta", title:'Ricetta', icon:'fa-home', Component:Ricetta},
 
     {path: "/gestione-ricette/new", name:"Nuova-Ricetta", title:'Nuova Ricetta', icon:'fa-list-ol', Component: AddEditRicetta},   

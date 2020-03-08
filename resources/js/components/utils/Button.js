@@ -21,11 +21,11 @@ const EditButton = ({ className='', onClick, children, disabled=false}) => (
 );
 
 const AddButton = ({ className='', onClick, children, disabled=false}) => (
-    <a className={"btn add btn-info waves-effect waves-light light-green darken-2 "+className +(disabled?' disabled':'')}
-      onClick={() => onClick()}>
-      {children}
-    </a>
-  );
+  <a className={"btn add btn-info waves-effect waves-light light-green darken-2 "+className +(disabled?' disabled':'')}
+    onClick={() => onClick()}>
+    {children}
+  </a>
+);
 
 const BackButton = ({ className='', onClick, children, disabled=false}) => (
   <a className={"btn back waves-effect waves-light blue-grey lighten-4  "+className +(disabled?' disabled':'')} onClick={() => onClick()}>

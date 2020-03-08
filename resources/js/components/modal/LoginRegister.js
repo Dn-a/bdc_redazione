@@ -162,13 +162,17 @@ export default class LoginRegister extends Component {
 
         let dataLogin = this.state.dataLogin;
 
-        dataLogin._token = CSRF_TOKEN;
+        let data ={};
+        data.email = dataLogin.email_login;
+        data.password = dataLogin.password_login;
+        data._token = CSRF_TOKEN;
+        
 
-        //console.log(dataLogin);return;
+        //console.log(data);return;
 
         this.setState({loaderLogin:true});
 
-        return axios.post(url,dataLogin,headers)
+        return axios.post(url,data,headers)
         .then(result => {
             
             //console.log(result.status);return;
@@ -268,7 +272,7 @@ export default class LoginRegister extends Component {
 
         dataLogin[field] = value;
 
-        if(dataLogin.email=='' || dataLogin.password=='')
+        if(dataLogin.email_login==null || dataLogin.email_login=='' || dataLogin.password_login==null || dataLogin.password_login=='')
             checkedLogin = false;
 
         this.setState({dataLogin,checkedLogin});        
@@ -465,10 +469,10 @@ export default class LoginRegister extends Component {
 
                             <form onSubmit={this._handleSubmit}>
                                 <div className="form-group mb-5">
-                                    <InputField name="email" divClassName={divClassName} className="form-control" placeholder="Email"
-                                    helperText={this.showError('email')} handleChange={this._handleChangeLogin} />
-                                    <InputField name="password" type='password' divClassName={divClassName} className="form-control" placeholder="Password"
-                                    helperText={this.showError('password')} handleChange={this._handleChangeLogin} />
+                                    <InputField name="email_login" divClassName={divClassName} className="form-control" placeholder="Email"
+                                    helperText={this.showError('email_login')} handleChange={this._handleChangeLogin} />
+                                    <InputField name="password_login" type='password' divClassName={divClassName} className="form-control" placeholder="Password"
+                                    helperText={this.showError('password_login')} handleChange={this._handleChangeLogin} />
                                 </div> 
 
                                 <div className="form-group">

@@ -15,6 +15,7 @@ import TextAreaField from '../utils/form/TextAreaField';
 import IngredienteModal from '../modal/IngredienteModal';
 
 const whitespace_reg_ex = /^[^\s].*/;
+const url_reg_ex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
 
 const FIELDS = [
     'titolo',
@@ -26,7 +27,7 @@ const FIELDS = [
     'calorie',
     'difficolta',
     'id_tipologia',
-    'id_ingredienti',
+    'ingredienti',
     'note',
     'img'
 ];
@@ -40,7 +41,18 @@ export default class AddEditRicetta extends Component {
         let error = {};
 
         FIELDS.map((fd,id) => {
-            data[fd] = error[fd]= '';
+            if(fd=='ingredienti'){
+                data[fd] = {
+                    titolo:[],
+                    unita_misura:[],
+                    id:[],
+                    quantita:[]
+                };
+                error[fd]= {};
+            }else{
+                data[fd] = '';
+                error[fd]= '';
+            }
         });
 
         this.state = {
@@ -116,7 +128,7 @@ export default class AddEditRicetta extends Component {
         this.setRemoteStore();
     }
 
-    _handleChange(e){
+    _handleChange(e,id){
         let value = e.target.value.toLowerCase();
         let field = e.target.name;
 
@@ -124,52 +136,84 @@ export default class AddEditRicetta extends Component {
         let error = this.state.error;
         let data = this.state.data;
 
-        if(value=='')
-            error[field] = INFO_ERROR['vuoto'];
-        else
-            error[field] = '';
-
-        switch(field){
-            case 'nome':
-                if( value.length > 1 && !whitespace_reg_ex.test(value))
-                    error.nome = INFO_ERROR['caratteri'];
-                break;
-            case 'cognome':
-                if(value.length > 1 && !whitespace_reg_ex.test(value))
-                    error.cognome = INFO_ERROR['caratteri'];
-                break;
-            case 'matricola':
-                value = value.toUpperCase();
-                if(value.length > 1 && !whitespace_reg_ex.test(value))
-                    error.matricola = INFO_ERROR['caratteri'];
-                break;
-            case 'email':
-                if(value.length < 8 )
-                    error.email = INFO_ERROR['email_1'];
-                else if(!email_reg_exp.test(value))
-                    error.email = INFO_ERROR['email_2'];
-                break;
-            case 'password':
-                if(value.length > 1 && !whitespace_reg_ex.test(value))
-                    error.password = INFO_ERROR['caratteri'];
-                else if(value.length > 0 && value.length < 8)
-                    error.password = INFO_ERROR['password'];
-                else if(this.state.data.confirm_password!='' && value != this.state.data.confirm_password)
-                    error.confirm_password = INFO_ERROR['confirm_password'];
-                else
-                    error.confirm_password = '';
-                break;
-            case 'confirm_password':
-                if(value.length > 1 && !whitespace_reg_ex.test(value))
-                    error.confirm_password = INFO_ERROR['caratteri'];
-                else if( value.length > 0 && value.length < 8 || value != this.state.data.password)
-                    error.confirm_password = INFO_ERROR['confirm_password'];
-                break;
+        if(value==''){
+            if(id!=null) 
+                error.ingredienti['ingrediente_'+id]= INFO_ERROR['vuoto'];
+            else
+                error[field] = INFO_ERROR['vuoto'];
+        }else{
+            if(id!=null) 
+                error.ingredienti['ingrediente_'+id]= '';            
+            else
+                error[field] = '';
         }
 
-        data[field] = value.trim();
+        switch(field){
+            case 'titolo':
+                if( value.length > 0 && !whitespace_reg_ex.test(value))
+                    error.titolo = INFO_ERROR['caratteri'];
+                else if(value.length > 50)
+                    error.titolo = INFO_ERROR['limite_caratteri'];
+                break;
+            case 'intro':
+                if(value.length > 0 && !whitespace_reg_ex.test(value))
+                    error.intro = INFO_ERROR['caratteri'];
+                else if(value.length > 255)
+                    error.intro = INFO_ERROR['limite_caratteri'];
+                break;
+            case 'tempo_preparazione':
+                if(isNaN(value) || (value.length > 0 && !whitespace_reg_ex.test(value)))
+                   error.tempo_preparazione = INFO_ERROR['numero'];
+                break;
+            case 'tempo_cottura':
+                if(isNaN(value) || (value.length > 0 && !whitespace_reg_ex.test(value)))
+                    error.tempo_cottura = INFO_ERROR['numero'];
+                break;
+            case 'porzioni':
+                if(isNaN(value) || (value.length > 0 && !whitespace_reg_ex.test(value)))
+                    error.porzioni = INFO_ERROR['numero'];
+                break;
+            case 'calorie':
+                if(isNaN(value) || (value.length > 0 && !whitespace_reg_ex.test(value)))
+                    error.calorie = INFO_ERROR['numero'];
+                break;
+            case 'img':
+                if(value.length > 0 && !whitespace_reg_ex.test(value))
+                    error.img = INFO_ERROR['caratteri'];
+                else if(value.length > 2048)
+                    error.img = INFO_ERROR['limite_caratteri'];
+                else if(!url_reg_ex.test(value))
+                    error.img = INFO_ERROR['img'];                
+                break;
+            case 'modalita_preparazione':
+                if(value.length > 0 && !whitespace_reg_ex.test(value))
+                    error.modalita_preparazione = INFO_ERROR['caratteri'];
+                else if(value.length > 1024)
+                    error.modalita_preparazione = INFO_ERROR['limite_caratteri'];
+                break;
+            case 'ingrediente_'+id:
+                if(isNaN(value) || (value.length > 0 && !whitespace_reg_ex.test(value)))
+                    error.ingredienti['ingrediente_'+id] = INFO_ERROR['numero'];
+                break;
+            case 'note':
+                if(value.length > 0 && !whitespace_reg_ex.test(value))
+                    error.note = INFO_ERROR['caratteri'];
+                else if(value.length > 255)
+                    error.note = INFO_ERROR['limite_caratteri'];
+                break;
+        }
+        
+        if(id!=null) 
+            data.ingredienti.quantita[id] = value;
+        else
+            data[field] = value.trim();
 
-        this.setState({data,error},()  => this.checked());
+        this.state.data = data;
+        this.state.error = error;
+        
+        this.checked()
+
+        //this.setState({data,error},()  => this.checked());
     }
 
     checked(){
@@ -177,16 +221,37 @@ export default class AddEditRicetta extends Component {
         let error = this.state.error;
 
         let checked = true;
-        Object.keys(error).map((k,id) => {
-            if(error[k]!='' || data[k]=='')
+        Object.keys(error).map((key,id) => {
+            //console.log(key)
+            //console.log(data[key])
+            if(key=='ingredienti'){
+                if(typeof error[key] === 'object'){
+                    let obj = Object.keys(error[key]);
+                    if(obj.length==0)
+                        checked = false;
+                    else                
+                        Object.keys(error[key]).some((k2,id2) => {                        
+                            if(error[key][k2]!='' || data.ingredienti.quantita[id2]==0 || data.ingredienti.quantita[id2]==''){                                
+                                checked = false;
+                                return true;
+                            }
+                        });
+                }
+            }else if(error[key]!='' || data[key]=='')
                 checked = false;
         });
 
+        //console.log(checked);
         this.setState({checked});
     }
 
-    showError(field){
+    showError(field,id){
         let error = this.state.error[field]!== undefined ? this.state.error[field] : '';
+        
+        if(id===undefined && field=='ingredienti' && Object.keys(error).length == 0)
+            error = INFO_ERROR['ingredienti'];
+        else if(typeof error ==='object' && Object.keys(error).length > 0)
+            error = error['ingrediente_'+id];
 
         if(error != '')
           return(
@@ -205,7 +270,7 @@ export default class AddEditRicetta extends Component {
         
         let user = User();
 
-        let bread = 'gestione-ricette';
+        let breadcrumbs = 'gestione-ricette';
                 
         let errorRegMessage = this.state.errorRegMessage;
 
@@ -213,14 +278,14 @@ export default class AddEditRicetta extends Component {
         let objFid2 = {1:'Primo',2:'Secondo',3:'Contorno',4:'Dolce',5:'Antipasto'};
 
         let styleHR = {margin: '35px 0 20px'};
-        //console.log(url)
         
+        //console.log(data.ingredienti)        
         
         return (
             <article className="col-md-12 constraint">
                         
                 <ul className="breadcrumbs mb-2">
-                    <li><a href="" onClick={(e)=> {e.preventDefault();history.goBack()}}>{bread} <i className="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                    <li><a href="" onClick={(e)=> {e.preventDefault();history.goBack()}}>{breadcrumbs} <i className="fa fa-angle-right" aria-hidden="true"></i></a></li>
                     <li>nuova ricetta</li>
                 </ul>
 
@@ -242,7 +307,7 @@ export default class AddEditRicetta extends Component {
                         defaultSelected='Scegli un valore'
                         handleChange={this._handleChange} />
                         <DropDownSelect placeholder="Scegli un valore"
-                        name="tipologia" className="form-control" divClassName={"col-md-5 "+divClassName} label="Tipologia"
+                        name="id_tipologia" className="form-control" divClassName={"col-md-5 "+divClassName} label="Tipologia"
                         values={objFid2}
                         defaultSelected='Scegli un valore'
                         handleChange={this._handleChange} />
@@ -264,7 +329,7 @@ export default class AddEditRicetta extends Component {
                     <hr style={styleHR}/>
 
                     <div className="form-group mb-0">                        
-                        <InputField label="Link immagine" name="img" divClassName={divClassName} className="form-control " placeholder="es: https://.../image.jpg"
+                        <InputField label="Link immagine" name="img" divClassName={divClassName} className="form-control " placeholder="es: https://www.images.com/image.jpg"
                         helperText={this.showError('img')} handleChange={this._handleChange} />                       
                     </div>
 
@@ -277,45 +342,48 @@ export default class AddEditRicetta extends Component {
 
                     <hr style={styleHR}/>
 
-                    <div className="form-group mb-0 row">     
+                    <div className="form-group mb-0 row">
+
                         <div className="md-col-4 pl-3 pr-2">                   
                             <SearchField
                                 label="Ingredienti"
-                                placeholder='Cerca un Ingrediente'
+                                placeholder='Cerca e aggiungi un Ingrediente'
                                 searchClassName='w-100'
                                 showList={true}
                                 url={this.props.url+'/ingredienti/search'}
-                                patternList={{id:'id', fields:{titolo:[]}} }//id di ritorno; i fields vengono usati come titolo
+                                patternList={{id:'id', fields:{titolo:[],calorie:[]}} }//id di ritorno; i fields vengono usati come titolo
                                 reloadOnClick={false}
                                 resetAfterClick={true}                                
                                 onClick={(val) => {
-                                        console.log(val);
+
                                         let data = this.state.data;
                                         let error = this.state.error;
-                                        //data.id_comune = val.id;
-                                        //error.id_comune = '';
-                                        //this.setState({data,error},() => this.checked());
-                                    }
-                                }
-                                callback={(val) => {
-                                        //console.log(val);
-                                        let data = this.state.data;
-                                        let error = this.state.error;
-                                        //data.id_comune = '';
-                                        if(val.length==0){
-                                            //error.id_comune = INFO_ERROR['comune'];
-                                        }
+
+                                        data.ingredienti.id.push(val.id)
+                                        data.ingredienti.titolo.push(val.titolo)
+                                        data.ingredienti.unita_misura.push(val.unita_misura)
+                                        data.ingredienti.quantita.push(0)
+                                        
+                                        let id = Object.keys(error.ingredienti).length;                                        
+                                        error.ingredienti['ingrediente_'+id] = '';                                        
+
+                                        this.state.data = data;
+                                        this.state.error = error;
+                                        
+                                        this.checked();
+
                                         //this.setState({data,error},() => this.checked());
                                     }
                                 }
                             />
-                            {this.showError('id_ingredienti')}
+                            {this.showError('ingredienti')}
                         </div>
-                        <div className="col-md-8 " style={{paddingTop:'34px'}}>
+
+                        <div className="col-md-8 mb-5" style={{paddingTop:'34px'}}>
                             <span className="mr-4">Se non trovi un ingrediente, crealo!</span>
 
                             <Button
-                                className='btn-primary'
+                                className='btn-light'
                                 onClick={this._handleShowModal}
                             >
                                 <i className="fa fa-plus-circle" aria-hidden="true"></i>
@@ -331,6 +399,58 @@ export default class AddEditRicetta extends Component {
                                 } 
                             />
                         </div>
+
+                        <div className="ml-4">
+                            <ul>
+                                {
+                                    data.ingredienti.id.map((id,key) => {
+                                        let titolo = data.ingredienti.titolo[key];
+                                        let unita = data.ingredienti.unita_misura[key];
+                                        let quantita = data.ingredienti.quantita[key];
+                                        let cnt = key+1;
+                                        return(
+                                            <li key={key} className="mb-3">
+                                                <span>{cnt}.</span>
+                                                <InputField  
+                                                name={"ingrediente_"+key}
+                                                value={quantita }
+                                                placeholder='quantità'
+                                                divClassName="d-inline-block mx-1 px-1 col-sm-3"
+                                                className=" form-control d-inline"
+                                                helperText={this.showError("ingredienti",key)} 
+                                                handleChange={(e) => this._handleChange(e,key)}
+                                                />
+                                                <span style={{color:'#aaa'}} className="mr-3">{unita}</span>&nbsp;  
+                                                <span>{titolo.charAt(0).toUpperCase()+titolo.slice(1)}</span>
+                                                <div 
+                                                className="btn-clear d-inline-block ml-3 p-1"
+                                                onClick={(a) => {
+
+                                                    let data = this.state.data;
+                                                    let error = this.state.error;
+                                                    
+                                                    data.ingredienti.id.splice(key,1);
+                                                    data.ingredienti.titolo.splice(key,1);
+                                                    data.ingredienti.unita_misura.splice(key,1);
+                                                    data.ingredienti.quantita.splice(key,1);
+                                                    
+                                                    delete error.ingredienti['ingrediente_'+key];
+
+                                                    //console.log(error.ingredienti)
+                                                    this.state.data = data;
+                                                    this.state.error = error;
+                                                    
+                                                    this.checked();
+
+                                                }}   
+                                                ><i className="fa fa-times" aria-hidden="true"></i></div>
+                                            </li>
+                                        )
+                                    })
+                                }
+                            </ul>
+                        </div>
+
                     </div>
                     
                     <hr style={styleHR}/>
