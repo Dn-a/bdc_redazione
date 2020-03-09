@@ -78608,6 +78608,7 @@ function (_Component) {
         divClassName: divClassName,
         className: "form-control",
         label: "Titolo",
+        placeholder: "max 50 caratteri",
         helperText: this.showError('titolo'),
         handleChange: this._handleChange
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -80962,6 +80963,7 @@ function (_Component) {
     _this._handleChange = _this._handleChange.bind(_assertThisInitialized(_this));
     _this._handleCloseModal = _this._handleCloseModal.bind(_assertThisInitialized(_this));
     _this._handleShowModal = _this._handleShowModal.bind(_assertThisInitialized(_this));
+    _this._handleOnSubmit = _this._handleOnSubmit.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -80996,18 +80998,16 @@ function (_Component) {
         }
       };
       var data = this.state.data;
-      var formData = new FormData();
-      Object.keys(data).map(function (k, id) {
-        if (!HIDE_FIELD.includes(k)) {
-          formData.append(k, data[k]);
-        }
-      }); //console.log(FormData);return;
+      var sendData = JSON.parse(JSON.stringify(data));
+      sendData._token = CSRF_TOKEN;
+      sendData.id_ingredienti = data.ingredienti.id;
+      sendData.quantita_ingrediente = data.ingredienti.quantita;
+      delete sendData.ingredienti; //console.log(sendData);return;
 
-      formData.append('_token', CSRF_TOKEN);
       this.setState({
         loader: true
       });
-      return axios.post(url, formData, headers).then(function (result) {
+      return axios.post(url, sendData, headers).then(function (result) {
         console.log(result);
         return result;
       })["catch"](function (error) {
@@ -81020,8 +81020,8 @@ function (_Component) {
       });
     }
   }, {
-    key: "_handleOnSave",
-    value: function _handleOnSave() {
+    key: "_handleOnSubmit",
+    value: function _handleOnSubmit() {
       console.log("save");
       this.setRemoteStore();
     }
@@ -81213,7 +81213,7 @@ function (_Component) {
         name: "tempo_preparazione",
         divClassName: "col-md-5 " + divClassName,
         className: "form-control",
-        placeholder: "Tempo preparazione",
+        placeholder: "Tempo preparazione (min)",
         helperText: this.showError('tempo_preparazione'),
         handleChange: this._handleChange
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -81221,7 +81221,7 @@ function (_Component) {
         name: "tempo_cottura",
         divClassName: "col-md-5 " + divClassName,
         className: "form-control ",
-        placeholder: "Tempo cottura",
+        placeholder: "Tempo cottura (min)",
         helperText: this.showError('tempo_cottura'),
         handleChange: this._handleChange
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -81237,7 +81237,7 @@ function (_Component) {
         name: "calorie",
         divClassName: "col-md-5 " + divClassName,
         className: "form-control ",
-        placeholder: "Calorie",
+        placeholder: "Kcal",
         helperText: this.showError('calorie'),
         handleChange: this._handleChange
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
@@ -81324,7 +81324,7 @@ function (_Component) {
         callback: function callback(row) {//this.setState({reloadInfiniteTable:++(this.state.reloadInfiniteTable)});
         }
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "ml-4"
+        className: "ml-3"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, data.ingredienti.id.map(function (id, key) {
         var titolo = data.ingredienti.titolo[key];
         var unita = data.ingredienti.unita_misura[key];
@@ -81337,7 +81337,7 @@ function (_Component) {
           name: "ingrediente_" + key,
           value: quantita,
           placeholder: "quantit\xE0",
-          divClassName: "d-inline-block mx-1 px-1 col-sm-3",
+          divClassName: "d-inline-block ml-3 mr-1 px-1 col-sm-3",
           className: " form-control d-inline",
           helperText: _this3.showError("ingredienti", key),
           handleChange: function handleChange(e) {
@@ -81391,8 +81391,8 @@ function (_Component) {
         src: "../img/loader_2.gif"
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_9__["AddButton"], {
         className: "",
-        disabled: !this.state.checked //onClick={this._handleOnRegister}
-
+        disabled: !this.state.checked,
+        onClick: this._handleOnSubmit
       }, "INVIA RICETTA", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
         className: "loader-2" + (this.state.loader == true ? ' d-inline-block' : ''),
         src: "../img/loader_2.gif"

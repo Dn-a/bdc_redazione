@@ -28,34 +28,51 @@ if(request()->header('accept')=='application/json'){
 // browser request
   if(request()->header('accept')!='application/json')
    {
-      Route::get('/{name}', 'HomeController@index')->name('home')
-      ->where('name', '|home|autori|redattori|blog|gestione-ricette|ingredienti|validazioni|setting');
-
-      Route::get('/{name}/{id}', 'HomeController@index')->name('home')
+      Route::get('/{name1}', 'HomeController@index')->name('home')
+      ->where('name1', '|home');
+      
+      
+      Route::get('/{name2}/{id}', 'HomeController@index')->name('home_2')
       ->where(
         [
-          'name' =>'blog|gestione-ricette|ingredienti|validazioni',
+          'name2' =>'blog',
           'id' => '[0-9]+'
         ]
       );
 
-      Route::get('/{name}/{name2}', 'HomeController@index')->name('home')
+
+      Route::get('/{name3}', 'HomeController@index')
+      ->where('name3', 'autori|redattori|gestione-ricette|ingredienti|validazioni|settings')->name('home_3')
+      ->middleware(['auth']);
+
+      
+      Route::get('/{name}/{id}', 'HomeController@index')
+      ->where(
+        [
+          'name' =>'validazioni',
+          'id' => '[0-9]+'
+        ]
+      )->middleware(['auth','ruolo:admin|caporedattore|redattore']);
+
+
+      Route::get('/{name}/{id}', 'HomeController@index')
+      ->where(
+        [
+          'name' =>'gestione-ricette|ingredienti',
+          'id' => '[0-9]+'
+        ]
+      )->middleware(['auth']);
+
+
+      Route::get('/{name}/{name2}', 'HomeController@index')
       ->where(
         [
           'name' =>'gestione-ricette',
           'name2' =>'new'
         ]
-      );
+      )->middleware(['auth']);
 
-      /*Route::get('/{name}/{id}/{name2}', 'HomeController@index')->name('home')
-      ->where(
-        [
-          'name' =>'gestione-ricette',
-          'name2' =>'edit',
-          'id' => '[0-9]+'
-        ]
-      );*/
-  }
+}
       
 
 // Ingredienti

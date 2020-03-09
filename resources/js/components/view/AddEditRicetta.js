@@ -70,6 +70,7 @@ export default class AddEditRicetta extends Component {
 
         this._handleCloseModal = this._handleCloseModal.bind(this);
         this._handleShowModal = this._handleShowModal.bind(this);
+        this._handleOnSubmit = this._handleOnSubmit.bind(this);
     }
 
     componentDidMount(){       
@@ -93,23 +94,19 @@ export default class AddEditRicetta extends Component {
         };
 
         let data = this.state.data;
+        let sendData = JSON.parse(JSON.stringify(data));
 
+        sendData._token = CSRF_TOKEN;
+        
+        sendData.id_ingredienti = data.ingredienti.id;
+        sendData.quantita_ingrediente = data.ingredienti.quantita;
+        delete sendData.ingredienti;
 
-        let formData = new FormData();
-
-        Object.keys(data).map((k,id) => {
-            if(!HIDE_FIELD.includes(k)){
-                formData.append(k,data[k]);
-            }
-        });
-
-        //console.log(FormData);return;
-
-        formData.append('_token',CSRF_TOKEN);
+        //console.log(sendData);return;
 
         this.setState({loader:true});
 
-        return axios.post(url,formData,headers)
+        return axios.post(url,sendData,headers)
         .then(result => {
             console.log(result);
 
@@ -123,7 +120,7 @@ export default class AddEditRicetta extends Component {
         });
     }
 
-    _handleOnSave(){
+    _handleOnSubmit(){
         console.log("save");
         this.setRemoteStore();
     }
@@ -316,13 +313,13 @@ export default class AddEditRicetta extends Component {
                     <hr style={styleHR}/>
 
                     <div className="form-group row mb-0">                        
-                        <InputField label="Tempo Preparazione" name="tempo_preparazione" divClassName={"col-md-5 "+divClassName} className="form-control" placeholder="Tempo preparazione"
+                        <InputField label="Tempo Preparazione" name="tempo_preparazione" divClassName={"col-md-5 "+divClassName} className="form-control" placeholder="Tempo preparazione (min)"
                         helperText={this.showError('tempo_preparazione')} handleChange={this._handleChange} />
-                        <InputField label="Tempo Cottura" name="tempo_cottura" divClassName={"col-md-5 "+divClassName} className="form-control " placeholder="Tempo cottura"
+                        <InputField label="Tempo Cottura" name="tempo_cottura" divClassName={"col-md-5 "+divClassName} className="form-control " placeholder="Tempo cottura (min)"
                         helperText={this.showError('tempo_cottura')} handleChange={this._handleChange} />
                         <InputField label="Porzioni" name="porzioni" divClassName={"col-md-5 "+divClassName} className="form-control " placeholder="Porzioni"
                         helperText={this.showError('porzioni')} handleChange={this._handleChange} />
-                        <InputField label="Calorie" name="calorie" divClassName={"col-md-5 "+divClassName} className="form-control " placeholder="Calorie"
+                        <InputField label="Calorie" name="calorie" divClassName={"col-md-5 "+divClassName} className="form-control " placeholder="Kcal"
                         helperText={this.showError('calorie')} handleChange={this._handleChange} />
                     </div>
                     
@@ -400,7 +397,7 @@ export default class AddEditRicetta extends Component {
                             />
                         </div>
 
-                        <div className="ml-4">
+                        <div className="ml-3">
                             <ul>
                                 {
                                     data.ingredienti.id.map((id,key) => {
@@ -415,7 +412,7 @@ export default class AddEditRicetta extends Component {
                                                 name={"ingrediente_"+key}
                                                 value={quantita }
                                                 placeholder='quantità'
-                                                divClassName="d-inline-block mx-1 px-1 col-sm-3"
+                                                divClassName="d-inline-block ml-3 mr-1 px-1 col-sm-3"
                                                 className=" form-control d-inline"
                                                 helperText={this.showError("ingredienti",key)} 
                                                 handleChange={(e) => this._handleChange(e,key)}
@@ -473,7 +470,7 @@ export default class AddEditRicetta extends Component {
                         <AddButton
                             className=""
                             disabled={!this.state.checked}
-                            //onClick={this._handleOnRegister}
+                            onClick={this._handleOnSubmit}
                         >
                             INVIA RICETTA
                             <img className={"loader-2"+(this.state.loader==true?' d-inline-block':'')} src="../img/loader_2.gif"></img>

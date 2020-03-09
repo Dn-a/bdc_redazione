@@ -188,6 +188,7 @@ export default class IngredienteModal extends Component {
 
                     <div className="form-group">
                         <InputField name="titolo" divClassName={divClassName} className="form-control" label="Titolo"
+                        placeholder="max 50 caratteri"
                         helperText={this.showError('titolo')} handleChange={this._handleChange} />
                         <InputField name="calorie" divClassName={divClassName} className="form-control" label="Calorie (kcal)"
                         helperText={this.showError('calorie')} handleChange={this._handleChange} />

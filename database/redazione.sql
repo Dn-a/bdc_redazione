@@ -7964,6 +7964,25 @@ REPLACE INTO `comuni` (`id`, `nome`, `prov`, `regione`) VALUES
 	(7914, 'Villaspeciosa', 'SU', 'Sardegna');
 /*!40000 ALTER TABLE `comuni` ENABLE KEYS */;
 
+-- Dump della struttura di tabella redazione.fasi
+CREATE TABLE IF NOT EXISTS `fasi` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `titolo` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dump dei dati della tabella redazione.fasi: ~7 rows (circa)
+/*!40000 ALTER TABLE `fasi` DISABLE KEYS */;
+REPLACE INTO `fasi` (`id`, `titolo`) VALUES
+	(1, 'bozza'),
+	(2, 'inviata'),
+	(3, 'validazione'),
+	(4, 'idonea'),
+	(5, 'scartata'),
+	(6, 'approvazione'),
+	(7, 'approvata');
+/*!40000 ALTER TABLE `fasi` ENABLE KEYS */;
+
 -- Dump della struttura di tabella redazione.ingredienti
 CREATE TABLE IF NOT EXISTS `ingredienti` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -7979,7 +7998,7 @@ CREATE TABLE IF NOT EXISTS `ingredienti` (
 REPLACE INTO `ingredienti` (`id`, `titolo`, `calorie`, `unita_misura`, `img`) VALUES
 	(1, 'spaghetti', 158.00, 'gr', 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Spaghetti_chitarra.png/1200px-Spaghetti_chitarra.png'),
 	(2, 'guanciale', 655.00, 'gr', 'https://www.intavoliamo.it/Info/media/k2/items/cache/8da476f72f06a276b1f930cdb28c21f1_XL.jpg'),
-	(3, 'tuorlo di uova', 322.00, 'gr', 'https://www.orticaweb.it/wp-content/uploads/2017/09/TuorloUovo.jpg'),
+	(3, 'tuorlo d\'uovo', 322.00, 'gr', 'https://www.orticaweb.it/wp-content/uploads/2017/09/TuorloUovo.jpg'),
 	(4, 'pecorino romano', 387.00, 'gr', 'https://www.volpetti.com/wp-content/uploads/2018/04/12-pecorino-romano_001.jpg'),
 	(5, 'sale fino', 0.00, 'q.b.', 'https://www.isaporidibau.it/wp-content/uploads/2015/02/sale-600x450.jpg'),
 	(6, 'pepe nero', 251.00, 'q.b.', 'https://file.cure-naturali.it/site/image/content/18441.jpg?format=jpg'),
@@ -7992,9 +8011,9 @@ CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dump dei dati della tabella redazione.migrations: ~11 rows (circa)
+-- Dump dei dati della tabella redazione.migrations: ~12 rows (circa)
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 REPLACE INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(1, '2014_02_15_155833_create_ruoli_table', 1),
@@ -8007,7 +8026,8 @@ REPLACE INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(8, '2020_02_15_134926_create_ricette_table', 1),
 	(9, '2020_02_15_134941_create_ingredienti_table', 1),
 	(10, '2020_02_15_154911_create_verifiche_table', 1),
-	(11, '2020_02_15_155528_create_ricette_ingredienti_table', 1);
+	(11, '2020_02_15_155528_create_ricette_ingredienti_table', 1),
+	(12, '2020_03_09_010902_create_fasi_table', 2);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 -- Dump della struttura di tabella redazione.password_resets
@@ -8053,7 +8073,7 @@ CREATE TABLE IF NOT EXISTS `ricette` (
   `porzioni` int(11) NOT NULL,
   `calorie` double(8,2) NOT NULL,
   `difficolta` enum('facile','media','difficile') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'facile',
-  `stato` enum('bozza','inviata','validazione','idonea','scartata','approvazione','approvata') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'bozza',
+  `id_fase` int(10) unsigned NOT NULL DEFAULT '1',
   `id_autore` int(10) unsigned NOT NULL,
   `id_tipologia` int(10) unsigned NOT NULL,
   `note` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -8062,14 +8082,16 @@ CREATE TABLE IF NOT EXISTS `ricette` (
   PRIMARY KEY (`id`),
   KEY `ricette_id_autore_foreign` (`id_autore`),
   KEY `ricette_id_tipologia_foreign` (`id_tipologia`),
+  KEY `ricette_id_fase_foreign` (`id_fase`),
   CONSTRAINT `ricette_id_autore_foreign` FOREIGN KEY (`id_autore`) REFERENCES `autori` (`id`),
+  CONSTRAINT `ricette_id_fase_foreign` FOREIGN KEY (`id_fase`) REFERENCES `fasi` (`id`),
   CONSTRAINT `ricette_id_tipologia_foreign` FOREIGN KEY (`id_tipologia`) REFERENCES `tipologie` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dump dei dati della tabella redazione.ricette: ~0 rows (circa)
+-- Dump dei dati della tabella redazione.ricette: ~1 rows (circa)
 /*!40000 ALTER TABLE `ricette` DISABLE KEYS */;
-REPLACE INTO `ricette` (`id`, `titolo`, `tempo_preparazione`, `tempo_cottura`, `intro`, `modalita_preparazione`, `porzioni`, `calorie`, `difficolta`, `stato`, `id_autore`, `id_tipologia`, `note`, `img`, `data_creazione`) VALUES
-	(1, 'Spaghetti alla carbonara', 15, 10, 'Gli spaghetti alla carbonara, o più semplicemente <strong>la Carbonara</strong> è uno dei primi piatti più amati della cucina italiana. Nonostante la sua giovane età la carbonara è considerata un classico della cucina romana.', 'Per preparare gli spaghetti alla carbonara cominciate mettendo sul fuoco una pentola con l’acqua salata per cuocere la pasta. Nel frattempo eliminate la cotenna dal guanciale 1 e tagliatelo prima a fette e poi a striscioline spesse circa 1cm 2. La cotenna avanzata potrà essere riutilizzata per insaporire altre preparazioni. Versate i pezzetti in una padella antiaderente 3 e rosolate per circa 15 minuti a fiamma media, fate attenzione a non bruciarlo altrimenti rilascerà un aroma troppo forte.', 4, 680.00, 'facile', 'approvata', 8, 1, '', 'https://images.lacucinaitaliana.it/gallery/82287/Big/f80628f9-ec45-4ac9-8963-e54d9775ddf1.jpg', '2020-03-04 02:24:14');
+REPLACE INTO `ricette` (`id`, `titolo`, `tempo_preparazione`, `tempo_cottura`, `intro`, `modalita_preparazione`, `porzioni`, `calorie`, `difficolta`, `id_fase`, `id_autore`, `id_tipologia`, `note`, `img`, `data_creazione`) VALUES
+	(2, 'Carbonara', 12, 12, 'cioacioa', 'aaladna', 4, 2345.00, 'facile', 7, 8, 5, 'xds', 'https://images.lacucinaitaliana.it/gallery/82287/Big/f80628f9-ec45-4ac9-8963-e54d9775ddf1.jpg', '2020-03-09 02:26:12');
 /*!40000 ALTER TABLE `ricette` ENABLE KEYS */;
 
 -- Dump della struttura di tabella redazione.ricette_ingredienti
@@ -8142,8 +8164,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dump dei dati della tabella redazione.users: ~3 rows (circa)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 REPLACE INTO `users` (`id`, `email`, `id_ruolo`, `password`, `email_verified_at`, `remember_token`, `created_at`, `updated_at`) VALUES
-	(9, 'antonino.dinatale@email.com', 3, '$2y$10$LrLJ8qEkCG4Kj0n9bSww5uIU06Wlg8o8gIT1ejttu/b5GH.EpFUQW', NULL, 'Uvuif1KKennX8tRyw6xAOjmDdROEae5CK544of8xQGjmp9xOKXPg3FG23WjE', '2020-03-02 23:21:37', '2020-03-02 23:21:37'),
-	(10, 'mario.rossi@email.com', 1, '$2y$10$Vjb7yyV9yWlvWqcBFN5W2O187cY3TOFRmForU.Nz55brbXSgGpzbi', NULL, '4YMEq0CwASVCHuTfu7HbH3jTziaXNw88AOO7bCgJJWT9wGG5JPbFEOjAhlNB', '2020-03-03 23:17:37', '2020-03-03 23:17:37'),
+	(9, 'antonino.dinatale@email.com', 3, '$2y$10$LrLJ8qEkCG4Kj0n9bSww5uIU06Wlg8o8gIT1ejttu/b5GH.EpFUQW', NULL, 'LNYhJKaxAql423TEOGSE13tNTyFYCFPzyNKnkSOqpGX5YHJjKMmlRKHqeq2Q', '2020-03-02 23:21:37', '2020-03-02 23:21:37'),
+	(10, 'mario.rossi@email.com', 1, '$2y$10$Vjb7yyV9yWlvWqcBFN5W2O187cY3TOFRmForU.Nz55brbXSgGpzbi', NULL, 'XQgQZgFoo13YJ8nnjSjFUXNza6gZbPyBLVY3rM5nynNFw4QAfqlVE1r3op7e', '2020-03-03 23:17:37', '2020-03-03 23:17:37'),
 	(12, 'franco.sole@email.com', 2, '$2y$10$igh.Rmd0x5l8ofr1x/WfQOhWD6LuvSSLU10NahGEqqSBrGx6qSeC6', NULL, NULL, '2020-03-05 00:00:20', '2020-03-05 00:00:20');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
@@ -8152,12 +8174,14 @@ CREATE TABLE IF NOT EXISTS `verifiche` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_ricetta` int(10) unsigned NOT NULL,
   `id_redattore` int(10) unsigned NOT NULL,
-  `stato` enum('scartata','idonea','approvata') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'scartata',
+  `id_fase` int(10) unsigned NOT NULL DEFAULT '3',
   `data_creazione` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `data_approvazione` timestamp NOT NULL,
   PRIMARY KEY (`id`),
   KEY `verifiche_id_ricetta_foreign` (`id_ricetta`),
   KEY `verifiche_id_redattore_foreign` (`id_redattore`),
+  KEY `verifiche_id_fase_foreign` (`id_fase`),
+  CONSTRAINT `verifiche_id_fase_foreign` FOREIGN KEY (`id_fase`) REFERENCES `fasi` (`id`),
   CONSTRAINT `verifiche_id_redattore_foreign` FOREIGN KEY (`id_redattore`) REFERENCES `redattori` (`id`),
   CONSTRAINT `verifiche_id_ricetta_foreign` FOREIGN KEY (`id_ricetta`) REFERENCES `ricette` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
