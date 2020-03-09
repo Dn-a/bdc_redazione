@@ -50,6 +50,10 @@ class RicettaResource extends JsonResource
             $ingredienti = $item->ingredienti;
             $item['ingredienti'] = $ingredienti;
         }
+        if(in_array('fase',$fields)){
+            $fase = $item->fase->titolo;
+            $item['fase'] = $fase;
+        }
 
         $array = [];
         foreach($this->withFields AS $value){

@@ -30,4 +30,9 @@ class Ricetta extends Model
         return $this->belongsToMany('App\Ingrediente','ricette_ingredienti','id_ricetta','id_ingrediente');
     }
 
+    public function fase()
+	{
+        return $this->belongsTo('App\Fase','id_fase');
+    }
+
 }

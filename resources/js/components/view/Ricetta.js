@@ -13,6 +13,7 @@ const FIELDS = [
     {titolo: 'ingredienti', type: [] },
     {titolo: 'calorie', type:0},
     {titolo: 'difficolta', type:0},
+    {titolo: 'fase', type:''},
     {titolo: 'autore', type:''},
     {titolo: 'tipologia', type:''},
     {titolo: 'img', type:''},
@@ -197,7 +198,7 @@ export default class Ricetta extends Component {
                                     </div>
                                 </div>
                                 
-                                {user.ruolo!='autore' && user.stato!='approvata' &&
+                                {user.ruolo!='autore' && data.fase!='approvata' &&
                                     <Validazione className="my-3"/>
                                 }
 
@@ -247,24 +248,24 @@ const Impostazioni = (props) => {
                 <Fragment>
                     <EditButton className="w-100"
                     onClick={(a) => console.log(a)}
-                    disabled={data.stato!='bozza' || data.stato!='inviata'}
+                    disabled={data.fase!='bozza' || data.fase!='inviata'}
                     >
                     <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
                     &nbsp;Modifica</EditButton>
 
-                    {(data.stato!='bozza' || data.stato!='inviata') && <div className="error-div">non puoi effettuare modifiche</div>}
+                    {(data.fase!='bozza' || data.fase!='inviata') && <div className="error-div">non puoi effettuare modifiche</div>}
                 </Fragment>
             }
             
             <div className="my-4" >
-                <div><strong>Stato</strong></div>
+                <div><strong>Fase</strong></div>
                 <hr className="mt-1 mb-4" />
                 <div className="row">
                     {
                         stati.map((st,key) => {
                             return(
                                 <div key={key} 
-                                    className={st+" stato col-md-6 mb-2 text-center "+(st==data.stato?'active':'')}
+                                    className={st+" stato col-md-6 mb-2 text-center "+(st==data.fase?'active':'')}
                                 >
                                     <div className=" p-2">{st}</div>
                                 </div>

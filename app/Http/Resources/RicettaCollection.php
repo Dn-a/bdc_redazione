@@ -64,6 +64,10 @@ class RicettaCollection extends ResourceCollection
             $tipologia = $item->tipologia->titolo;
             $item['tipologia'] = $tipologia;
         }
+        if(in_array('fase',$fields)){
+            $fase = $item->fase->titolo;
+            $item['fase'] = $fase;
+        }
 
         if(empty($this->withFields)) return $item;
 

@@ -25,7 +25,7 @@ const COLUMNS = [
             )
         }
     },
-    { title: 'Stato', field: 'stato', style: {textTransform:'capitalize'}},
+    { title: 'Fase', field: 'fase', style: {textTransform:'capitalize'}},
     { title: 'Creato il', field:'data_creazione', render: cell => new Date(cell).toLocaleDateString("it-IT",{year:"numeric",month:"2-digit", day:"2-digit"})},
   ].map((a) => { if(a!=null) return a; return false; } );;
 

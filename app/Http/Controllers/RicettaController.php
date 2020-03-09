@@ -25,7 +25,10 @@ class RicettaController extends Controller
         $ricette = Ricetta::
             where(function($query) use ($blog,$user) {
                 if($blog || !Auth::check())                      
-                    $query->where('stato', 'approvata');
+                    //$query->where('stato', 'approvata');
+                    $query->whereHas('fase', function($query) {
+                        $query->where('titolo','approvata');
+                    });
                 if(Auth::check() && $user->ruolo=='autore' )
                     $query->where('id_autore', $user->autore->id);
             })
@@ -48,13 +51,14 @@ class RicettaController extends Controller
         $ricette = Ricetta::
         where(function($query) use ($blog) {
             if($blog || !Auth::check())                        
-                $query->where('stato', 'approvata');
+                $query->whereHas('fase', function($query) {
+                    $query->where('titolo','approvata');
+                });
         })
         ->where(function($query) use($arr) {
             $query->where('titolo','like', $arr[0].'%')
             ->orWhere('calorie','like', $arr[0].'%')
-            ->orWhere('difficolta','like', $arr[0].'%')            
-            ->orWhere('stato','like', $arr[0].'%')            
+            ->orWhere('difficolta','like', $arr[0].'%')    
             ->orWhereHas('autore',function($query) use($arr) {
                 $query->where('nome',$arr[0])
                 ->orWhere('cognome',$arr[0])
@@ -88,7 +92,7 @@ class RicettaController extends Controller
 
         if(!$blog)
             $moreFields =  array_merge($moreFields,
-                ['ingredienti', 'modalita_preparazione','porzioni','autore', 'tipologia','data_creazione','stato']
+                ['ingredienti', 'modalita_preparazione','porzioni','autore', 'tipologia','data_creazione','fase']
             );
         
         return $moreFields;

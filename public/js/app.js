@@ -82166,6 +82166,9 @@ var FIELDS = [{
   titolo: 'difficolta',
   type: 0
 }, {
+  titolo: 'fase',
+  type: ''
+}, {
   titolo: 'autore',
   type: ''
 }, {
@@ -82348,7 +82351,7 @@ function (_Component) {
         className: "title"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "cottura")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.tempo_cottura, " min")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, data.ingredienti.map(function (i, k) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, i);
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, data.modalita_preparazione))), user.ruolo != 'autore' && user.stato != 'approvata' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Validazione, {
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, data.modalita_preparazione))), user.ruolo != 'autore' && data.fase != 'approvata' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Validazione, {
         className: "my-3"
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("aside", {
         className: "col-md-4 "
@@ -82388,22 +82391,22 @@ var Impostazioni = function Impostazioni(props) {
     onClick: function onClick(a) {
       return console.log(a);
     },
-    disabled: data.stato != 'bozza' || data.stato != 'inviata'
+    disabled: data.fase != 'bozza' || data.fase != 'inviata'
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
     className: "fa fa-pencil-square-o",
     "aria-hidden": "true"
-  }), "\xA0Modifica"), (data.stato != 'bozza' || data.stato != 'inviata') && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }), "\xA0Modifica"), (data.fase != 'bozza' || data.fase != 'inviata') && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "error-div"
   }, "non puoi effettuare modifiche")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "my-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Stato")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Fase")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
     className: "mt-1 mb-4"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row"
   }, stati.map(function (st, key) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       key: key,
-      className: st + " stato col-md-6 mb-2 text-center " + (st == data.stato ? 'active' : '')
+      className: st + " stato col-md-6 mb-2 text-center " + (st == data.fase ? 'active' : '')
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: " p-2"
     }, st));
@@ -82509,8 +82512,8 @@ var COLUMNS = [{
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Preparazione:"), " ", row.tempo_preparazione, " min"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Cottura:"), " ", row.tempo_cottura, " min"));
   }
 }, {
-  title: 'Stato',
-  field: 'stato',
+  title: 'Fase',
+  field: 'fase',
   style: {
     textTransform: 'capitalize'
   }
