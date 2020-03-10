@@ -80551,6 +80551,53 @@ function (_Component) {
 
 /***/ }),
 
+/***/ "./resources/js/components/utils/form/CheckField.js":
+/*!**********************************************************!*\
+  !*** ./resources/js/components/utils/form/CheckField.js ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var CheckField = function CheckField(_ref) {
+  var name = _ref.name,
+      placeholder = _ref.placeholder,
+      _ref$className = _ref.className,
+      className = _ref$className === void 0 ? null : _ref$className,
+      label = _ref.label,
+      required = _ref.required,
+      checked = _ref.checked,
+      defaultChecked = _ref.defaultChecked,
+      value = _ref.value,
+      handleChange = _ref.handleChange;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: className
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+    htmlFor: name + value
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "checkbox",
+    id: name + value,
+    name: name //className={'with-gap'}
+    ,
+    className: 'darken-3',
+    required: required,
+    placeholder: placeholder,
+    onChange: handleChange,
+    checked: checked,
+    defaultChecked: defaultChecked,
+    value: value
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, " ", label)));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (CheckField);
+
+/***/ }),
+
 /***/ "./resources/js/components/utils/form/DataField.js":
 /*!*********************************************************!*\
   !*** ./resources/js/components/utils/form/DataField.js ***!
@@ -80954,6 +81001,7 @@ function (_Component) {
     _this.state = {
       data: data,
       error: error,
+      fase: 'bozza',
       show: false,
       checked: false,
       loader: false,
@@ -81022,10 +81070,12 @@ function (_Component) {
               data[f].unita_misura[k] = i.unita_misura;
             });
           } else if (f == 'id_tipologia') data[f] = remoteData['tipologia'].id;else data[f] = remoteData[f];
-        }); //console.log(remoteData); console.log(data);
+        }); //console.log(remoteData); 
+        //console.log(data);
 
         _this2.setState({
-          data: data
+          data: data,
+          fase: remoteData.fase
         }, function () {
           return _this2.checked();
         });
@@ -81234,7 +81284,7 @@ function (_Component) {
         href: "",
         onClick: function onClick(e) {
           e.preventDefault();
-          history.goBack();
+          history.push(_this4.props.url + '/gestione-ricette');
         }
       }, breadcrumbs, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fa fa-angle-right",
@@ -81473,6 +81523,11 @@ function (_Component) {
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group mb-5 text-right"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_9__["Button"], {
+        className: "btn-light mr-3",
+        onClick: function onClick(e) {
+          return history.goBack();
+        }
+      }, "INDIETRO"), this.state.fase == 'bozza' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_9__["Button"], {
         className: "btn-warning mr-3",
         disabled: this.state.data.titolo == '' || this.state.error.titolo != '',
         onClick: function onClick(e) {
@@ -81487,7 +81542,7 @@ function (_Component) {
         onClick: function onClick() {
           return _this4._handleOnSubmit('inviata');
         }
-      }, "INVIA RICETTA", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+      }, this.isEdit ? 'AGGIORNA RICETTA' : 'INVIA RICETTA', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
         className: "loader-2" + (this.state.loader == true ? ' d-inline-block' : ''),
         src: this.props.url + "/img/loader_2.gif"
       }))), this.state.confirmMessage != '' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -82209,7 +82264,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var html_react_parser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! html-react-parser */ "./node_modules/html-react-parser/index.js");
 /* harmony import */ var html_react_parser__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(html_react_parser__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _utils_Button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/Button */ "./resources/js/components/utils/Button.js");
-/* harmony import */ var _Env__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../Env */ "./resources/js/components/Env.js");
+/* harmony import */ var _utils_form_CheckField__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../utils/form/CheckField */ "./resources/js/components/utils/form/CheckField.js");
+/* harmony import */ var _Env__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../Env */ "./resources/js/components/Env.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -82227,6 +82283,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -82345,11 +82402,13 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this3 = this;
+
       var data = this.state.ricetta;
       var router = this.props.router;
       var history = router.history;
       var url = router.match.url;
-      var user = Object(_Env__WEBPACK_IMPORTED_MODULE_3__["User"])();
+      var user = Object(_Env__WEBPACK_IMPORTED_MODULE_4__["User"])();
       var bread = 'home';
       if (url.includes('blog')) bread = 'blog';else if (url.includes('gestione-ricette')) bread = 'gestione ricette';
       var errorRegMessage = this.state.errorRegMessage; //console.log(url)
@@ -82370,7 +82429,8 @@ function (_Component) {
         href: "",
         onClick: function onClick(e) {
           e.preventDefault();
-          history.goBack();
+          var dir = bread != 'blog' ? '/gestione-ricette' : '';
+          history.push(_this3.props.url + dir); //history.goBack()}
         }
       }, bread, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fa fa-angle-right",
@@ -82444,14 +82504,23 @@ function (_Component) {
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "title"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "cottura")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.tempo_cottura, " min")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, data.ingredienti.map(function (i, k) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, i);
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          key: k //className="form-control"
+
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          name: 'ingrediente_' + k //className="custom-control custom-checkbox"
+          ,
+          label: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, i.quantita + '  ' + i.unita_misura + ' di ', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, " \xA0", i.titolo))
+        }));
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, data.modalita_preparazione))), user.ruolo != 'autore' && data.fase != 'approvata' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Validazione, {
         className: "my-3"
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("aside", {
         className: "col-md-4 "
       }, bread == 'gestione ricette' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Impostazioni, {
         user: user,
-        data: data
+        data: data,
+        url: this.props.url,
+        router: this.props.router
       }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ValoriNutrizionali, {
         data: data
       }))));
@@ -82475,6 +82544,8 @@ var Validazione = function Validazione(props) {
 var Impostazioni = function Impostazioni(props) {
   var data = props.data;
   var user = props.user;
+  var history = props.router.history;
+  var idRicetta = props.router.match.params.ricetta;
   var stati = ['bozza', 'inviata', 'validazione', 'idonea', 'scartata', 'approvazione', 'approvata'];
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "gestione p-4"
@@ -82483,13 +82554,13 @@ var Impostazioni = function Impostazioni(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Impostazioni")), user.ruolo == 'autore' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_2__["EditButton"], {
     className: "w-100",
     onClick: function onClick(a) {
-      return console.log(a);
+      return history.push(props.url + '/gestione-ricette/' + idRicetta + '/edit');
     },
-    disabled: data.fase != 'bozza' || data.fase != 'inviata'
+    disabled: data.fase != 'bozza' && data.fase != 'inviata'
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
     className: "fa fa-pencil-square-o",
     "aria-hidden": "true"
-  }), "\xA0Modifica"), (data.fase != 'bozza' || data.fase != 'inviata') && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }), "\xA0Modifica"), data.fase != 'bozza' && data.fase != 'inviata' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "error-div"
   }, "non puoi effettuare modifiche")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "my-4"
@@ -82801,8 +82872,8 @@ var COLUMNS = [{
 } : null, {
   title: 'Tipologia',
   field: 'tipologia',
-  style: {
-    textTransform: 'capitalize'
+  render: function render(cell, row) {
+    return row.tipologia.titolo.charAt(0).toUpperCase() + row.tipologia.titolo.slice(1);
   }
 }, {
   title: 'Difficoltà',

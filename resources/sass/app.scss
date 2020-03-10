@@ -259,10 +259,14 @@ ul{
         color:#9d9d9d;
         background:#f8f9fa;
     }
+    .inviata.active > div {
+        color: #fff;
+        background-color: #af6919;
+    }
     .approvata.active > div {
         color: #fff;
         background-color: #30a681;
-    }
+    }    
     .article .content .info {
         margin-bottom: 20px;
     }

@@ -1,6 +1,7 @@
 import React, { Component , Fragment } from 'react';
 import parse from 'html-react-parser';
 import { EditButton, ConfirmButton } from '../utils/Button';
+import CheckField from './../utils/form/CheckField';
 import {User} from './../Env';
 
 const FIELDS = [
@@ -114,7 +115,19 @@ export default class Ricetta extends Component {
                             (<article className="col-md-8 pr-4">
                         
                                 <ul className="breadcrumbs">
-                                    <li><a href="" onClick={(e)=> {e.preventDefault();history.goBack()}}>{bread} <i className="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                                    <li>
+                                        <a href="" onClick={
+                                                (e) => {
+                                                    e.preventDefault();
+                                                    let dir = bread!='blog'?'/gestione-ricette':'';
+                                                    history.push(this.props.url + dir)
+                                                    //history.goBack()}
+                                                }
+                                            }
+                                        >
+                                            {bread} <i className="fa fa-angle-right" aria-hidden="true"></i>
+                                        </a>
+                                    </li>
                                     <li>Ricetta</li>
                                 </ul>
 
@@ -187,7 +200,22 @@ export default class Ricetta extends Component {
                                     <div>
                                         <ul>
                                             {data.ingredienti.map((i,k) => {
-                                            return <li>{i}</li>  
+                                                return(
+                                                    <div key={k} 
+                                                    //className="form-control"
+                                                    >
+                                                        <CheckField 
+                                                            name={'ingrediente_'+k}
+                                                            //className="custom-control custom-checkbox"
+                                                            label={
+                                                                <Fragment>
+                                                                    {i.quantita+ '  ' + i.unita_misura + ' di '}
+                                                                    <strong> &nbsp;{i.titolo}</strong>
+                                                                </Fragment>
+                                                            }
+                                                        />
+                                                    </div>
+                                                )
                                             })}
                                         </ul>
                                     </div>
@@ -207,7 +235,7 @@ export default class Ricetta extends Component {
                         
                         <aside className="col-md-4 ">
                             {bread=='gestione ricette'?
-                                <Impostazioni user={user} data={data} />
+                                <Impostazioni user={user} data={data} url={this.props.url} router={this.props.router} />
                             :
                                 <ValoriNutrizionali data={data} />
                             }
@@ -238,8 +266,11 @@ const Impostazioni = (props) => {
     let data = props.data;
     let user = props.user;
     
-    let stati = ['bozza','inviata','validazione','idonea','scartata','approvazione','approvata'];
+    let history = props.router.history;
+    let idRicetta = props.router.match.params.ricetta;
 
+    let stati = ['bozza','inviata','validazione','idonea','scartata','approvazione','approvata'];
+    
     return(
         <div className="gestione p-4">
             <h3 className="mb-3"><strong>Impostazioni</strong></h3>
@@ -247,13 +278,13 @@ const Impostazioni = (props) => {
             {user.ruolo=='autore' &&
                 <Fragment>
                     <EditButton className="w-100"
-                    onClick={(a) => console.log(a)}
-                    disabled={data.fase!='bozza' || data.fase!='inviata'}
+                    onClick={(a) => history.push(props.url+'/gestione-ricette/'+idRicetta+'/edit')}
+                    disabled={data.fase!='bozza' && data.fase!='inviata'}
                     >
                     <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
                     &nbsp;Modifica</EditButton>
 
-                    {(data.fase!='bozza' || data.fase!='inviata') && <div className="error-div">non puoi effettuare modifiche</div>}
+                    {(data.fase!='bozza' && data.fase!='inviata') && <div className="error-div">non puoi effettuare modifiche</div>}
                 </Fragment>
             }
             

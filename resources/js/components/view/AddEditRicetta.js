@@ -58,6 +58,7 @@ export default class AddEditRicetta extends Component {
         this.state = {
             data: data,
             error: error,
+            fase:'bozza',
             show: false,
             checked: false,
             loader:false,
@@ -128,9 +129,10 @@ export default class AddEditRicetta extends Component {
                         data[f] = remoteData[f];
                 });
                                 
-                //console.log(remoteData); console.log(data);
+                //console.log(remoteData); 
+                //console.log(data);
                 
-                this.setState({data: data}, () => this.checked());
+                this.setState({data: data, fase: remoteData.fase}, () => this.checked());
 
                 return res;
 			}).catch((error) => {
@@ -366,7 +368,7 @@ export default class AddEditRicetta extends Component {
             <article className="col-md-12 constraint">
                         
                 <ul className="breadcrumbs mb-2">
-                    <li><a href="" onClick={(e)=> {e.preventDefault();history.goBack()}}>{breadcrumbs} <i className="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                    <li><a href="" onClick={(e)=> {e.preventDefault();history.push(this.props.url+'/gestione-ricette')}}>{breadcrumbs} <i className="fa fa-angle-right" aria-hidden="true"></i></a></li>
                     <li>{this.isEdit? 'modifica ricetta' : 'nuova ricetta'}</li>
                 </ul>
 
@@ -546,21 +548,31 @@ export default class AddEditRicetta extends Component {
                     </div>
                     
                     <div className="form-group mb-5 text-right">
-                        <Button
+
+                        <Button 
+                            className="btn-light mr-3"
+                            onClick={(e) => history.goBack()}
+                        >
+                            INDIETRO            
+                        </Button>
+
+                        {this.state.fase=='bozza' && 
+                            <Button
                             className="btn-warning mr-3"
                             disabled={this.state.data.titolo=='' || this.state.error.titolo!=''}
                             onClick={(e) => this._handleOnSubmit('bozza')}
-                        >
-                            {this.isEdit?'AGGIORNA BOZZA':'SALVA COME BOZZA'}
-                            <img className={"loader-2"+(this.state.loader==true?' d-inline-block':'')} src={this.props.url+"/img/loader_2.gif"}></img>
-                        </Button>
+                            >
+                                {this.isEdit?'AGGIORNA BOZZA':'SALVA COME BOZZA'}
+                                <img className={"loader-2"+(this.state.loader==true?' d-inline-block':'')} src={this.props.url+"/img/loader_2.gif"}></img>
+                            </Button>
+                        }
 
                         <AddButton
                             className=""
                             disabled={!this.state.checked}
                             onClick={() => this._handleOnSubmit('inviata')}
                         >
-                            INVIA RICETTA
+                            {this.isEdit?'AGGIORNA RICETTA':'INVIA RICETTA'}
                             <img className={"loader-2"+(this.state.loader==true?' d-inline-block':'')} src={this.props.url+"/img/loader_2.gif"}></img>
                         </AddButton>
 

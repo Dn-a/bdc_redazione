@@ -213,7 +213,7 @@ class RicettaController extends Controller
     {
         
         try{
-            //return response()->json($ricetta->id,201);exit;            
+            //return response()->json($ricetta->all(),201);exit;            
 
             if($request->fase!='bozza')
                 $request->validate([

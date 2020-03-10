@@ -13,7 +13,7 @@ const COLUMNS = [
     User().ruolo !='autore'?
         ({ title: 'Autore', field: 'autore', style: {textTransform:'capitalize'}})
     :null,
-    { title: 'Tipologia', field: 'tipologia', style: {textTransform:'capitalize'}},
+    { title: 'Tipologia', field: 'tipologia', render: (cell,row) => row.tipologia.titolo.charAt(0).toUpperCase()+row.tipologia.titolo.slice(1)},
     { title: 'Difficoltà', field: 'difficolta', style: {textTransform:'capitalize'}},
     { title: 'Tempi', field: 'tempo_cottura', render:(cell,row) => 
         {

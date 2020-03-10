@@ -12,7 +12,7 @@ class Ricetta extends Model
 
     protected $fillable = [
         'titolo', 'tempo_preparazione', 'tempo_cottura', 'intro', 'modalita_preparazione', 'porzioni','calorie',
-        'difficolta', 'stato', 'id_autore', 'id_tipologia', 'note', 'img'
+        'difficolta', 'stato', 'id_autore', 'id_tipologia', 'note', 'img', 'id_fase'
     ];
 
     public function autore()
