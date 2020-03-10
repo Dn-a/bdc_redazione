@@ -27,7 +27,7 @@ class Ricetta extends Model
 
     public function ingredienti()
 	{
-        return $this->belongsToMany('App\Ingrediente','ricette_ingredienti','id_ricetta','id_ingrediente');
+        return $this->belongsToMany('App\Ingrediente','ricette_ingredienti','id_ricetta','id_ingrediente')->withPivot('quantita');
     }
 
     public function fase()

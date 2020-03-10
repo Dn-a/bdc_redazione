@@ -23,7 +23,7 @@ const routes = [
     {path: "/blog/:ricetta", name:"Ricetta", title:'Ricetta', icon:'fa-home', Component:Ricetta},
 
     {path: "/gestione-ricette/new", name:"Nuova-Ricetta", title:'Nuova Ricetta', icon:'fa-list-ol', Component: AddEditRicetta},   
-    {path: "/gestione-ricette/:ricetta/edit", name:"Modifica-Ricetta", title:'Modifica Ricetta', icon:'fa-list-ol', Component: Ricetta},   
+    {path: "/gestione-ricette/:ricetta/edit", name:"Modifica-Ricetta", title:'Modifica Ricetta', icon:'fa-list-ol', Component: AddEditRicetta},   
 
     {path: "/gestione-ricette", name:"Ricette", title:'Gestione Ricette', icon:'fa-list-ol', Component: Ricette},   
     {path: "/gestione-ricette/:ricetta", name:"Gestione-Ricetta", title:'Gestione Ricetta', icon:'fa-list-ol', Component: Ricetta},   

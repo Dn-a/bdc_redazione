@@ -15,7 +15,7 @@ const FIELDS = [
     {titolo: 'difficolta', type:0},
     {titolo: 'fase', type:''},
     {titolo: 'autore', type:''},
-    {titolo: 'tipologia', type:''},
+    {titolo: 'tipologia', type:{}},
     {titolo: 'img', type:''},
     {titolo: 'data_creazione', type:'0000-00-00'}
 ];
@@ -136,7 +136,7 @@ export default class Ricetta extends Component {
                                         </div>
                                         <div >
                                             <div className="title"><strong>Tipologia</strong></div>
-                                            <div>{data.tipologia}</div>
+                                            <div>{data.tipologia.titolo}</div>
                                         </div>                                        
                                     </div>
                                     <div className="col-sm-4 info">

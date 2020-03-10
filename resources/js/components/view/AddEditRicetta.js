@@ -69,13 +69,24 @@ export default class AddEditRicetta extends Component {
 
         this._handleChange = this._handleChange.bind(this);
 
+        this.isEdit = false;
+        this.idRicettaEdit = -1;
+
         this._handleCloseModal = this._handleCloseModal.bind(this);
         this._handleShowModal = this._handleShowModal.bind(this);
         this._handleOnSubmit = this._handleOnSubmit.bind(this);
     }
 
-    componentDidMount(){       
-        //console.log(this.props.router.match.params.ricetta)        
+    componentDidMount(){
+        let match = this.props.router.match;
+        let id = match.params.ricetta;
+        let isEdit = match.url.includes('edit');
+        this.isEdit = isEdit;
+        this.idRicettaEdit = id;
+        //console.log(id); console.log(edit);
+
+        if(isEdit && !isNaN(id) && id!=0 ) this.getRemoteData(id);
+
     }
 
     _handleCloseModal () {
@@ -85,8 +96,55 @@ export default class AddEditRicetta extends Component {
         this.setState({show : true});
     }
 
-    setRemoteStore(type) {
+    getRemoteData($id){
 
+        let url = this.props.url+'/ricette/'+$id;
+
+        let headers = {headers: {'Accept': 'application/json'}};
+
+        //this.setState({loader:true})
+
+        return axios.get(url, headers )
+			.then(res => {
+                
+                let data = this.state.data;              
+                let error = this.state.error;              
+                let remoteData = res.data.data;
+                
+                FIELDS.map((f,key) => {
+                    if(f=='ingredienti'){
+                        //console.log(remoteData[f]);return;
+                        remoteData[f].map((i,k) => {
+                            error.ingredienti['ingrediente_'+k] = '';
+                            data[f].id[k] = i.id;
+                            data[f].titolo[k] = i.titolo;
+                            data[f].quantita[k] = i.quantita;
+                            data[f].unita_misura[k] = i.unita_misura;
+                        })
+                    }
+                    else if(f=='id_tipologia')
+                        data[f] = remoteData['tipologia'].id;
+                    else
+                        data[f] = remoteData[f];
+                });
+                                
+                //console.log(remoteData); console.log(data);
+                
+                this.setState({data: data}, () => this.checked());
+
+                return res;
+			}).catch((error) => {
+                if(error.response===undefined) return;
+                if(error.response.data!==undefined)
+                    console.log(error.response.data);
+                else
+                    console.log(error.response);
+                throw error;
+			});
+    }
+
+    setRemoteData(type) {
+        
         let url = this.props.url+'/ricette';
 
         let headers = {headers: {'Accept': 'application/json',
@@ -94,16 +152,31 @@ export default class AddEditRicetta extends Component {
             }
         };
 
-        let data = this.state.data;
-        let sendData = JSON.parse(JSON.stringify(data));
 
-        sendData._token = CSRF_TOKEN;
-        
-        sendData.fase = type=='inviata'? 'inviata':'bozza';
-        
+        let data = this.state.data;
+        let sendData = {};
+
+        FIELDS.map((f,k) => {
+            if(f=='ingredienti')
+                sendData[f] = data[f]
+            else
+                sendData[f] =  typeof data[f] === 'string' ? data[f].trim() : data[f]
+        });
+
+        //let sendData = JSON.parse(JSON.stringify(data));
+
+        sendData._token = CSRF_TOKEN;        
+        sendData.fase = type=='inviata'? 'inviata':'bozza';        
         sendData.id_ingredienti = data.ingredienti.id;
         sendData.quantita_ingrediente = data.ingredienti.quantita;
+
         delete sendData.ingredienti;
+
+
+        if(this.isEdit){
+            url += '/'+ this.idRicettaEdit;
+            sendData._method = 'put';
+        }
 
         //console.log(sendData);return;
 
@@ -133,7 +206,7 @@ export default class AddEditRicetta extends Component {
 
     _handleOnSubmit(type){
         console.log("save");
-        this.setRemoteStore(type);
+        this.setRemoteData(type);
     }
 
     _handleChange(e,id){
@@ -214,7 +287,7 @@ export default class AddEditRicetta extends Component {
         if(id!=null) 
             data.ingredienti.quantita[id] = value;
         else
-            data[field] = value.trim();
+            data[field] = value;
 
         this.state.data = data;
         this.state.error = error;
@@ -294,16 +367,16 @@ export default class AddEditRicetta extends Component {
                         
                 <ul className="breadcrumbs mb-2">
                     <li><a href="" onClick={(e)=> {e.preventDefault();history.goBack()}}>{breadcrumbs} <i className="fa fa-angle-right" aria-hidden="true"></i></a></li>
-                    <li>nuova ricetta</li>
+                    <li>{this.isEdit? 'modifica ricetta' : 'nuova ricetta'}</li>
                 </ul>
 
                 <form className="py-5 px-4 bg-light">
 
                     <div className="form-group mb-0">
                         <InputField label="Titolo" name="titolo" divClassName={divClassName} className="form-control" placeholder="max 50 caratteri"
-                        helperText={this.showError('titolo')} handleChange={this._handleChange} />
+                        value={data.titolo} helperText={this.showError('titolo')} handleChange={this._handleChange} />
                         <TextAreaField label="Breve Introduzione" name="intro" divClassName={divClassName} className="form-control" placeholder="max 255 caratteri"
-                        helperText={this.showError('intro')} handleChange={this._handleChange} />                        
+                        value={data.intro} helperText={this.showError('intro')} handleChange={this._handleChange} />                        
                     </div>
 
                     <hr style={styleHR}/>
@@ -312,12 +385,14 @@ export default class AddEditRicetta extends Component {
                         <DropDownSelect placeholder="Scegli un valore"
                         name="difficolta" className="form-control" divClassName={"col-md-5 "+divClassName} label="Difficoltà"
                         values={objFid}
-                        defaultSelected='Scegli un valore'
+                        selected={data.difficolta!='' ? data.difficolta:'Scegli un valore'}
+                        //defaultSelected='Scegli un valore'
                         handleChange={this._handleChange} />
                         <DropDownSelect placeholder="Scegli un valore"
                         name="id_tipologia" className="form-control" divClassName={"col-md-5 "+divClassName} label="Tipologia"
                         values={objFid2}
-                        defaultSelected='Scegli un valore'
+                        selected={data.id_tipologia!='' ? data.id_tipologia:'Scegli un valore'}
+                        //defaultSelected='Scegli un valore'
                         handleChange={this._handleChange} />
                     </div>
 
@@ -325,27 +400,27 @@ export default class AddEditRicetta extends Component {
 
                     <div className="form-group row mb-0">                        
                         <InputField label="Tempo Preparazione" name="tempo_preparazione" divClassName={"col-md-5 "+divClassName} className="form-control" placeholder="Tempo preparazione (min)"
-                        helperText={this.showError('tempo_preparazione')} handleChange={this._handleChange} />
+                        value={data.tempo_preparazione} helperText={this.showError('tempo_preparazione')} handleChange={this._handleChange} />
                         <InputField label="Tempo Cottura" name="tempo_cottura" divClassName={"col-md-5 "+divClassName} className="form-control " placeholder="Tempo cottura (min)"
-                        helperText={this.showError('tempo_cottura')} handleChange={this._handleChange} />
+                        value={data.tempo_cottura} helperText={this.showError('tempo_cottura')} handleChange={this._handleChange} />
                         <InputField label="Porzioni" name="porzioni" divClassName={"col-md-5 "+divClassName} className="form-control " placeholder="Porzioni"
-                        helperText={this.showError('porzioni')} handleChange={this._handleChange} />
+                        value={data.porzioni} helperText={this.showError('porzioni')} handleChange={this._handleChange} />
                         <InputField label="Calorie" name="calorie" divClassName={"col-md-5 "+divClassName} className="form-control " placeholder="Kcal"
-                        helperText={this.showError('calorie')} handleChange={this._handleChange} />
+                        value={data.calorie} helperText={this.showError('calorie')} handleChange={this._handleChange} />
                     </div>
                     
                     <hr style={styleHR}/>
 
                     <div className="form-group mb-0">                        
                         <InputField label="Link immagine" name="img" divClassName={divClassName} className="form-control " placeholder="es: https://www.images.com/image.jpg"
-                        helperText={this.showError('img')} handleChange={this._handleChange} />                       
+                        value={data.img} helperText={this.showError('img')} handleChange={this._handleChange} />                       
                     </div>
 
                     <hr style={styleHR}/>
 
                     <div className="form-group mb-5">                        
                         <TextAreaField label="Modalità preparazione" style={{height:'200px'}} name="modalita_preparazione" divClassName={divClassName} className="form-control" placeholder=""
-                        helperText={this.showError('modalita_preparazione')} handleChange={this._handleChange} />                        
+                        value={data.modalita_preparazione} helperText={this.showError('modalita_preparazione')} handleChange={this._handleChange} />                        
                     </div>
 
                     <hr style={styleHR}/>
@@ -412,16 +487,18 @@ export default class AddEditRicetta extends Component {
                             <ul>
                                 {
                                     data.ingredienti.id.map((id,key) => {
+                                        //console.log(key); return;
                                         let titolo = data.ingredienti.titolo[key];
                                         let unita = data.ingredienti.unita_misura[key];
                                         let quantita = data.ingredienti.quantita[key];
                                         let cnt = key+1;
+                                        //console.log(cnt); return;
                                         return(
                                             <li key={key} className="mb-3">
                                                 <span>{cnt}.</span>
                                                 <InputField  
                                                 name={"ingrediente_"+key}
-                                                value={quantita }
+                                                value={quantita}
                                                 placeholder='quantità'
                                                 divClassName="d-inline-block ml-3 mr-1 px-1 col-sm-3"
                                                 className=" form-control d-inline"
@@ -465,7 +542,7 @@ export default class AddEditRicetta extends Component {
 
                     <div className="form-group mb-5">                        
                         <TextAreaField label="Note" name="note" divClassName={divClassName} className="form-control" placeholder="max 255 caratteri"
-                        helperText={this.showError('note')} handleChange={this._handleChange} />                        
+                        value={data.note} helperText={this.showError('note')} handleChange={this._handleChange} />                        
                     </div>
                     
                     <div className="form-group mb-5 text-right">
@@ -474,8 +551,8 @@ export default class AddEditRicetta extends Component {
                             disabled={this.state.data.titolo=='' || this.state.error.titolo!=''}
                             onClick={(e) => this._handleOnSubmit('bozza')}
                         >
-                            SALVA COME BOZZA
-                            <img className={"loader-2"+(this.state.loader==true?' d-inline-block':'')} src="../img/loader_2.gif"></img>
+                            {this.isEdit?'AGGIORNA BOZZA':'SALVA COME BOZZA'}
+                            <img className={"loader-2"+(this.state.loader==true?' d-inline-block':'')} src={this.props.url+"/img/loader_2.gif"}></img>
                         </Button>
 
                         <AddButton
@@ -484,7 +561,7 @@ export default class AddEditRicetta extends Component {
                             onClick={() => this._handleOnSubmit('inviata')}
                         >
                             INVIA RICETTA
-                            <img className={"loader-2"+(this.state.loader==true?' d-inline-block':'')} src="../img/loader_2.gif"></img>
+                            <img className={"loader-2"+(this.state.loader==true?' d-inline-block':'')} src={this.props.url+"/img/loader_2.gif"}></img>
                         </AddButton>
 
                     </div> 

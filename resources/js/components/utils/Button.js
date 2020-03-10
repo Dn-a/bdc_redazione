@@ -1,7 +1,7 @@
 import React from "react";
 
 const Button = ({ className='',title='', onClick, children, disabled=false}) => (
-  <a title={title} className={"btn waves-effect waves-light "+className+" grey lighten-5" +(disabled?' disabled':'')} onClick={() => onClick()}>
+  <a title={title} className={"btn waves-effect waves-light "+className+" grey lighten-5" +(disabled?' disabled':'')} onClick={(e) => onClick(e)}>
     {children}
   </a>
 );

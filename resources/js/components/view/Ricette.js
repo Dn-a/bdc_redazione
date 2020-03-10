@@ -13,7 +13,7 @@ const COLUMNS = [
     User().ruolo !='autore'?
         ({ title: 'Autore', field: 'autore', style: {textTransform:'capitalize'}})
     :null,
-    { title: 'Tipologia', field: 'tipologia', style: {textTransform:'capitalize'}},
+    { title: 'Tipologia', field: 'tipologia', render: (cell,row) => row.tipologia.titolo.charAt(0).toUpperCase()+row.tipologia.titolo.slice(1)},
     { title: 'Difficoltà', field: 'difficolta', style: {textTransform:'capitalize'}},
     { title: 'Tempi', field: 'tempo_cottura', render:(cell,row) => 
         {
@@ -27,6 +27,24 @@ const COLUMNS = [
     },
     { title: 'Fase', field: 'fase', style: {textTransform:'capitalize'}},
     { title: 'Creato il', field:'data_creazione', render: cell => new Date(cell).toLocaleDateString("it-IT",{year:"numeric",month:"2-digit", day:"2-digit"})},
+    { title: 'Azioni', field:'actions', render:(cell,row,handle) => 
+        {   
+            if(row.fase=='bozza')
+                return(
+                    <Button className='btn-light' title="Modifica"
+                        onClick={ (e) => {
+                            e.stopPropagation();
+                            if(confirm("Sicuro di volerla eliminare?")){
+                               console.log("delete")
+                            }
+                        }}
+                    >
+                        <i className="fa fa-trash-o" aria-hidden="true"></i>
+
+                    </Button>
+                )
+        }
+    },
   ].map((a) => { if(a!=null) return a; return false; } );;
 
 
@@ -84,7 +102,7 @@ export default  class Ricette extends Component {
                         <SearchField showList={false} 
                         //patternList={{id:'id',fields:['titolo','cognome']}}
                         url={this.url+'/search'}
-                        //query={idPtVendita!=-1 ? 'id_pt_vendita='+idPtVendita : ''}
+                        query='only=ricette'
                         callback={this._handleSearchFieldCallback}
                         />
                     </div>
@@ -104,11 +122,16 @@ export default  class Ricette extends Component {
                             id='tb-ricette'
                             reload={this.state.reloadInfiniteTable}
                             url={this.url}
-                            //query={idPtVendita!=-1 ? 'id_pt_vendita='+idPtVendita : ''}
+                            query='only=ricette'
                             columns={COLUMNS}
                             externalRows={this.state.rows}
-                            onClick={(row) =>                                 
-                                    history.push(this.props.url+'/gestione-ricette/'+row.id)
+                            onClick={(row) => {
+                                    //console.log(row)
+                                    if(row.fase=='bozza')
+                                        history.push(this.props.url+'/gestione-ricette/'+row.id+'/edit')
+                                    else
+                                        history.push(this.props.url+'/gestione-ricette/'+row.id)
+                                }
                             }
                         />
                     </div>

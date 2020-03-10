@@ -14,7 +14,7 @@ import {URL_HOME} from '../Env';
 // - selectedList: riceve in ingresso una lista di ID dei dati visulalizzati in tabella
 // - multiSelectCallback: ritorna un set di dati inerenti le righe selezionate
 // - onClick: intercetta il click sulla singola riga
-// - onActions: metodo invocato da eventuali azioni implementate nel render del campo columns - argomenti(object)
+// - onActions: metodo invocato da eventuali azioni implementate nel render del campo columns - argomenti(object,type)
 
 export default class InfiniteTable extends Component {
 

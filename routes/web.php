@@ -26,51 +26,67 @@ if(request()->header('accept')=='application/json'){
 
 
 // browser request
-  if(request()->header('accept')!='application/json')
-   {
-      Route::get('/{name1}', 'HomeController@index')->name('home')
-      ->where('name1', '|home');
-      
-      
-      Route::get('/{name2}/{id}', 'HomeController@index')->name('home_2')
-      ->where(
-        [
-          'name2' =>'blog',
-          'id' => '[0-9]+'
-        ]
-      );
+  if(request()->header('accept')!='application/json'){
 
+    Route::get('/{name1}', 'HomeController@index')->name('home')
+    ->where('name1', '|home');      
+
+    Route::get('/{name2}/{id}', 'HomeController@index')->name('home_2')
+    ->where(
+      [
+        'name2' =>'blog',
+        'id' => '[0-9]+'
+      ]
+    );
+
+
+    // ADMIN | CAPOREDATTORE | REDATTORE
+    //
+    Route::get('/{name}/{id}', 'HomeController@index')
+    ->where(
+      [
+        'name' =>'validazioni',
+        'id' => '[0-9]+'
+      ]
+    )->middleware(['auth','ruolo:admin|caporedattore|redattore']);
+
+
+    // ADMIN | CAPOREDATTORE | REDATTORE | AUTORE
+    //
+    Route::middleware(['auth'])->group( function () {
 
       Route::get('/{name3}', 'HomeController@index')
-      ->where('name3', 'autori|redattori|gestione-ricette|ingredienti|validazioni|settings')->name('home_3')
-      ->middleware(['auth']);
-
+      ->where('name3', 'autori|redattori|gestione-ricette|ingredienti|validazioni|settings')->name('home_3');
       
-      Route::get('/{name}/{id}', 'HomeController@index')
-      ->where(
-        [
-          'name' =>'validazioni',
-          'id' => '[0-9]+'
-        ]
-      )->middleware(['auth','ruolo:admin|caporedattore|redattore']);
+        // View
+        Route::get('/{name}/{id}', 'HomeController@index')
+        ->where(
+          [
+            'name' =>'gestione-ricette|ingredienti',
+            'id' => '[0-9]+'
+          ]
+        );
 
+        // New
+        Route::get('/{name}/{name2}', 'HomeController@index')
+        ->where(
+          [
+            'name' =>'gestione-ricette',
+            'name2' =>'new'
+          ]
+        );        
 
-      Route::get('/{name}/{id}', 'HomeController@index')
-      ->where(
-        [
-          'name' =>'gestione-ricette|ingredienti',
-          'id' => '[0-9]+'
-        ]
-      )->middleware(['auth']);
-
-
-      Route::get('/{name}/{name2}', 'HomeController@index')
-      ->where(
-        [
-          'name' =>'gestione-ricette',
-          'name2' =>'new'
-        ]
-      )->middleware(['auth']);
+        // Edit
+        Route::get('/{name}/{id}/{name2}', 'HomeController@index')
+        ->where(
+          [
+            'name' => 'gestione-ricette',
+            'id' => '[0-9]+',
+            'name2' => 'edit'
+          ]
+        );
+      
+    });
 
 }
       
@@ -124,5 +140,6 @@ Route::middleware(['auth','ruolo:admin|caporedattore|redattore|autore'])->group(
 
   // Ricette
     Route::post('ricette', 'RicettaController@store');
+    Route::put('ricette/{ricetta}', 'RicettaController@update');
 
 });

@@ -43,11 +43,19 @@ class RicettaResource extends JsonResource
             $item['autore'] = $autore;
         }
         if(in_array('tipologia',$fields)){
-            $tipologia = $item->tipologia->titolo;
+            $tipologia = $item->tipologia;
             $item['tipologia'] = $tipologia;
         }
         if(in_array('ingredienti',$fields)){
             $ingredienti = $item->ingredienti;
+            for($i=0; $i < count($ingredienti); $i++)            
+            {
+                $ingredienti[$i]['quantita'] = $ingredienti[$i]['pivot']['quantita'];
+                unset(
+                    $ingredienti[$i]['pivot']
+                    //,$ingredienti[$i]['img']
+                );
+            }
             $item['ingredienti'] = $ingredienti;
         }
         if(in_array('fase',$fields)){
