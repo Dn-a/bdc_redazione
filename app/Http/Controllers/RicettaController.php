@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\RicettaCollection;
 use App\Http\Resources\RicettaResource;
 use App\Ricetta;
+use App\RicettaIngrediente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -108,35 +109,71 @@ class RicettaController extends Controller
     public function store(Request $request)
     {
         try{
-            //return response()->json($request->all(),201);exit;
-            //Validate
-            $request->validate([
-                'titolo' => 'required|string|min:1|max:50',
-                'intro' => 'required|string|max:255',
-                'modalita_preparazione' => 'required|string|max:1024',
-                'porzioni' => 'required|integer',
-                'calorie' => 'required|regex:/^\d+(\.\d{1,6})?$/',
-                'tempo_preparazione' => 'required|integer',
-                'tempo_cottura' => 'required|integer',
-                'difficolta' => 'required|string',
-                'id_tipologia' => 'required|integer',
-                'id_ingredienti' => 'required|array',
-                'id_ingredienti.*' => 'required|integer',
-                'quantita_ingrediente' => 'required|array',
-                'quantita_ingrediente.*' => 'required|integer',
-                'note' => 'string|max:255',
-                'img' => 'required|string|min:1|max:2048'
-            ]);
+            //return response()->json($request->fase=='bozza',201);exit;            
 
-            return response()->json($request->all(),201);exit;
+            if($request->fase!='bozza')
+                $request->validate([
+                    'titolo' => 'required|string|min:1|max:50',
+                    'intro' => 'required|string|max:255',
+                    'modalita_preparazione' => 'required|string|max:1024',
+                    'porzioni' => 'required|integer',
+                    'calorie' => 'required|regex:/^\d+(\.\d{1,6})?$/',
+                    'tempo_preparazione' => 'required|integer',
+                    'tempo_cottura' => 'required|integer',
+                    'difficolta' => 'required|string',
+                    'id_tipologia' => 'required|integer',
+                    'id_ingredienti' => 'required|array',
+                    'id_ingredienti.*' => 'required|integer',
+                    'quantita_ingrediente' => 'required|array',
+                    'quantita_ingrediente.*' => 'required|integer',
+                    'note' => 'string|max:255',
+                    'img' => 'required|string|min:1|max:2048'
+                ]);
+
+            //return response()->json($request->all(),201);exit;
             
             $data = $request->all();
-
-            $ingrediente = new Ricetta();
             
+            $user = Auth::user();
+
+            $arrayRicetta = [
+                'titolo' => $data['titolo'],
+                'tempo_preparazione' => $data['tempo_preparazione'],
+                'tempo_cottura' => $data['tempo_cottura'],
+                'intro' => $data['intro'],
+                'modalita_preparazione' => $data['modalita_preparazione'],
+                'porzioni' => $data['porzioni'],
+                'calorie' => $data['calorie'],
+                'difficolta' => isset($data['difficolta']) ? $data['difficolta'] : 'facile',
+                'id_tipologia' => isset($data['id_tipologia']) ? $data['id_tipologia'] : 1,
+                'note' => $data['note'],
+                'img' => $data['img'],
+                'id_autore' => $user->autore->id
+            ];
+
+            if($request->fase=='inviata')
+                $arrayRicetta['id_fase'] = 2;
+
+            $ricetta = Ricetta::create($arrayRicetta);
+            
+            $arrayIngredienti = [];
+            $cnt = count($data['id_ingredienti']);
+            for( $j=0 ; $j < $cnt; $j++ ){
+                $arrayIngredienti[$j]['id_ricetta'] = $ricetta->id;
+                $arrayIngredienti[$j]['id_ingrediente'] = $data['id_ingredienti'][$j];
+                $arrayIngredienti[$j]['quantita'] = $data['quantita_ingrediente'][$j] ? : 0;
+            }
+            
+            if( $cnt > 0 ){
+                $ri = new RicettaIngrediente();
+                $ri->insert($arrayIngredienti);
+            }
+
             //$ingrediente->fill($data)->save();                  
 
-            return response()->json(['insert' =>'Ricetta registrata!'],201);
+            $msg = $request->fase=='bozza' ? 'Bozza registrata!' : 'Ricetta inviata!';
+
+            return response()->json(['insert' => $msg],201);
 
         }catch( \Illuminate\Database\QueryException $e){
             return response()->json(['msg' => $e->getMessage() ],500);

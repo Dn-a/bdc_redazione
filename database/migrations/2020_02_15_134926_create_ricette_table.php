@@ -16,19 +16,19 @@ class CreateRicetteTable extends Migration
         Schema::create('ricette', function (Blueprint $table) {
             $table->increments('id');
             $table->string('titolo',50);
-            $table->integer('tempo_preparazione');
-            $table->integer('tempo_cottura');
-            $table->string('intro');
-            $table->string('modalita_preparazione');
-            $table->integer('porzioni');
-            $table->float('calorie');
+            $table->integer('tempo_preparazione')->nullable();
+            $table->integer('tempo_cottura')->nullable();
+            $table->string('intro')->nullable();
+            $table->string('modalita_preparazione')->nullable();
+            $table->integer('porzioni')->nullable();
+            $table->float('calorie')->nullable();
             $table->enum('difficolta',['facile','media','difficile'])->default('facile');
             //$table->enum('stato',['bozza','inviata','validazione','idonea','scartata','approvazione','approvata'])->default('bozza');
             $table->unsignedInteger('id_fase')->default(1);
             $table->unsignedInteger('id_autore');
-            $table->unsignedInteger('id_tipologia');
+            $table->unsignedInteger('id_tipologia')->default(1);
             $table->string('note')->nullable();
-            $table->string('img',2048);
+            $table->string('img',2048)->nullable();
             $table->timestamp('data_creazione')->useCurrent();
         });
 

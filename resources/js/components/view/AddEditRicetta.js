@@ -61,7 +61,8 @@ export default class AddEditRicetta extends Component {
             show: false,
             checked: false,
             loader:false,
-            errorRegMessage:''
+            errorRegMessage:'',
+            confirmMessage:''
         };
 
         this.home = URL_HOME;
@@ -84,7 +85,7 @@ export default class AddEditRicetta extends Component {
         this.setState({show : true});
     }
 
-    setRemoteStore() {
+    setRemoteStore(type) {
 
         let url = this.props.url+'/ricette';
 
@@ -98,6 +99,8 @@ export default class AddEditRicetta extends Component {
 
         sendData._token = CSRF_TOKEN;
         
+        sendData.fase = type=='inviata'? 'inviata':'bozza';
+        
         sendData.id_ingredienti = data.ingredienti.id;
         sendData.quantita_ingrediente = data.ingredienti.quantita;
         delete sendData.ingredienti;
@@ -108,21 +111,29 @@ export default class AddEditRicetta extends Component {
 
         return axios.post(url,sendData,headers)
         .then(result => {
-            console.log(result);
+            //console.log(result);
 
+            let msg = result.data.insert;
+            this.setState({ confirmMessage:msg, loader:false});
             return result;
 
         }).catch((error) => {
-          console.error(error.response);
-          if(error.response!==undefined &&  error.response.data.errors)
-            this.setState({errorRegMessage: error.response.data.errors,loader:false}); 
-          throw error;
+            console.error(error.response);
+            let msg = '';
+            if(error.response!==undefined ){
+                if(error.response.data.errors)
+                    msg = error.response.data.errors;
+                else if(error.response.data.msg)
+                    msng = error.response.data.msg;
+            } 
+            this.setState({errorRegMessage: msg, loader:false});
+            throw error;
         });
     }
 
-    _handleOnSubmit(){
+    _handleOnSubmit(type){
         console.log("save");
-        this.setRemoteStore();
+        this.setRemoteStore(type);
     }
 
     _handleChange(e,id){
@@ -460,8 +471,8 @@ export default class AddEditRicetta extends Component {
                     <div className="form-group mb-5 text-right">
                         <Button
                             className="btn-warning mr-3"
-                            disabled={!this.state.checked}
-                            //onClick={this._handleOnRegister}
+                            disabled={this.state.data.titolo=='' || this.state.error.titolo!=''}
+                            onClick={(e) => this._handleOnSubmit('bozza')}
                         >
                             SALVA COME BOZZA
                             <img className={"loader-2"+(this.state.loader==true?' d-inline-block':'')} src="../img/loader_2.gif"></img>
@@ -470,7 +481,7 @@ export default class AddEditRicetta extends Component {
                         <AddButton
                             className=""
                             disabled={!this.state.checked}
-                            onClick={this._handleOnSubmit}
+                            onClick={() => this._handleOnSubmit('inviata')}
                         >
                             INVIA RICETTA
                             <img className={"loader-2"+(this.state.loader==true?' d-inline-block':'')} src="../img/loader_2.gif"></img>
@@ -478,9 +489,9 @@ export default class AddEditRicetta extends Component {
 
                     </div> 
 
-                    {this.state.confirmedRegMessage!='' && 
+                    {this.state.confirmMessage!='' && 
                         <div className="alert alert-success" role="alert">
-                            <div>{this.state.confirmedRegMessage}</div>
+                            <div>{this.state.confirmMessage}</div>
                         </div>
                     }
 

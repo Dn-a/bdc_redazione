@@ -80957,7 +80957,8 @@ function (_Component) {
       show: false,
       checked: false,
       loader: false,
-      errorRegMessage: ''
+      errorRegMessage: '',
+      confirmMessage: ''
     };
     _this.home = _Env__WEBPACK_IMPORTED_MODULE_2__["URL_HOME"];
     _this._handleChange = _this._handleChange.bind(_assertThisInitialized(_this));
@@ -80987,7 +80988,7 @@ function (_Component) {
     }
   }, {
     key: "setRemoteStore",
-    value: function setRemoteStore() {
+    value: function setRemoteStore(type) {
       var _this2 = this;
 
       var url = this.props.url + '/ricette';
@@ -81000,6 +81001,7 @@ function (_Component) {
       var data = this.state.data;
       var sendData = JSON.parse(JSON.stringify(data));
       sendData._token = CSRF_TOKEN;
+      sendData.fase = type == 'inviata' ? 'inviata' : 'bozza';
       sendData.id_ingredienti = data.ingredienti.id;
       sendData.quantita_ingrediente = data.ingredienti.quantita;
       delete sendData.ingredienti; //console.log(sendData);return;
@@ -81008,22 +81010,36 @@ function (_Component) {
         loader: true
       });
       return axios.post(url, sendData, headers).then(function (result) {
-        console.log(result);
+        //console.log(result);
+        var msg = result.data.insert;
+
+        _this2.setState({
+          confirmMessage: msg,
+          loader: false
+        });
+
         return result;
       })["catch"](function (error) {
         console.error(error.response);
-        if (error.response !== undefined && error.response.data.errors) _this2.setState({
-          errorRegMessage: error.response.data.errors,
+        var msg = '';
+
+        if (error.response !== undefined) {
+          if (error.response.data.errors) msg = error.response.data.errors;else if (error.response.data.msg) msng = error.response.data.msg;
+        }
+
+        _this2.setState({
+          errorRegMessage: msg,
           loader: false
         });
+
         throw error;
       });
     }
   }, {
     key: "_handleOnSubmit",
-    value: function _handleOnSubmit() {
+    value: function _handleOnSubmit(type) {
       console.log("save");
-      this.setRemoteStore();
+      this.setRemoteStore(type);
     }
   }, {
     key: "_handleChange",
@@ -81384,22 +81400,26 @@ function (_Component) {
         className: "form-group mb-5 text-right"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_9__["Button"], {
         className: "btn-warning mr-3",
-        disabled: !this.state.checked //onClick={this._handleOnRegister}
-
+        disabled: this.state.data.titolo == '' || this.state.error.titolo != '',
+        onClick: function onClick(e) {
+          return _this3._handleOnSubmit('bozza');
+        }
       }, "SALVA COME BOZZA", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
         className: "loader-2" + (this.state.loader == true ? ' d-inline-block' : ''),
         src: "../img/loader_2.gif"
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_9__["AddButton"], {
         className: "",
         disabled: !this.state.checked,
-        onClick: this._handleOnSubmit
+        onClick: function onClick() {
+          return _this3._handleOnSubmit('inviata');
+        }
       }, "INVIA RICETTA", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
         className: "loader-2" + (this.state.loader == true ? ' d-inline-block' : ''),
         src: "../img/loader_2.gif"
-      }))), this.state.confirmedRegMessage != '' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }))), this.state.confirmMessage != '' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "alert alert-success",
         role: "alert"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.state.confirmedRegMessage)), _typeof(errorRegMessage) === 'object' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.state.confirmMessage)), _typeof(errorRegMessage) === 'object' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "alert alert-danger",
         role: "alert"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Attenzione!"), Object.keys(errorRegMessage).map(function (a, k1) {

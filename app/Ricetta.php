@@ -11,7 +11,7 @@ class Ricetta extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'titolo', 'tempo_cottura', 'intro', 'modalita_preparazione', 'porzioni','calorie',
+        'titolo', 'tempo_preparazione', 'tempo_cottura', 'intro', 'modalita_preparazione', 'porzioni','calorie',
         'difficolta', 'stato', 'id_autore', 'id_tipologia', 'note', 'img'
     ];
 
