@@ -25,12 +25,12 @@ const COLUMNS = [
             )
         }
     },
-    { title: 'Stato', field: 'stato', style: {textTransform:'capitalize'}},
+    { title: 'Fase', field: 'fase', style: {textTransform:'capitalize'}},
     { title: 'Creato il', field:'data_creazione', render: cell => new Date(cell).toLocaleDateString("it-IT",{year:"numeric",month:"2-digit", day:"2-digit"})},
   ].map((a) => { if(a!=null) return a; return false; } );;
 
 
-export default  class Validazioni extends Component {
+export default  class Verifiche extends Component {
 
     constructor(props){
         super(props);
@@ -91,7 +91,7 @@ export default  class Validazioni extends Component {
                         <SearchField showList={false} 
                         //patternList={{id:'id',fields:['titolo','cognome']}}
                         url={this.url+'/search'}
-                        //query={idPtVendita!=-1 ? 'id_pt_vendita='+idPtVendita : ''}
+                        query='only=verifiche'
                         callback={this._handleSearchFieldCallback}
                         />
                     </div>
@@ -107,11 +107,11 @@ export default  class Validazioni extends Component {
                             id='tb-ricette'
                             reload={this.state.reloadInfiniteTable}
                             url={this.url}
-                            //query={idPtVendita!=-1 ? 'id_pt_vendita='+idPtVendita : ''}
+                            query='only=verifiche'
                             columns={COLUMNS}
                             externalRows={this.state.rows}
                             onClick={(row) =>                                 
-                                    history.push(this.props.url+'/gestione-ricette/'+row.id)
+                                    history.push(this.props.url+'/verifiche/'+row.id)
                             }
                         />
                     </div>

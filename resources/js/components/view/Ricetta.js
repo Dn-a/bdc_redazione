@@ -35,8 +35,12 @@ export default class Ricetta extends Component {
         this.state = {
             ricetta: data,
             loader: false,
-            errorRegMessage:''
+            verificationLoader: false,
+            errorRegMessage:'',
+            validationMessage:''
         };
+
+        this.setRemoteData = this.setRemoteData.bind(this);
     }
 
     componentDidMount(){       
@@ -45,9 +49,9 @@ export default class Ricetta extends Component {
         this.getRemoteData(ricetta);
     }
 
-    getRemoteData($ricetta){
+    getRemoteData(id){
 
-        let url = this.props.url+'/ricette/'+$ricetta;
+        let url = this.props.url+'/ricette/'+id;
 
         let headers = {headers: {'Accept': 'application/json'}};
 
@@ -57,14 +61,13 @@ export default class Ricetta extends Component {
 			.then(result => {
 
                 let ricetta = this.state.ricetta;
-
                 let remoteData = result.data;
 
                 ricetta = remoteData.data; 
 
                 //console.log(remoteData);
 
-                this.setState({ ricetta:ricetta, loader:false })
+                this.setState({ ricetta: ricetta, loader:false })
 
 			}).catch((error) => {
                 if(error.response===undefined) return;
@@ -83,6 +86,50 @@ export default class Ricetta extends Component {
 			});
     }
 
+    setRemoteData(id,verifica) {
+        
+        let url = this.props.url+'/ricette/verifica/'+id;
+
+        let headers = {headers: {'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            }
+        };
+
+        let sendData = {};
+
+        sendData.fase = verifica;
+        sendData._method = 'put';
+        sendData._token = CSRF_TOKEN;
+
+        this.setState({verificationLoader:true});
+
+        //console.log(sendData);return;
+
+        return axios.post(url,sendData,headers)
+        .then(result => {
+            //console.log(result);
+
+            let ricetta = this.state.ricetta;
+
+            ricetta.fase = result.data.fase;
+            let msg = ricetta.fase=='idonea' ? 'Ricetta Validata!' : 'Ricetta Approvata!';
+            this.setState({ ricetta : ricetta , validationMessage:msg , verificationLoader : false});
+            return result;
+
+        }).catch((error) => {
+            console.error(error.response);
+            let msg = '';
+            if(error.response!==undefined ){
+                if(error.response.data.errors)
+                    msg = error.response.data.errors;
+                else if(error.response.data.msg)
+                    msng = error.response.data.msg;
+            } 
+            this.setState({errorRegMessage: msg, loader:false});
+            throw error;
+        });
+    }
+
  
     render() {
 
@@ -97,11 +144,11 @@ export default class Ricetta extends Component {
             bread = 'blog';
         else if(url.includes('gestione-ricette'))
             bread = 'gestione ricette';
+        else if(url.includes('verifiche'))
+            bread = 'verifiche';
         
         let errorRegMessage = this.state.errorRegMessage;
-
-        //console.log(url)
-
+        
         return (
             <Fragment>
                 {errorRegMessage!=''? 
@@ -119,7 +166,11 @@ export default class Ricetta extends Component {
                                         <a href="" onClick={
                                                 (e) => {
                                                     e.preventDefault();
-                                                    let dir = bread!='blog'?'/gestione-ricette':'';
+                                                    let dir = '';
+                                                    if(bread=='gestione ricette')
+                                                        dir = '/gestione-ricette';
+                                                    else if(bread=='verifiche')
+                                                        dir = '/verifiche';
                                                     history.push(this.props.url + dir)
                                                     //history.goBack()}
                                                 }
@@ -221,20 +272,32 @@ export default class Ricetta extends Component {
                                     </div>
                                     <div>
                                         <p>
-                                            {data.modalita_preparazione}
+                                            {
+                                                parse(data.modalita_preparazione)
+                                            }
                                         </p>
                                     </div>
                                 </div>
                                 
-                                {user.ruolo!='autore' && data.fase!='approvata' &&
-                                    <Validazione className="my-3"/>
+                                {(
+                                    user.ruolo=='redattore' && data.fase=='validazione' || 
+                                    user.ruolo=='caporedattore' && data.fase=='approvazione'
+                                ) 
+                                &&
+                                    <Validazione state={this.state} onClick={this.setRemoteData} user={user} url={this.props.url} className="my-3"/>
+                                }
+
+                                {this.state.validationMessage!='' && 
+                                    <div className="alert alert-success" role="alert">
+                                        <div>{this.state.validationMessage}</div>
+                                    </div>
                                 }
 
                             </article>)
                         }   
                         
                         <aside className="col-md-4 ">
-                            {bread=='gestione ricette'?
+                            {bread=='gestione ricette' || bread=='verifiche'?
                                 <Impostazioni user={user} data={data} url={this.props.url} router={this.props.router} />
                             :
                                 <ValoriNutrizionali data={data} />
@@ -249,14 +312,20 @@ export default class Ricetta extends Component {
 
 const Validazione = (props) => {
 
+    let style = {backgroundColor:'#67de25 !important'};
+
+    let fase = props.user.ruolo=='redattore' ? 'idonea' : 'approvata';
+    let classValid = props.user.ruolo=='redattore' ? 'validazione ': '';
     return(
-        <div>
+        <div >
             <ConfirmButton 
-            className={"w-100 "+props.className}
-            onClick={(a) => console.log(a)
+            //style={style}
+            className={"w-100 "+ classValid + props.className}
+            onClick={(a) => props.onClick(props.state.ricetta.id,fase)
             }
             >
-                Approva
+                { props.user.ruolo=='redattore' ? 'Valida' : 'Approva'}
+                <img className={"loader-2"+(props.state.verificationLoader==true?' d-inline-block':'')} src={props.url+"/img/loader_2.gif"}></img>
             </ConfirmButton>
         </div>
     )
@@ -269,7 +338,7 @@ const Impostazioni = (props) => {
     let history = props.router.history;
     let idRicetta = props.router.match.params.ricetta;
 
-    let stati = ['bozza','inviata','validazione','idonea','scartata','approvazione','approvata'];
+    let stati = ['inviata','validazione','idonea','scartata','approvazione','approvata'];
     
     return(
         <div className="gestione p-4">

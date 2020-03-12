@@ -12,6 +12,7 @@ class RedattoreCollection extends ResourceCollection
         'cognome',
         'matricola',
         'email',
+        'ruolo',
         'data_creazione'   
     ];
     protected $withPagination;
@@ -61,6 +62,10 @@ class RedattoreCollection extends ResourceCollection
         if(in_array('data_creazione',$fields)){
             $dataC = $item->dataCreazione();
             $item['data_creazione'] = $dataC;
+        }
+        if(in_array('ruolo',$fields)){
+            $ruolo = $item->ruolo();
+            $item['ruolo'] = $ruolo;
         }
 
         if(empty($this->withFields)) return $item;

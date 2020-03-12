@@ -6,6 +6,7 @@ use App\Http\Resources\RicettaCollection;
 use App\Http\Resources\RicettaResource;
 use App\Ricetta;
 use App\RicettaIngrediente;
+use App\Verifica;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,17 +22,29 @@ class RicettaController extends Controller
         $only = $request->input('only') ?: '';
         $blog = in_array('blog', explode('-',$only));
         $viewRicette = in_array('ricette', explode('-',$only));
+        $viewVerifiche = in_array('verifiche', explode('-',$only));
         
         $user = Auth::user();
 
         $ricette = Ricetta::
-            where(function($query) use ($blog, $user) {
+            where(function($query) use ($blog, $user, $viewVerifiche) {
                 if($blog || !Auth::check())                      
                     //$query->where('stato', 'approvata');
                     $query->whereHas('fase', function($query) {
                         $query->where('titolo','approvata');
                     });
-                if(Auth::check() && $user->ruolo=='autore' )
+                elseif($viewVerifiche && Auth::check())                    
+                    $query->whereHas('fase', function($query)  use($user) {
+                        if($user->ruolo->titolo =='redattore' )
+                            $query->where('titolo','<>','bozza');
+                        elseif($user->ruolo->titolo =='caporedattore' ){
+                            $query->where('titolo','<>','bozza');                            
+                            $query->where('titolo','<>','inviata');                            
+                            $query->where('titolo','<>','validazione');
+                        }
+                    });
+                
+                if(Auth::check() && $user->ruolo->titolo =='autore' )
                     $query->where('id_autore', $user->autore->id);
             })
             ->orderBy('data_creazione','DESC')->paginate($page);
@@ -50,13 +63,29 @@ class RicettaController extends Controller
         $only = $request->input('only') ?: '';
         $blog = in_array('blog', explode('-',$only));
         $viewRicette = in_array('ricette', explode('-',$only));
+        $viewVerifiche = in_array('verifiche', explode('-',$only));
+
+        $user = Auth::user();
 
         $ricette = Ricetta::
-        where(function($query) use ($blog) {
+        where(function($query) use ($blog, $user, $viewVerifiche) {
             if($blog || !Auth::check())                        
                 $query->whereHas('fase', function($query) {
                     $query->where('titolo','approvata');
                 });
+            elseif($viewVerifiche && Auth::check())
+                $query->whereHas('fase', function($query)  use($user) {
+                    if($user->ruolo->titolo =='redattore' )
+                        $query->where('titolo','<>','bozza');
+                    elseif($user->ruolo->titolo =='caporedattore' ){
+                        $query->where('titolo','<>','bozza');                            
+                        $query->where('titolo','<>','inviata');                            
+                        $query->where('titolo','<>','validazione');
+                    }
+                });
+            
+            if(Auth::check() && $user->ruolo->titolo =='autore' )
+                $query->where('id_autore', $user->autore->id);
         })
         ->where(function($query) use($arr) {
             $query->where('titolo','like', $arr[0].'%')
@@ -195,7 +224,15 @@ class RicettaController extends Controller
     public function show(Ricetta $ricetta)
     {   
         //print_r($ricetta);exit;
-        //return $ricetta;
+        
+        $user = Auth::user();
+        
+        if( $ricetta->id_fase=='2' && Auth::check() && $user->ruolo->titolo =='redattore' )
+            $ricetta->update(['id_fase' => 3]);
+
+        else if( $ricetta->id_fase=='4' && Auth::check() && $user->ruolo->titolo =='caporedattore' )
+            $ricetta->update(['id_fase' => 6]);
+
         return new RicettaResource(
             $ricetta, 
             $this->moreField(false,false,true) 
@@ -277,9 +314,64 @@ class RicettaController extends Controller
         }
     }
 
+    public function verifica(Request $request, Ricetta $ricetta)
+    {
+        
+        try{
+            //return response()->json($ricetta->all(),201);exit;            
+
+            $request->validate([
+                'fase' => 'required|string'
+            ]);
+
+            //return response()->json(['fase' => $request->fase],201);exit;
+                        
+            $arrayRicetta = [
+            ];
+
+            if($request->fase == 'idonea')
+                $arrayRicetta['id_fase'] = 4;
+            elseif($request->fase == 'approvata')
+                $arrayRicetta['id_fase'] = 7;
+
+            $ricetta->update($arrayRicetta);
+
+            $user = Auth::user();
+            
+            $verifica = Verifica::where('id_ricetta',$ricetta->id);
+
+            $check = $verifica->exists();
+
+            if(!$check)
+                $verifica->insert([
+                    'id_ricetta' => $ricetta->id,
+                    'id_redattore' => $user->redattore->id,
+                    'id_fase' => $arrayRicetta['id_fase']
+                ]);
+            else
+                $verifica->update([
+                    'id_fase' => $arrayRicetta['id_fase']
+                ]);
+           
+            return response()->json(['fase' => $request->fase],201);
+
+        }catch( \Illuminate\Database\QueryException $e){
+            return response()->json(['msg' => $e->getMessage() ],500);
+        }
+    }
+
     
     public function destroy(Ricetta $ricetta)
     {
-        //
+        try{
+            $ricetta->ingredienti()->detach();
+            $ricetta->delete();
+
+            return response()->json(['delete' => 'Ricetta eliminata!'],201);
+        
+        }catch( \Illuminate\Database\QueryException $e){
+            return response()->json(['msg' => $e->getMessage() ],500);
+        }
+
     }
 }

@@ -32,6 +32,10 @@ const FIELDS = [
     'img'
 ];
 
+const LOWER_CASE = [
+    'difficolta'
+]
+
 export default class AddEditRicetta extends Component {
 
     constructor(props){
@@ -112,6 +116,8 @@ export default class AddEditRicetta extends Component {
                 let error = this.state.error;              
                 let remoteData = res.data.data;
                 
+                //console.log(remoteData);
+
                 FIELDS.map((f,key) => {
                     if(f=='ingredienti'){
                         //console.log(remoteData[f]);return;
@@ -126,7 +132,7 @@ export default class AddEditRicetta extends Component {
                     else if(f=='id_tipologia')
                         data[f] = remoteData['tipologia'].id;
                     else
-                        data[f] = remoteData[f];
+                        data[f] = remoteData[f]==null?'':remoteData[f];
                 });
                                 
                 //console.log(remoteData); 
@@ -161,8 +167,11 @@ export default class AddEditRicetta extends Component {
         FIELDS.map((f,k) => {
             if(f=='ingredienti')
                 sendData[f] = data[f]
-            else
-                sendData[f] =  typeof data[f] === 'string' ? data[f].trim() : data[f]
+            else 
+                if(typeof data[f] === 'string')
+                    sendData[f] = LOWER_CASE.includes(f) ?  data[f].trim().toLowerCase() : data[f].trim();                
+                else
+                    sendData[f] = data[f]
         });
 
         //let sendData = JSON.parse(JSON.stringify(data));
@@ -212,7 +221,7 @@ export default class AddEditRicetta extends Component {
     }
 
     _handleChange(e,id){
-        let value = e.target.value.toLowerCase();
+        let value = e.target.value;
         let field = e.target.name;
 
 
@@ -314,13 +323,14 @@ export default class AddEditRicetta extends Component {
                         checked = false;
                     else                
                         Object.keys(error[key]).some((k2,id2) => {                        
-                            if(error[key][k2]!='' || data.ingredienti.quantita[id2]==0 || data.ingredienti.quantita[id2]==''){                                
+                            if(error[key][k2]!='' || data.ingredienti.quantita[id2]==0 
+                            || data.ingredienti.quantita[id2]=='' || data.ingredienti.quantita[id2]==null ){                                
                                 checked = false;
                                 return true;
                             }
                         });
                 }
-            }else if(error[key]!='' || data[key]=='')
+            }else if(error[key]!='' || data[key]=='' || data[key]==null)
                 checked = false;
         });
 
@@ -572,7 +582,7 @@ export default class AddEditRicetta extends Component {
                             disabled={!this.state.checked}
                             onClick={() => this._handleOnSubmit('inviata')}
                         >
-                            {this.isEdit?'AGGIORNA RICETTA':'INVIA RICETTA'}
+                            {this.isEdit && this.state.fase!='bozza'?'AGGIORNA RICETTA':'INVIA RICETTA'}
                             <img className={"loader-2"+(this.state.loader==true?' d-inline-block':'')} src={this.props.url+"/img/loader_2.gif"}></img>
                         </AddButton>
 

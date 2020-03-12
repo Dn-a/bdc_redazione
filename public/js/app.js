@@ -78064,7 +78064,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _view_AddEditRicetta__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./view/AddEditRicetta */ "./resources/js/components/view/AddEditRicetta.js");
 /* harmony import */ var _view_Ricetta__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./view/Ricetta */ "./resources/js/components/view/Ricetta.js");
 /* harmony import */ var _view_Ricette__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./view/Ricette */ "./resources/js/components/view/Ricette.js");
-/* harmony import */ var _view_Validazioni__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./view/Validazioni */ "./resources/js/components/view/Validazioni.js");
+/* harmony import */ var _view_Verifiche__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./view/Verifiche */ "./resources/js/components/view/Verifiche.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -78112,11 +78112,17 @@ var routes = [{
   icon: 'fa-home',
   Component: _view_Home__WEBPACK_IMPORTED_MODULE_7__["default"]
 }, {
-  path: "/validazioni",
-  name: "Validazioni",
+  path: "/verifiche",
+  name: "Verifiche",
   title: 'Validazione Ricette',
   icon: 'fa-gavel',
-  Component: _view_Validazioni__WEBPACK_IMPORTED_MODULE_13__["default"]
+  Component: _view_Verifiche__WEBPACK_IMPORTED_MODULE_13__["default"]
+}, {
+  path: "/verifiche/:ricetta",
+  name: "Verifica",
+  title: 'Validazione Ricetta',
+  icon: 'fa-gavel',
+  Component: _view_Ricetta__WEBPACK_IMPORTED_MODULE_11__["default"]
 }, {
   path: "/blog/:ricetta",
   name: "Ricetta",
@@ -78166,7 +78172,7 @@ var MainTitle = function MainTitle() {
     var path = _ref.path,
         title = _ref.title,
         icon = _ref.icon;
-    if (title == 'Home' || title == 'Ricetta') return;
+    if (title == 'Home' || title == 'Ricetta' || title == 'Verifica') return;
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
       key: key,
       exact: true,
@@ -79648,11 +79654,13 @@ var Button = function Button(_ref) {
 var ConfirmButton = function ConfirmButton(_ref2) {
   var _ref2$className = _ref2.className,
       className = _ref2$className === void 0 ? '' : _ref2$className,
+      style = _ref2.style,
       _onClick2 = _ref2.onClick,
       children = _ref2.children,
       _ref2$disabled = _ref2.disabled,
       disabled = _ref2$disabled === void 0 ? false : _ref2$disabled;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    style: style,
     className: "btn confirm btn-success waves-effect waves-light light-green darken-2 " + className + (disabled ? ' disabled' : ''),
     onClick: function onClick() {
       return _onClick2();
@@ -80190,7 +80198,8 @@ function (_Component) {
           }, value); // IMAGE
 
           var img = '';
-          if (column.img !== undefined && row['img'] !== undefined) img = row['img'];else if (column.img !== undefined && column.img != '') img = column.img; // RENDER
+          if (column.img !== undefined && row['img'] !== undefined) img = row['img'];else if (column.img !== undefined && column.img != '') img = column.img; //img = img!=null && img!='' ? img : this.props.url+'default_table.png';
+          // RENDER
 
           if (rows[0][column.field] === undefined) return;else if (column.render != undefined) value = column.render(row[column.field], row, _this10._handleActions);else value = row[column.field]; //cell
 
@@ -80846,7 +80855,7 @@ var InputField = function InputField(_ref) {
     placeholder: placeholder,
     onFocus: handleFocus,
     onChange: handleChange,
-    value: value
+    value: value != null ? value : undefined
   }), helperText, dataList != null && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("datalist", {
     id: name
   }, dataList.map(function (value, id) {
@@ -80896,7 +80905,7 @@ var TextAreaField = function TextAreaField(_ref) {
   }, label) : '', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
     type: "text",
     name: name,
-    value: value,
+    value: value != null ? value : undefined,
     required: required,
     className: className,
     style: style != undefined ? style : {
@@ -80970,6 +80979,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 var whitespace_reg_ex = /^[^\s].*/;
 var url_reg_ex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
 var FIELDS = ['titolo', 'tempo_preparazione', 'tempo_cottura', 'intro', 'modalita_preparazione', 'porzioni', 'calorie', 'difficolta', 'id_tipologia', 'ingredienti', 'note', 'img'];
+var LOWER_CASE = ['difficolta'];
 
 var AddEditRicetta =
 /*#__PURE__*/
@@ -81058,7 +81068,8 @@ function (_Component) {
       return axios.get(url, headers).then(function (res) {
         var data = _this2.state.data;
         var error = _this2.state.error;
-        var remoteData = res.data.data;
+        var remoteData = res.data.data; //console.log(remoteData);
+
         FIELDS.map(function (f, key) {
           if (f == 'ingredienti') {
             //console.log(remoteData[f]);return;
@@ -81069,7 +81080,7 @@ function (_Component) {
               data[f].quantita[k] = i.quantita;
               data[f].unita_misura[k] = i.unita_misura;
             });
-          } else if (f == 'id_tipologia') data[f] = remoteData['tipologia'].id;else data[f] = remoteData[f];
+          } else if (f == 'id_tipologia') data[f] = remoteData['tipologia'].id;else data[f] = remoteData[f] == null ? '' : remoteData[f];
         }); //console.log(remoteData); 
         //console.log(data);
 
@@ -81102,7 +81113,7 @@ function (_Component) {
       var data = this.state.data;
       var sendData = {};
       FIELDS.map(function (f, k) {
-        if (f == 'ingredienti') sendData[f] = data[f];else sendData[f] = typeof data[f] === 'string' ? data[f].trim() : data[f];
+        if (f == 'ingredienti') sendData[f] = data[f];else if (typeof data[f] === 'string') sendData[f] = LOWER_CASE.includes(f) ? data[f].trim().toLowerCase() : data[f].trim();else sendData[f] = data[f];
       }); //let sendData = JSON.parse(JSON.stringify(data));
 
       sendData._token = CSRF_TOKEN;
@@ -81155,7 +81166,7 @@ function (_Component) {
   }, {
     key: "_handleChange",
     value: function _handleChange(e, id) {
-      var value = e.target.value.toLowerCase();
+      var value = e.target.value;
       var field = e.target.name;
       var error = this.state.error;
       var data = this.state.data;
@@ -81226,13 +81237,13 @@ function (_Component) {
           if (_typeof(error[key]) === 'object') {
             var obj = Object.keys(error[key]);
             if (obj.length == 0) checked = false;else Object.keys(error[key]).some(function (k2, id2) {
-              if (error[key][k2] != '' || data.ingredienti.quantita[id2] == 0 || data.ingredienti.quantita[id2] == '') {
+              if (error[key][k2] != '' || data.ingredienti.quantita[id2] == 0 || data.ingredienti.quantita[id2] == '' || data.ingredienti.quantita[id2] == null) {
                 checked = false;
                 return true;
               }
             });
           }
-        } else if (error[key] != '' || data[key] == '') checked = false;
+        } else if (error[key] != '' || data[key] == '' || data[key] == null) checked = false;
       }); //console.log(checked);
 
       this.setState({
@@ -81542,7 +81553,7 @@ function (_Component) {
         onClick: function onClick() {
           return _this4._handleOnSubmit('inviata');
         }
-      }, this.isEdit ? 'AGGIORNA RICETTA' : 'INVIA RICETTA', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+      }, this.isEdit && this.state.fase != 'bozza' ? 'AGGIORNA RICETTA' : 'INVIA RICETTA', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
         className: "loader-2" + (this.state.loader == true ? ' d-inline-block' : ''),
         src: this.props.url + "/img/loader_2.gif"
       }))), this.state.confirmMessage != '' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -82120,6 +82131,12 @@ var COLUMNS = [{
   title: 'Matricola',
   field: 'matricola'
 }, {
+  title: 'Ruolo',
+  field: 'ruolo',
+  style: {
+    textTransform: 'capitalize'
+  }
+}, {
   title: 'Creato il',
   field: 'data_creazione',
   render: function render(cell) {
@@ -82276,9 +82293,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -82351,8 +82368,11 @@ function (_Component) {
     _this.state = {
       ricetta: data,
       loader: false,
-      errorRegMessage: ''
+      verificationLoader: false,
+      errorRegMessage: '',
+      validationMessage: ''
     };
+    _this.setRemoteData = _this.setRemoteData.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -82365,10 +82385,10 @@ function (_Component) {
     }
   }, {
     key: "getRemoteData",
-    value: function getRemoteData($ricetta) {
+    value: function getRemoteData(id) {
       var _this2 = this;
 
-      var url = this.props.url + '/ricette/' + $ricetta;
+      var url = this.props.url + '/ricette/' + id;
       var headers = {
         headers: {
           'Accept': 'application/json'
@@ -82400,9 +82420,58 @@ function (_Component) {
       });
     }
   }, {
+    key: "setRemoteData",
+    value: function setRemoteData(id, verifica) {
+      var _this3 = this;
+
+      var url = this.props.url + '/ricette/verifica/' + id;
+      var headers = {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      };
+      var sendData = {};
+      sendData.fase = verifica;
+      sendData._method = 'put';
+      sendData._token = CSRF_TOKEN;
+      this.setState({
+        verificationLoader: true
+      }); //console.log(sendData);return;
+
+      return axios.post(url, sendData, headers).then(function (result) {
+        //console.log(result);
+        var ricetta = _this3.state.ricetta;
+        ricetta.fase = result.data.fase;
+        var msg = ricetta.fase == 'idonea' ? 'Ricetta Validata!' : 'Ricetta Approvata!';
+
+        _this3.setState({
+          ricetta: ricetta,
+          validationMessage: msg,
+          verificationLoader: false
+        });
+
+        return result;
+      })["catch"](function (error) {
+        console.error(error.response);
+        var msg = '';
+
+        if (error.response !== undefined) {
+          if (error.response.data.errors) msg = error.response.data.errors;else if (error.response.data.msg) msng = error.response.data.msg;
+        }
+
+        _this3.setState({
+          errorRegMessage: msg,
+          loader: false
+        });
+
+        throw error;
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       var data = this.state.ricetta;
       var router = this.props.router;
@@ -82410,9 +82479,8 @@ function (_Component) {
       var url = router.match.url;
       var user = Object(_Env__WEBPACK_IMPORTED_MODULE_4__["User"])();
       var bread = 'home';
-      if (url.includes('blog')) bread = 'blog';else if (url.includes('gestione-ricette')) bread = 'gestione ricette';
-      var errorRegMessage = this.state.errorRegMessage; //console.log(url)
-
+      if (url.includes('blog')) bread = 'blog';else if (url.includes('gestione-ricette')) bread = 'gestione ricette';else if (url.includes('verifiche')) bread = 'verifiche';
+      var errorRegMessage = this.state.errorRegMessage;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, errorRegMessage != '' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, errorRegMessage) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row constraint article"
       }, this.state.loader ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -82429,8 +82497,9 @@ function (_Component) {
         href: "",
         onClick: function onClick(e) {
           e.preventDefault();
-          var dir = bread != 'blog' ? '/gestione-ricette' : '';
-          history.push(_this3.props.url + dir); //history.goBack()}
+          var dir = '';
+          if (bread == 'gestione ricette') dir = '/gestione-ricette';else if (bread == 'verifiche') dir = '/verifiche';
+          history.push(_this4.props.url + dir); //history.goBack()}
         }
       }, bread, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fa fa-angle-right",
@@ -82512,11 +82581,18 @@ function (_Component) {
           ,
           label: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, i.quantita + '  ' + i.unita_misura + ' di ', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, " \xA0", i.titolo))
         }));
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, data.modalita_preparazione))), user.ruolo != 'autore' && data.fase != 'approvata' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Validazione, {
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, html_react_parser__WEBPACK_IMPORTED_MODULE_1___default()(data.modalita_preparazione)))), (user.ruolo == 'redattore' && data.fase == 'validazione' || user.ruolo == 'caporedattore' && data.fase == 'approvazione') && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Validazione, {
+        state: this.state,
+        onClick: this.setRemoteData,
+        user: user,
+        url: this.props.url,
         className: "my-3"
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("aside", {
+      }), this.state.validationMessage != '' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "alert alert-success",
+        role: "alert"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.state.validationMessage))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("aside", {
         className: "col-md-4 "
-      }, bread == 'gestione ricette' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Impostazioni, {
+      }, bread == 'gestione ricette' || bread == 'verifiche' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Impostazioni, {
         user: user,
         data: data,
         url: this.props.url,
@@ -82533,12 +82609,21 @@ function (_Component) {
 
 
 var Validazione = function Validazione(props) {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_2__["ConfirmButton"], {
-    className: "w-100 " + props.className,
+  var style = {
+    backgroundColor: '#67de25 !important'
+  };
+  var fase = props.user.ruolo == 'redattore' ? 'idonea' : 'approvata';
+  var classValid = props.user.ruolo == 'redattore' ? 'validazione ' : '';
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_2__["ConfirmButton"] //style={style}
+  , {
+    className: "w-100 " + classValid + props.className,
     onClick: function onClick(a) {
-      return console.log(a);
+      return props.onClick(props.state.ricetta.id, fase);
     }
-  }, "Approva"));
+  }, props.user.ruolo == 'redattore' ? 'Valida' : 'Approva', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    className: "loader-2" + (props.state.verificationLoader == true ? ' d-inline-block' : ''),
+    src: props.url + "/img/loader_2.gif"
+  })));
 };
 
 var Impostazioni = function Impostazioni(props) {
@@ -82546,7 +82631,7 @@ var Impostazioni = function Impostazioni(props) {
   var user = props.user;
   var history = props.router.history;
   var idRicetta = props.router.match.params.ricetta;
-  var stati = ['bozza', 'inviata', 'validazione', 'idonea', 'scartata', 'approvazione', 'approvata'];
+  var stati = ['inviata', 'validazione', 'idonea', 'scartata', 'approvazione', 'approvata'];
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "gestione p-4"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
@@ -82698,12 +82783,12 @@ var COLUMNS = [{
   render: function render(cell, row, handle) {
     if (row.fase == 'bozza') return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_4__["Button"], {
       className: "btn-light",
-      title: "Modifica",
+      title: "Rimuovi Ricetta",
       onClick: function onClick(e) {
         e.stopPropagation();
 
         if (confirm("Sicuro di volerla eliminare?")) {
-          console.log("delete");
+          handle(row, 'rimuovi');
         }
       }
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
@@ -82732,7 +82817,8 @@ function (_Component) {
       rows: '',
       loader: false,
       show: false,
-      reloadInfiniteTable: 0
+      reloadInfiniteTable: 0,
+      errorRegMessage: ''
     };
     _this.url = _this.props.url + '/ricette';
     _this._handleSearchFieldCallback = _this._handleSearchFieldCallback.bind(_assertThisInitialized(_this));
@@ -82742,6 +82828,44 @@ function (_Component) {
   _createClass(Ricette, [{
     key: "componentDidMount",
     value: function componentDidMount() {//this.getRemoteData();
+    }
+  }, {
+    key: "deleteRemoteData",
+    value: function deleteRemoteData($id) {
+      var _this2 = this;
+
+      var url = this.props.url + '/ricette/' + $id;
+      var headers = {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      };
+      var sendData = {};
+      sendData._method = 'delete';
+      sendData._token = CSRF_TOKEN; //console.log(sendData);return;
+
+      return axios.post(url, sendData, headers).then(function (result) {
+        //console.log(result);
+        _this2.setState({
+          reloadInfiniteTable: ++_this2.state.reloadInfiniteTable
+        });
+
+        return result;
+      })["catch"](function (error) {
+        console.error(error.response);
+        var msg = '';
+
+        if (error.response !== undefined) {
+          if (error.response.data.errors) msg = error.response.data.errors;else if (error.response.data.msg) msng = error.response.data.msg;
+        }
+
+        _this2.setState({
+          errorRegMessage: msg
+        });
+
+        throw error;
+      });
     }
   }, {
     key: "_handleSearchFieldCallback",
@@ -82763,7 +82887,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var user = Object(_Env__WEBPACK_IMPORTED_MODULE_2__["User"])();
       var history = this.props.router.history;
@@ -82783,7 +82907,7 @@ function (_Component) {
         className: "col-md-6 text-right"
       }, user.ruolo == 'autore' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_4__["AddButton"], {
         onClick: function onClick() {
-          return history.push(_this2.props.url + '/gestione-ricette/new');
+          return history.push(_this3.props.url + '/gestione-ricette/new');
         }
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fa fa-plus-circle",
@@ -82801,7 +82925,10 @@ function (_Component) {
         externalRows: this.state.rows,
         onClick: function onClick(row) {
           //console.log(row)
-          if (row.fase == 'bozza') history.push(_this2.props.url + '/gestione-ricette/' + row.id + '/edit');else history.push(_this2.props.url + '/gestione-ricette/' + row.id);
+          if (row.fase == 'bozza') history.push(_this3.props.url + '/gestione-ricette/' + row.id + '/edit');else history.push(_this3.props.url + '/gestione-ricette/' + row.id);
+        },
+        onActions: function onActions(row, type) {
+          return _this3.deleteRemoteData(row.id);
         }
       }))));
     }
@@ -82814,16 +82941,16 @@ function (_Component) {
 
 /***/ }),
 
-/***/ "./resources/js/components/view/Validazioni.js":
-/*!*****************************************************!*\
-  !*** ./resources/js/components/view/Validazioni.js ***!
-  \*****************************************************/
+/***/ "./resources/js/components/view/Verifiche.js":
+/*!***************************************************!*\
+  !*** ./resources/js/components/view/Verifiche.js ***!
+  \***************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Validazioni; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Verifiche; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
@@ -82888,8 +83015,8 @@ var COLUMNS = [{
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Preparazione:"), " ", row.tempo_preparazione, " min"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Cottura:"), " ", row.tempo_cottura, " min"));
   }
 }, {
-  title: 'Stato',
-  field: 'stato',
+  title: 'Fase',
+  field: 'fase',
   style: {
     textTransform: 'capitalize'
   }
@@ -82909,17 +83036,17 @@ var COLUMNS = [{
 });
 ;
 
-var Validazioni =
+var Verifiche =
 /*#__PURE__*/
 function (_Component) {
-  _inherits(Validazioni, _Component);
+  _inherits(Verifiche, _Component);
 
-  function Validazioni(props) {
+  function Verifiche(props) {
     var _this;
 
-    _classCallCheck(this, Validazioni);
+    _classCallCheck(this, Verifiche);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Validazioni).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Verifiche).call(this, props));
     _this.state = {
       rows: '',
       loader: false,
@@ -82933,7 +83060,7 @@ function (_Component) {
     return _this;
   }
 
-  _createClass(Validazioni, [{
+  _createClass(Verifiche, [{
     key: "componentDidMount",
     value: function componentDidMount() {//this.getRemoteData();
     }
@@ -82984,8 +83111,8 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_SearchField__WEBPACK_IMPORTED_MODULE_3__["default"], {
         showList: false //patternList={{id:'id',fields:['titolo','cognome']}}
         ,
-        url: this.url + '/search' //query={idPtVendita!=-1 ? 'id_pt_vendita='+idPtVendita : ''}
-        ,
+        url: this.url + '/search',
+        query: "only=verifiche",
         callback: this._handleSearchFieldCallback
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-6 text-right"
@@ -82996,18 +83123,18 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_InfiniteTable__WEBPACK_IMPORTED_MODULE_5__["default"], {
         id: "tb-ricette",
         reload: this.state.reloadInfiniteTable,
-        url: this.url //query={idPtVendita!=-1 ? 'id_pt_vendita='+idPtVendita : ''}
-        ,
+        url: this.url,
+        query: "only=verifiche",
         columns: COLUMNS,
         externalRows: this.state.rows,
         onClick: function onClick(row) {
-          return history.push(_this2.props.url + '/gestione-ricette/' + row.id);
+          return history.push(_this2.props.url + '/verifiche/' + row.id);
         }
       }))));
     }
   }]);
 
-  return Validazioni;
+  return Verifiche;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
 

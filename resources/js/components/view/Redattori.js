@@ -14,6 +14,7 @@ const COLUMNS = [
     { title: 'Cognome', field: 'cognome', style: {textTransform:'capitalize'} },
     { title: 'Email', field: 'email' },
     { title: 'Matricola', field: 'matricola' },
+    { title: 'Ruolo', field: 'ruolo', style: {textTransform:'capitalize'} },
     { title: 'Creato il', field:'data_creazione', render: cell => new Date(cell).toLocaleDateString("it-IT",{year:"numeric",month:"2-digit", day:"2-digit"})},
   ];
 

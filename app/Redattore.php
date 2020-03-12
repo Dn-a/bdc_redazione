@@ -20,6 +20,12 @@ class Redattore extends Model
         return $user->email;
     }
 
+    public function ruolo()
+    {   
+        $user = User::where('id',$this->id_user)->first();
+        return $user->ruolo->titolo;
+    }
+
     public function dataCreazione()
     {   
         $user = User::where('id',$this->id_user)->first();

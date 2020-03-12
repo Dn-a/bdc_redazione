@@ -6,8 +6,8 @@ const Button = ({ className='',title='', onClick, children, disabled=false}) => 
   </a>
 );
 
-const ConfirmButton = ({ className='', onClick, children, disabled=false}) => (
-  <a className={"btn confirm btn-success waves-effect waves-light light-green darken-2 "+className +(disabled?' disabled':'')}
+const ConfirmButton = ({ className='',style, onClick, children, disabled=false}) => (
+  <a style={style} className={"btn confirm btn-success waves-effect waves-light light-green darken-2 "+className +(disabled?' disabled':'')}
     onClick={() => onClick()}>
     {children}
   </a>

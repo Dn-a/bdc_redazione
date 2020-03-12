@@ -15,11 +15,12 @@ import Autori from './view/Autori';
 import AddEditRicetta from './view/AddEditRicetta';
 import Ricetta from './view/Ricetta';
 import Ricette from './view/Ricette';
-import Validazioni from './view/Validazioni';
+import Verifiche from './view/Verifiche';
 
 const routes = [
     {path: "/", name:"Home",title:'Home', icon:'fa-home', Component:Home},
-    {path: "/validazioni", name:"Validazioni", title:'Validazione Ricette', icon:'fa-gavel', Component: Validazioni},
+    {path: "/verifiche", name:"Verifiche", title:'Validazione Ricette', icon:'fa-gavel', Component: Verifiche},
+    {path: "/verifiche/:ricetta", name:"Verifica", title:'Validazione Ricetta', icon:'fa-gavel', Component: Ricetta},
     {path: "/blog/:ricetta", name:"Ricetta", title:'Ricetta', icon:'fa-home', Component:Ricetta},
 
     {path: "/gestione-ricette/new", name:"Nuova-Ricetta", title:'Nuova Ricetta', icon:'fa-list-ol', Component: AddEditRicetta},   
@@ -37,7 +38,7 @@ const MainTitle = ()  => {
         <Switch>
             {
             routes.map(({path, title, icon},key) => {
-                if(title=='Home' || title=='Ricetta') return;
+                if(title=='Home' || title=='Ricetta' || title=='Verifica') return;
             return(
             <Route key={key} exact path={path} >
                 <div className="px-2 pl-4 mt-2 mb-5 constraint">

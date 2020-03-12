@@ -42,10 +42,10 @@ if(request()->header('accept')=='application/json'){
 
     // ADMIN | CAPOREDATTORE | REDATTORE
     //
-    Route::get('/{name}/{id}', 'HomeController@index')
+    Route::get('/{name3}/{id}', 'HomeController@index')
     ->where(
       [
-        'name' =>'validazioni',
+        'name3' =>'verifiche',
         'id' => '[0-9]+'
       ]
     )->middleware(['auth','ruolo:admin|caporedattore|redattore']);
@@ -55,34 +55,34 @@ if(request()->header('accept')=='application/json'){
     //
     Route::middleware(['auth'])->group( function () {
 
-      Route::get('/{name3}', 'HomeController@index')
-      ->where('name3', 'autori|redattori|gestione-ricette|ingredienti|validazioni|settings')->name('home_3');
+      Route::get('/{name4}', 'HomeController@index')
+      ->where('name4', 'autori|redattori|gestione-ricette|ingredienti|verifiche|settings')->name('home_3');
       
         // View
-        Route::get('/{name}/{id}', 'HomeController@index')
+        Route::get('/{name5}/{id}', 'HomeController@index')
         ->where(
           [
-            'name' =>'gestione-ricette|ingredienti',
+            'name5' =>'gestione-ricette|ingredienti',
             'id' => '[0-9]+'
           ]
         );
 
         // New
-        Route::get('/{name}/{name2}', 'HomeController@index')
+        Route::get('/{name6}/{name7}', 'HomeController@index')
         ->where(
           [
-            'name' =>'gestione-ricette',
-            'name2' =>'new'
+            'name6' =>'gestione-ricette',
+            'name7' =>'new'
           ]
         );        
 
         // Edit
-        Route::get('/{name}/{id}/{name2}', 'HomeController@index')
+        Route::get('/{name8}/{id}/{name9}', 'HomeController@index')
         ->where(
           [
-            'name' => 'gestione-ricette',
+            'name8' => 'gestione-ricette',
             'id' => '[0-9]+',
-            'name2' => 'edit'
+            'name9' => 'edit'
           ]
         );
       
@@ -129,6 +129,9 @@ Route::middleware(['auth','ruolo:admin|caporedattore|redattore'])->group( functi
     Route::get('verifiche/search/{val}', 'VerificaController@search')->name('verifiche.search');
     Route::resource('verifiche', 'VerificaController',['as' => 'verifiche']);
 
+  // Ricette
+    Route::put('ricette/verifica/{ricetta}', 'RicettaController@verifica');
+    
 });
 
 // ADMIN | CAPOREDATTORE | REDATTORE | AUTORE
@@ -140,6 +143,7 @@ Route::middleware(['auth','ruolo:admin|caporedattore|redattore|autore'])->group(
 
   // Ricette
     Route::post('ricette', 'RicettaController@store');
-    Route::put('ricette/{ricetta}', 'RicettaController@update');
+    Route::put('ricette/{ricetta}', 'RicettaController@update');    
+    Route::delete('ricette/{ricetta}', 'RicettaController@destroy');
 
 });

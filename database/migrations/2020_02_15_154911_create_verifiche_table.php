@@ -20,7 +20,7 @@ class CreateVerificheTable extends Migration
             //$table->enum('stato',['scartata','idonea','approvata'])->default('scartata');
             $table->unsignedInteger('id_fase')->default(1);
             $table->timestamp('data_creazione')->useCurrent();
-            $table->timestamp('data_approvazione');
+            $table->timestamp('data_approvazione')->nullable();
         });
 
         Schema::table('verifiche', function($table) {

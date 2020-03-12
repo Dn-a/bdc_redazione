@@ -31,11 +31,11 @@ const COLUMNS = [
         {   
             if(row.fase=='bozza')
                 return(
-                    <Button className='btn-light' title="Modifica"
+                    <Button className='btn-light' title="Rimuovi Ricetta"
                         onClick={ (e) => {
                             e.stopPropagation();
                             if(confirm("Sicuro di volerla eliminare?")){
-                               console.log("delete")
+                                handle(row,'rimuovi')
                             }
                         }}
                     >
@@ -57,7 +57,8 @@ export default  class Ricette extends Component {
             rows: '',
             loader: false,
             show:false,
-            reloadInfiniteTable:0
+            reloadInfiniteTable:0,
+            errorRegMessage:''
         };
 
         this.url = this.props.url+'/ricette';
@@ -68,6 +69,45 @@ export default  class Ricette extends Component {
 
     componentDidMount(){
         //this.getRemoteData();
+    }
+
+    deleteRemoteData($id){
+
+        let url = this.props.url+'/ricette/'+$id;
+
+        let headers = {headers: {'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            }
+        };
+
+        let sendData = {};
+
+        sendData._method = 'delete';
+        sendData._token = CSRF_TOKEN;        
+
+        //console.log(sendData);return;
+
+        return axios.post(url,sendData,headers)
+        .then(result => {
+            //console.log(result);
+
+            this.setState({ reloadInfiniteTable : (++this.state.reloadInfiniteTable)});
+
+            return result;
+
+        }).catch((error) => {
+            console.error(error.response);
+            let msg = '';
+            if(error.response!==undefined ){
+                if(error.response.data.errors)
+                    msg = error.response.data.errors;
+                else if(error.response.data.msg)
+                    msng = error.response.data.msg;
+            } 
+            this.setState({errorRegMessage: msg});
+            throw error;
+        });
+
     }
     
     
@@ -133,6 +173,7 @@ export default  class Ricette extends Component {
                                         history.push(this.props.url+'/gestione-ricette/'+row.id)
                                 }
                             }
+                            onActions={ (row,type) => this.deleteRemoteData(row.id) }
                         />
                     </div>
                 </div>

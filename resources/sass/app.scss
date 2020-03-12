@@ -263,6 +263,30 @@ ul{
         color: #fff;
         background-color: #af6919;
     }
+    .validazione.active > div{
+        color: #fff;
+        background-color: #deb825;        
+    }
+    .btn.validazione{
+        background-color: #8ade25;
+        border-color: #8ade25;
+        &:active,
+        &:focus{
+            background-color: #6eb11e !important;
+        }
+    }
+    .idonea.active > div{
+        color: #fff;
+        background-color: #67de25;        
+    }
+    .scartata.active > div{
+        color: #fff;
+        background-color: #de3f25;        
+    }
+    .approvazione.active > div {
+        color: #fff;
+        background-color: #3b96a5;
+    }
     .approvata.active > div {
         color: #fff;
         background-color: #30a681;

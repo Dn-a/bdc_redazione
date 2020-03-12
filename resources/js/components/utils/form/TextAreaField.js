@@ -8,7 +8,7 @@ const TextAreaField = ({name , value, placeholder, required, handleChange, label
     <textarea
         type = "text"
         name = {name}
-        value = {value}
+        value = {value!=null ? value : undefined}
         required = {required}
         className={className}
         style = {style!=undefined? style : ({ height : "80px" })}

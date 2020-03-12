@@ -456,10 +456,11 @@ export default class InfiniteTable extends Component {
                                                     // IMAGE
                                                     let img = '';
                                                     if(column.img !== undefined &&  row['img']!== undefined)
-                                                        img=  row['img'];
+                                                        img =  row['img'];
                                                     else if(column.img !== undefined && column.img !='')
-                                                        img= column.img;
-
+                                                        img = column.img;
+                                                    
+                                                    //img = img!=null && img!='' ? img : this.props.url+'default_table.png';
                                                     // RENDER
                                                     if(rows[0][column.field] === undefined)
                                                         return;
