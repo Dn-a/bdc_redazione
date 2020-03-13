@@ -1,6 +1,6 @@
 import React from "react";
 
-const TextAreaField = ({name , value, placeholder, required, handleChange, label, divClassName='', className='', style, helperText}) => (
+const TextAreaField = ({name , value, placeholder, required, handleChange, onMouseUp, onKeyUp, label, divClassName='', className='', style, helperText}) => (
     <div className={"input-field "+divClassName}>
     { label != null ? <label
         className=""
@@ -15,6 +15,8 @@ const TextAreaField = ({name , value, placeholder, required, handleChange, label
         autoComplete = "off"
         placeholder = {placeholder}
         onChange = {handleChange}
+        onMouseUpCapture={onMouseUp}
+        onKeyUp={onKeyUp}
     />
     {helperText}
     </div>

@@ -63,6 +63,7 @@ export default class AddEditRicetta extends Component {
             data: data,
             error: error,
             fase:'bozza',
+            selectedText: {before:'',selected:'',after:''},
             show: false,
             checked: false,
             loader:false,
@@ -80,6 +81,10 @@ export default class AddEditRicetta extends Component {
         this._handleCloseModal = this._handleCloseModal.bind(this);
         this._handleShowModal = this._handleShowModal.bind(this);
         this._handleOnSubmit = this._handleOnSubmit.bind(this);
+        this.getSelectionText = this.getSelectionText.bind(this);
+        this.addH3 = this.addH3.bind(this);
+        this.addStrong = this.addStrong.bind(this);
+        this.addP = this.addP.bind(this);
     }
 
     componentDidMount(){
@@ -197,8 +202,13 @@ export default class AddEditRicetta extends Component {
         .then(result => {
             //console.log(result);
 
-            let msg = result.data.insert;
-            this.setState({ confirmMessage:msg, loader:false});
+            if(type=='inviata' && !this.isEdit)
+                this.props.router.history.push(this.props.url+'/gestione-ricette');
+            else{
+                let msg = result.data.insert;
+                this.setState({ confirmMessage:msg, loader:false});
+            }
+
             return result;
 
         }).catch((error) => {
@@ -280,11 +290,11 @@ export default class AddEditRicetta extends Component {
             case 'modalita_preparazione':
                 if(value.length > 0 && !whitespace_reg_ex.test(value))
                     error.modalita_preparazione = INFO_ERROR['caratteri'];
-                else if(value.length > 1024)
+                else if(value.length > 2048)
                     error.modalita_preparazione = INFO_ERROR['limite_caratteri'];
                 break;
             case 'ingrediente_'+id:
-                if(isNaN(value) || (value.length > 0 && !whitespace_reg_ex.test(value)))
+                if(isNaN(value) || (value.length > 0 && !whitespace_reg_ex.test(value)) || value==0)
                     error.ingredienti['ingrediente_'+id] = INFO_ERROR['numero'];
                 break;
             case 'note':
@@ -352,6 +362,55 @@ export default class AddEditRicetta extends Component {
           );
     }
 
+
+    getSelectionText(e) {
+        let text = e.target.value;
+        let start = e.target.selectionStart;
+        let end = e.target.selectionEnd;
+
+        let size = text.length>=0 ? text.length : 0;
+        
+        let before = text.slice(0, start)
+        let selected = text.slice(start,end);
+        let after = end<size ? text.slice(end, size) : ''
+
+        let selectedText = this.state.selectedText;
+
+        selectedText.before = before;
+        selectedText.selected = selected;
+        selectedText.after = after;
+
+        this.setState({ selectedText: selectedText });        
+    }
+
+    addH3(){
+        let selectedText = this.state.selectedText;
+        let data = this.state.data;
+
+        if(selectedText.selected.length>0)        
+            data.modalita_preparazione = selectedText.before + '<h3>'+ selectedText.selected + '</h3>'+selectedText.after;
+
+        this.setState({data:data});
+    }
+    addP(){
+        let selectedText = this.state.selectedText;
+        let data = this.state.data;
+
+        if(selectedText.selected.length>0)        
+            data.modalita_preparazione = selectedText.before + '<p>'+ selectedText.selected + '</p>'+selectedText.after;
+
+        this.setState({data:data});
+    }
+    addStrong(){
+        let selectedText = this.state.selectedText;
+        let data = this.state.data;
+
+        if(selectedText.selected.length>0)        
+            data.modalita_preparazione = selectedText.before + '<strong>'+ selectedText.selected + '</strong>'+selectedText.after;
+
+        this.setState({data:data});
+    }
+
  
     render() {
 
@@ -388,7 +447,9 @@ export default class AddEditRicetta extends Component {
                         <InputField label="Titolo" name="titolo" divClassName={divClassName} className="form-control" placeholder="max 50 caratteri"
                         value={data.titolo} helperText={this.showError('titolo')} handleChange={this._handleChange} />
                         <TextAreaField label="Breve Introduzione" name="intro" divClassName={divClassName} className="form-control" placeholder="max 255 caratteri"
-                        value={data.intro} helperText={this.showError('intro')} handleChange={this._handleChange} />                        
+                        value={data.intro} helperText={this.showError('intro')} 
+                        handleChange={this._handleChange}                        
+                        /> 
                     </div>
 
                     <hr style={styleHR}/>
@@ -405,7 +466,8 @@ export default class AddEditRicetta extends Component {
                         values={objFid2}
                         selected={data.id_tipologia!='' ? data.id_tipologia:'Scegli un valore'}
                         //defaultSelected='Scegli un valore'
-                        handleChange={this._handleChange} />
+                        handleChange={this._handleChange}
+                        />
                     </div>
 
                     <hr style={styleHR}/>
@@ -430,9 +492,17 @@ export default class AddEditRicetta extends Component {
 
                     <hr style={styleHR}/>
 
-                    <div className="form-group mb-5">                        
+                    <div className="form-group mb-5">
+                        <div className="position-absolute" style={{right:'35px'}}>
+                            <a className='btn btn-link' onClick={this.addH3} ><strong>Titolo 3</strong></a>
+                            <a className='btn btn-link' onClick={this.addStrong} ><strong>Strong</strong></a>
+                            <a className='btn btn-link' onClick={this.addP} ><strong>Paragrafo</strong></a>
+                        </div>
                         <TextAreaField label="Modalità preparazione" style={{height:'200px'}} name="modalita_preparazione" divClassName={divClassName} className="form-control" placeholder=""
-                        value={data.modalita_preparazione} helperText={this.showError('modalita_preparazione')} handleChange={this._handleChange} />                        
+                        value={data.modalita_preparazione} helperText={this.showError('modalita_preparazione')} handleChange={this._handleChange} 
+                        onMouseUp = {this.getSelectionText}
+                        onKeyUp = {this.getSelectionText}
+                        />   
                     </div>
 
                     <hr style={styleHR}/>
@@ -582,7 +652,7 @@ export default class AddEditRicetta extends Component {
                             disabled={!this.state.checked}
                             onClick={() => this._handleOnSubmit('inviata')}
                         >
-                            {this.isEdit && this.state.fase!='bozza'?'AGGIORNA RICETTA':'INVIA RICETTA'}
+                            {this.isEdit && this.state.fase!='bozza'? 'AGGIORNA RICETTA' : 'INVIA RICETTA'}
                             <img className={"loader-2"+(this.state.loader==true?' d-inline-block':'')} src={this.props.url+"/img/loader_2.gif"}></img>
                         </AddButton>
 

@@ -1,8 +1,13 @@
 import React, { Component , Fragment } from 'react';
+import ReactBootstrapSlider from 'react-bootstrap-slider';
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-slider/dist/css/bootstrap-slider.css";
 
 import Blog from './Blog';
 import SearchField from '../utils/SearchField';
 import DropdownSelect from '../utils/form/DropdownSelect';
+import InputField from '../utils/form/InputField';
+import RangeField from '../utils/form/RangeField';
 
 export default class Home extends Component {
 
@@ -17,11 +22,13 @@ export default class Home extends Component {
 
  
     render() {
-       
+        
+        let difficolta = {'facile':'facile','media':'media','difficile':'difficile'};
+
         return (
 
             <Fragment>
-                <div className="slider " >                        
+                <div className="slider-blog " >                        
                     <img src={this.props.url+'/img/home.jpg'} />                        
                 </div>
                 <div className="container-fluid constraint">
@@ -35,14 +42,46 @@ export default class Home extends Component {
                     </div>
 
                     <div className="row pb-3 mb-4 px-3">
-                        <div className="col-md-2 pr-1">                            
+                        <div className="col-md-2 pr-0">                            
                             <DropdownSelect 
-                                placeholder="Categorie"
-                                defaultSelected='Categorie'
+                                placeholder="Tipologia"
+                                defaultSelected='Tipologia'
                                 values={{0:'primo'}}
                             />
                         </div>
-                        <div className="col-md-8 px-1">
+                        <div className="col-md-2 pr-0">                            
+                            <DropdownSelect 
+                                placeholder="Difficoltà"
+                                defaultSelected='Difficoltà'
+                                values={difficolta}
+                            />
+                        </div>
+                        <div className="col-md-2 pr-0">                            
+                            <InputField 
+                                className="form-control"
+                                placeholder="Tempo cottura (min)"
+                            />
+                        </div>
+                        <div className="col-md-2 pr-0">                            
+                            <InputField 
+                                className="form-control"
+                                placeholder="Kcal"
+                            />
+                        </div>
+                        <div className="col-md-2 pr-0">                            
+                            <ReactBootstrapSlider
+                            value={100}
+                            //change={this.changeValue}
+                            //slideStop={this.changeValue}
+                            step={10}
+                            max={10}
+                            min={100}
+                            //orientation="vertical"
+                            //reversed={true}
+                            //disabled="disabled" 
+                            />
+                        </div>
+                        <div className="col-md-6 px-3 mt-3">
                             <SearchField 
                                 searchClassName="w-100"
                             />                            

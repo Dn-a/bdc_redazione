@@ -1,4 +1,4 @@
-import React, { Component , Fragment } from 'react';
+import React, { Component , Fragment, useState, useEffect } from 'react';
 import parse from 'html-react-parser';
 import { EditButton, ConfirmButton } from '../utils/Button';
 import CheckField from './../utils/form/CheckField';
@@ -36,6 +36,7 @@ export default class Ricetta extends Component {
             ricetta: data,
             loader: false,
             verificationLoader: false,
+            checked : [],
             errorRegMessage:'',
             validationMessage:''
         };
@@ -62,12 +63,15 @@ export default class Ricetta extends Component {
 
                 let ricetta = this.state.ricetta;
                 let remoteData = result.data;
+                let checked = this.state.checked;
 
                 ricetta = remoteData.data; 
 
+                ricetta.ingredienti.map((i,k) => checked[k] = false)
+
                 //console.log(remoteData);
 
-                this.setState({ ricetta: ricetta, loader:false })
+                this.setState({ ricetta: ricetta, checked: checked , loader:false })
 
 			}).catch((error) => {
                 if(error.response===undefined) return;
@@ -215,7 +219,7 @@ export default class Ricetta extends Component {
                                 </div>
 
                                 <div className="content">
-                                    <div className="intro mb-3">{parse(data.intro)}</div>
+                                    <div className="intro mb-5">{parse(data.intro)}</div>
                                     <div className="image mb-4">
                                         <img src={data.img} />
                                     </div>
@@ -248,15 +252,28 @@ export default class Ricetta extends Component {
                                             </div>                                        
                                         </div>
                                     </div>
-                                    <div>
+                                    
+                                    <div className="ingredienti mb-5">
+                                        <h5><strong>Ingredienti</strong></h5>
+                                        <hr/>
                                         <ul>
                                             {data.ingredienti.map((i,k) => {
+                                                let checked = this.state.checked;                                                                
+                                                                
                                                 return(
                                                     <div key={k} 
                                                     //className="form-control"
                                                     >
                                                         <CheckField 
-                                                            name={'ingrediente_'+k}
+                                                            name={'ingrediente_'+k }
+                                                            divClassName={(checked[k]? 'checked':'') }
+                                                            className='mr-3'
+                                                            value=''
+                                                            checked={this.state.checked[k]}
+                                                            handleChange={() => {
+                                                                checked[k] = !checked[k];
+                                                                this.setState({checked: checked})
+                                                            } }
                                                             //className="custom-control custom-checkbox"
                                                             label={
                                                                 <Fragment>
@@ -270,13 +287,25 @@ export default class Ricetta extends Component {
                                             })}
                                         </ul>
                                     </div>
-                                    <div>
-                                        <p>
+                                    
+                                    <div className="body mb-5">
+                                        <div>
+                                            <h5><strong>Modalità Preparazione</strong></h5>
+                                            <hr/>
+                                        </div>                                      
                                             {
                                                 parse(data.modalita_preparazione)
                                             }
-                                        </p>
                                     </div>
+
+                                    {data.fase!='approvata' && user.ruolo!='autore' && 
+                                        <div className="body mb-3">
+                                            <div className="alert alert-secondary">
+                                                <h5><strong>Note per il redattore</strong></h5>
+                                                {data.note}
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
                                 
                                 {(
@@ -300,7 +329,13 @@ export default class Ricetta extends Component {
                             {bread=='gestione ricette' || bread=='verifiche'?
                                 <Impostazioni user={user} data={data} url={this.props.url} router={this.props.router} />
                             :
-                                <ValoriNutrizionali data={data} />
+                                <Fragment>
+
+                                    <ValoriNutrizionali data={data} />
+
+                                    <UltimeRicette history={history} url={this.props.url} data={data} />
+
+                                </Fragment>
                             }
                         </aside>
                     </div>
@@ -383,11 +418,76 @@ const Impostazioni = (props) => {
 const ValoriNutrizionali = (props) => {
     let data = props.data;
     return(
-        <div className="blog border border-dark p-4">                                
+        <div className="blog border border-dark p-4 mb-5">                                
             <h3 className="mb-3 "><strong>Valori Nutrizionali</strong></h3>        
             <div className="mb-2 info" ><i className="fa fa-cutlery" aria-hidden="true"></i> {data.porzioni} porzioni</div>
             <hr style={{borderTop: '1rem solid #333'}} />
             <div className="mb-2 info" ><i className="fa fa-free-code-camp" aria-hidden="true"></i> {data.calorie} Kcal</div>
+        </div>
+    )
+}
+
+const UltimeRicette = (props) => {
+    
+
+    const [data, setData] = useState({ricette:[]});
+
+    useEffect(() => {        
+        getRemoteData();
+    }, []);
+
+    const getRemoteData = () => {
+
+        let url = props.url+'/ricette?only=blog';
+
+        let headers = {headers: {'Accept': 'application/json'}};
+
+        return axios.get(url, headers )
+			.then(result => {
+                
+                let remoteData = result.data;
+                
+                data.ricette.push(...remoteData.data);
+                
+                //console.log(data);
+                //setData({data : data})
+
+			}).catch((error) => {
+                if(error.response===undefined) return;
+                
+                if(error.response.data!==undefined)
+                    console.log(error.response.data);
+                else
+                    console.log(error.response);
+
+                throw error;
+			});
+    }
+
+    return(
+        <div className="blog p-1 mb-3 bg-transparent ultime-ricette">                                
+            <h3 className="mb-3 "><strong>Ricette Recenti</strong></h3>        
+            <div>
+                {
+                    data.ricette.map((r,k) => {
+                        if(props.data.id==r.id) return;
+                        return(
+                            <div className="clearfix" key={k}>
+                                <div className="image float-left mb-3 mr-3">
+                                    <a href={props.url+'/blog/'+r.id} >
+                                        <img src={r.img} />
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href={props.url+'/blog/'+r.id} >{r.titolo} </a>
+                                    <div>di {r.autore}</div>
+                                </div>
+                                <hr/>
+                            </div>
+                        )
+                    })
+                }
+            </div>
         </div>
     )
 }

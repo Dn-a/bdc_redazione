@@ -217,7 +217,7 @@ ul{
         margin-right: 5px;
     }
 /*--- HOME ---*/
-    .slider {
+    .slider-blog {
         max-height: 200px;
         overflow: hidden;
         position: absolute;
@@ -225,7 +225,7 @@ ul{
         width: 100%;
         top: 0px;
     }
-    .slider img {
+    .slider-blog img {
         filter: brightness(70%) opacity(90%) grayscale(10%) contrast(110%);
         width: 100%;
     }
@@ -246,6 +246,13 @@ ul{
     .article .info > i {
         margin-right: 5px;
         font-size: 1.4em;
+    }
+    .blog .card {
+        transition-duration: 0.3s;
+        &:hover{
+            transform: translate(0,-2px);
+            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.10);
+        }
     }
     
 /*---ARTICLE---*/
@@ -311,6 +318,16 @@ ul{
         height: 45px;
         right: inherit;
         bottom: inherit;
+    }
+    .ingredienti .checked span {
+        text-decoration: line-through;
+    }
+    .ultime-ricette .image img {
+        width: 100%;
+        border-radius: 5px;
+    }
+    .ultime-ricette .image{
+        width: 75px;
     }
 /*--- FOOTER ---*/
     footer {

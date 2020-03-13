@@ -109,7 +109,7 @@ export default class IngredienteModal extends Component {
     }
 
     _handleChange(e){
-        let value = e.target.value.toLowerCase();
+        let value = e.target.value;
         let field = e.target.name;
 
 
@@ -131,6 +131,7 @@ export default class IngredienteModal extends Component {
                    error.calorie = INFO_ERROR['numero'];
                 break;
             case 'unita_misura':
+                value = value.toLowerCase();
                 if( value.length > 0 && !whitespace_reg_ex.test(value))
                     error.unita_misura = INFO_ERROR['caratteri'];
                 break;
@@ -176,6 +177,7 @@ export default class IngredienteModal extends Component {
         return(
             <AddEditModal size="md"
                 show={this.props.show}
+                url={this.props.url}
                 onHide={(a) => {this.props.onHide(a);this._resetAfterClose();}}
                 loader={this.state.loader}
                 onConfirm={this._handleOnSave}
@@ -190,7 +192,7 @@ export default class IngredienteModal extends Component {
                         <InputField name="titolo" divClassName={divClassName} className="form-control" label="Titolo"
                         placeholder="max 50 caratteri"
                         helperText={this.showError('titolo')} handleChange={this._handleChange} />
-                        <InputField name="calorie" divClassName={divClassName} className="form-control" label="Calorie (kcal)"
+                        <InputField name="calorie" divClassName={divClassName} className="form-control" label="Calorie (kcal) - x 100 grammi"
                         helperText={this.showError('calorie')} handleChange={this._handleChange} />
                     </div>
                     

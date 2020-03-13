@@ -29,7 +29,7 @@ const COLUMNS = [
     { title: 'Creato il', field:'data_creazione', render: cell => new Date(cell).toLocaleDateString("it-IT",{year:"numeric",month:"2-digit", day:"2-digit"})},
     { title: 'Azioni', field:'actions', render:(cell,row,handle) => 
         {   
-            if(row.fase=='bozza')
+            if(row.fase=='bozza' || row.fase=='inviata')
                 return(
                     <Button className='btn-light' title="Rimuovi Ricetta"
                         onClick={ (e) => {

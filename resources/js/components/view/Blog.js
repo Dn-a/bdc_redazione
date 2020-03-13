@@ -104,7 +104,7 @@ export default class Blog extends Component {
                                                     </div>
                                                     <div className="info col-sm-3 col-md-4 text-center px-1">
                                                         <i className="fa fa-clock-o" aria-hidden="true"> </i>
-                                                        &nbsp;{(rc.tempo_preparazione+rc.tempo_preparazione)} min
+                                                        &nbsp;{(rc.tempo_preparazione+rc.tempo_cottura)} min
                                                     </div>
                                                     <div className="info col-sm-6 col-md-5 text-center px-1">
                                                         <i className="fa fa-free-code-camp" aria-hidden="true"></i>

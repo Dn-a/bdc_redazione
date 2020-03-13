@@ -27,7 +27,7 @@ class RicettaController extends Controller
         $user = Auth::user();
 
         $ricette = Ricetta::
-            where(function($query) use ($blog, $user, $viewVerifiche) {
+            where(function($query) use ($blog, $user, $viewRicette, $viewVerifiche) {
                 if($blog || !Auth::check())                      
                     //$query->where('stato', 'approvata');
                     $query->whereHas('fase', function($query) {
@@ -44,7 +44,7 @@ class RicettaController extends Controller
                         }
                     });
                 
-                if(Auth::check() && $user->ruolo->titolo =='autore' )
+                if(Auth::check() && $viewRicette && $user->ruolo->titolo =='autore' )
                     $query->where('id_autore', $user->autore->id);
             })
             ->orderBy('data_creazione','DESC')->paginate($page);
@@ -129,6 +129,10 @@ class RicettaController extends Controller
         else if($viewRicette)
             $moreFields =  array_merge($moreFields,
                 ['tipologia','data_creazione','fase']
+            );
+        else if($blog)
+            $moreFields =  array_merge($moreFields,
+                ['autore']
             );
 
         if($viewRicetta)
