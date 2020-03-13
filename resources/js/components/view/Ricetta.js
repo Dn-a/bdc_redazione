@@ -427,18 +427,25 @@ const ValoriNutrizionali = (props) => {
     )
 }
 
-const UltimeRicette = (props) => {
+
+class UltimeRicette extends Component {
     
 
-    const [data, setData] = useState({ricette:[]});
+    constructor(props) {
+        super(props);
 
-    useEffect(() => {        
-        getRemoteData();
-    }, []);
+        this.state = {
+            data:{ricette:[]}
+        }
+    }
 
-    const getRemoteData = () => {
+    componentDidMount(){
+        this.getRemoteData();
+    }
 
-        let url = props.url+'/ricette?only=blog';
+    getRemoteData() {
+
+        let url = this.props.url+'/ricette?only=blog';
 
         let headers = {headers: {'Accept': 'application/json'}};
 
@@ -446,11 +453,12 @@ const UltimeRicette = (props) => {
 			.then(result => {
                 
                 let remoteData = result.data;
-                
+                let data = this.state.data;
+
                 data.ricette.push(...remoteData.data);
                 
                 //console.log(data);
-                //setData({data : data})
+                this.setState({data : data})
 
 			}).catch((error) => {
                 if(error.response===undefined) return;
@@ -464,30 +472,33 @@ const UltimeRicette = (props) => {
 			});
     }
 
-    return(
-        <div className="blog p-1 mb-3 bg-transparent ultime-ricette">                                
-            <h3 className="mb-3 "><strong>Ricette Recenti</strong></h3>        
-            <div>
-                {
-                    data.ricette.map((r,k) => {
-                        if(props.data.id==r.id) return;
-                        return(
-                            <div className="clearfix" key={k}>
-                                <div className="image float-left mb-3 mr-3">
-                                    <a href={props.url+'/blog/'+r.id} >
-                                        <img src={r.img} />
-                                    </a>
+    render(){
+
+        return(
+            <div className="blog p-1 mb-3 bg-transparent ultime-ricette">                                
+                <h3 className="mb-3 "><strong>Ricette Recenti</strong></h3>        
+                <div>
+                    {
+                        this.state.data.ricette.map((r,k) => {
+                            if(this.props.data.id==r.id) return;
+                            return(
+                                <div className="clearfix" key={k}>
+                                    <div className="image float-left mb-3 mr-3">
+                                        <a href={this.props.url+'/blog/'+r.id} >
+                                            <img src={r.img} />
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a href={this.props.url+'/blog/'+r.id} >{r.titolo} </a>
+                                        <div>di {r.autore}</div>
+                                    </div>
+                                    <hr/>
                                 </div>
-                                <div>
-                                    <a href={props.url+'/blog/'+r.id} >{r.titolo} </a>
-                                    <div>di {r.autore}</div>
-                                </div>
-                                <hr/>
-                            </div>
-                        )
-                    })
-                }
+                            )
+                        })
+                    }
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }

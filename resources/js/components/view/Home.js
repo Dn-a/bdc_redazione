@@ -1,6 +1,6 @@
 import React, { Component , Fragment } from 'react';
 import ReactBootstrapSlider from 'react-bootstrap-slider';
-import "bootstrap/dist/css/bootstrap.css";
+//import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-slider/dist/css/bootstrap-slider.css";
 
 import Blog from './Blog';
