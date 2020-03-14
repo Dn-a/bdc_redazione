@@ -7,6 +7,11 @@ import InputField from './form/InputField';
 //
 // - reloadOnClick: esegue una nuova ricerca
 // - handles: consente di richiamare alcune funzioni dall'esterno {reset,recall}
+// - showList: boolean
+// - reloadOnClick: boolean
+// - resetAfterClick: boolean
+// - onClick: handle
+// - patternList: Object - {id:'id', fields:{titolo:[],calorie:[]}
 
 export default class SearchField extends Component {
 

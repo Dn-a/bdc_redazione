@@ -11644,6 +11644,22 @@ header {
   padding-bottom: 120px;
 }
 
+/*--Slider Field --*/
+
+.slider-handle {
+  background-color: #30a681 !important;
+  background-image: none !important;
+}
+
+.slider-selection.tick-slider-selection {
+  background: #beded4 !important;
+  background-image: none !important;
+}
+
+.slider.slider-horizontal .slider-tick-label-container .slider-tick-label {
+  font-size: 0.8em;
+}
+
 /*--- BLOG ---*/
 
 .blog .info,

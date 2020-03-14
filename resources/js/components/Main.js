@@ -23,6 +23,9 @@ const routes = [
     {path: "/verifiche/:ricetta", name:"Verifica", title:'Validazione Ricetta', icon:'fa-gavel', Component: Ricetta},
     {path: "/blog/:ricetta", name:"Ricetta", title:'Ricetta', icon:'fa-home', Component:Ricetta},
 
+    {path: "/validate", name:"Validate", title:'Ricette Validate', icon:'fa-thumbs-up', Component: Verifiche},
+    {path: "/approvate", name:"Approvate", title:'Ricette Approvate', icon:'fa-thumbs-up', Component: Verifiche},
+
     {path: "/gestione-ricette/new", name:"Nuova-Ricetta", title:'Nuova Ricetta', icon:'fa-list-ol', Component: AddEditRicetta},   
     {path: "/gestione-ricette/:ricetta/edit", name:"Modifica-Ricetta", title:'Modifica Ricetta', icon:'fa-list-ol', Component: AddEditRicetta},   
 

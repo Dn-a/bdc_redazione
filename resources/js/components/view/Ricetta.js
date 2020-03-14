@@ -209,7 +209,7 @@ export default class Ricetta extends Component {
                                     </div>
                                     <div className="col-sm-4 info">
                                         <div className="pl-2">
-                                            <i className="fa fa-thumbs-o-up" aria-hidden="true"> </i>
+                                            <i className="fa fa-star-half-o" aria-hidden="true"> </i>
                                         </div>
                                         <div >
                                             <div className="title"><strong>Difficoltà</strong></div>

@@ -42,47 +42,53 @@ if(request()->header('accept')=='application/json'){
 
     // ADMIN | CAPOREDATTORE | REDATTORE
     //
-    Route::get('/{name3}/{id}', 'HomeController@index')
-    ->where(
-      [
-        'name3' =>'verifiche',
-        'id' => '[0-9]+'
-      ]
-    )->middleware(['auth','ruolo:admin|caporedattore|redattore']);
+    Route::middleware(['auth','ruolo:admin|caporedattore|redattore'])->group( function () {
 
+      Route::get('/{name3}/{id}', 'HomeController@index')
+      ->where(
+        [
+          'name3' =>'verifiche',
+          'id' => '[0-9]+'
+        ]
+      );
 
+      Route::get('/{name4}', 'HomeController@index')
+        ->where('name4', 'autori|redattori|verifiche|approvate|validate')->name('home_3');
+
+    });
+    
     // ADMIN | CAPOREDATTORE | REDATTORE | AUTORE
     //
     Route::middleware(['auth'])->group( function () {
 
-      Route::get('/{name4}', 'HomeController@index')
-      ->where('name4', 'autori|redattori|gestione-ricette|ingredienti|verifiche|settings')->name('home_3');
+      Route::get('/{name5}', 'HomeController@index')
+      ->where('name5', 'gestione-ricette|ingredienti|')->name('home_4');
       
         // View
-        Route::get('/{name5}/{id}', 'HomeController@index')
+        Route::get('/{name6}/{id}', 'HomeController@index')
         ->where(
           [
-            'name5' =>'gestione-ricette|ingredienti',
+            'name6' =>'gestione-ricette|ingredienti',
             'id' => '[0-9]+'
           ]
         );
 
         // New
-        Route::get('/{name6}/{name7}', 'HomeController@index')
+        Route::get('/{name7}/{name8}', 'HomeController@index')
         ->where(
           [
-            'name6' =>'gestione-ricette',
-            'name7' =>'new'
+            'name7' =>'gestione-ricette',
+            'name8' =>'new'
           ]
         );        
 
         // Edit
-        Route::get('/{name8}/{id}/{name9}', 'HomeController@index')
+        Route::get('/{name9}/{id}/{name10}', 'HomeController@index')
         ->where(
           [
-            'name8' => 'gestione-ricette',
+            'name9' => 'gestione-ricette',
             'id' => '[0-9]+',
-            'name9' => 'edit'
+            'name10' => 'edit'
           ]
         );
       

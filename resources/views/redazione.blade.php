@@ -26,7 +26,8 @@
             $user = $ruolo=='autore' ? $user->autore : $user->redattore;
             $nome = $user->nome;// .' '. $user->cognome;
         
-            if($ruolo == 'caporedattore') $menu = array_merge($menu,['redattori']);
+            if($ruolo == 'caporedattore') $menu = array_merge($menu,['redattori','approvate']);
+            if($ruolo == 'redattore') $menu = array_merge($menu,['validate']);
             if($ruolo != 'autore') $menu = array_merge($menu,['autori','ingredienti','verifiche']);
             if($ruolo == 'autore') $menu = array_merge($menu,['ricette']);
 

@@ -68,7 +68,7 @@ class RicettaController extends Controller
         $user = Auth::user();
 
         $ricette = Ricetta::
-        where(function($query) use ($blog, $user, $viewVerifiche) {
+        where(function($query) use ($blog, $user, $viewRicette, $viewVerifiche) {
             if($blog || !Auth::check())                        
                 $query->whereHas('fase', function($query) {
                     $query->where('titolo','approvata');
@@ -84,7 +84,7 @@ class RicettaController extends Controller
                     }
                 });
             
-            if(Auth::check() && $user->ruolo->titolo =='autore' )
+            if(Auth::check() && $viewRicette && $user->ruolo->titolo =='autore' )
                 $query->where('id_autore', $user->autore->id);
         })
         ->where(function($query) use($arr) {

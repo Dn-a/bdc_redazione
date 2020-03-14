@@ -99,7 +99,7 @@ export default class Blog extends Component {
                                                 
                                                 <div className="row">
                                                     <div className="info col-sm-3 col-md-3 text-center px-1">
-                                                        <i className="fa fa-thumbs-o-up" aria-hidden="true"></i>
+                                                        <i className="fa fa-star-half-o" aria-hidden="true"></i>
                                                         &nbsp;{rc.difficolta}
                                                     </div>
                                                     <div className="info col-sm-3 col-md-4 text-center px-1">
