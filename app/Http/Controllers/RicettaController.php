@@ -26,8 +26,41 @@ class RicettaController extends Controller
         
         $user = Auth::user();
 
+        // FILTRI
+        $ricetta = $request->input('ricetta');
+        $tipologia = $request->input('tipologia');
+        $difficolta = $request->input('difficolta');
+        $tempo = $request->input('tempo')? explode('-',$request->input('tempo')): null;
+        $calorie = $request->input('calorie') ? explode('-',$request->input('calorie')) : null;
+        $ingredienti = $request->input('ingredienti') ? json_decode($request->input('ingredienti')) : null;
+
         $ricette = Ricetta::
-            where(function($query) use ($blog, $user, $viewRicette, $viewVerifiche) {
+            where(function($query) use ($blog, $user, $viewRicette, $viewVerifiche,
+                $ricetta, $tipologia, $difficolta, $tempo, $calorie, $ingredienti
+            ) {
+                if($ricetta)
+                    $query->where('titolo',$ricetta);
+                if($tipologia)
+                    $query->whereHas('tipologia', function($query)  use($tipologia) {
+                        $query->where('titolo',$tipologia);
+                    });
+                if($difficolta)
+                    $query->where('difficolta',$difficolta);
+                if($tempo && count($tempo) > 1){
+                    $query->whereRaw("(tempo_cottura + tempo_preparazione) >= {$tempo[0]}");
+                    $query->whereRaw("(tempo_cottura + tempo_preparazione) <= {$tempo[1]}");
+                    //$query->where('tempo_cottura','<=', $tempo[1]);
+                }
+                if($calorie && count($calorie) > 1){                    
+                    $query->where('calorie','>=', $calorie[0]);
+                    $query->where('calorie','<=', $calorie[1]);
+                }
+                if($ingredienti && count($ingredienti) > 0 ){                  
+                    $query->whereHas('ingredienti', function($query)  use($ingredienti) {
+                        $query->whereIn('titolo', $ingredienti);
+                    });
+                }                
+
                 if($blog || !Auth::check())                      
                     //$query->where('stato', 'approvata');
                     $query->whereHas('fase', function($query) {

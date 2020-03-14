@@ -30,8 +30,8 @@ export default class Home extends Component {
 
         this.state = {
             filtri: {
-                tipologia: 0,
-                difficolta: 0 ,
+                tipologia: '',
+                difficolta: '',
                 tempo:{
                     min: TEMPO.min,
                     max: TEMPO.max,
@@ -40,7 +40,7 @@ export default class Home extends Component {
                     min: CALORIE.min,
                     max: CALORIE.max,
                 },
-                Ricetta:'',
+                ricetta:'',
                 ingredienti:[]
             },
             loader: false,           
@@ -70,19 +70,61 @@ export default class Home extends Component {
 
         this.setState({ filtri : filtri })
     }
+
+
+    filterRemove(entry , ingr){
+        
+        const onClick = () => {
+            let filtri = this.state.filtri;
+
+            switch(entry){
+                case 'ricetta':
+                    filtri.ricetta = '';
+                    break;
+                case 'tipologia':
+                    filtri.tipologia = 0;
+                    break;
+                case 'difficolta':
+                    filtri.difficolta = 0;
+                    break;
+                case 'tempo':
+                    filtri.tempo.min = TEMPO.min;
+                    filtri.tempo.max = TEMPO.max;
+                    break;
+                case 'calorie':
+                    filtri.calorie.min = CALORIE.min;
+                    filtri.calorie.max = CALORIE.max;
+                    break;
+                case 'ingrediente':
+                    filtri.ingredienti = filtri.ingredienti.filter( i => i!= ingr);
+            }
+            
+            this.setState({ filtri : filtri });
+        }
+
+        return(
+            <div onClick={() => onClick() } className="btn-clear d-inline mr-2 active"><i className="fa fa-times" aria-hidden="true"></i></div>
+        )
+    }
+
  
     render() {
-        
-        let tipologia = {0:'Tutte','primo':'Primo','secondo':'Secondo','contorno':'Contorno','dolce':'Dolce','antipasto':'Antipasto'};
-        let difficolta = {0:'Tutte','facile':'Facile','media':'Media','difficile':'Difficile'};
+        let filtri = this.state.filtri;
+
+        let tipologia = {
+            //0:'Tutte',
+            'primo':'Primo','secondo':'Secondo','contorno':'Contorno','dolce':'Dolce','antipasto':'Antipasto'};
+        let difficolta = {
+            //0:'Tutte',
+            'facile':'Facile','media':'Media','difficile':'Difficile'};
 
         let urlRicetta = this.props.url+'/ricette/search';
         let urlIngrediente = this.props.url+'/ingredienti/search';
 
-        let tempoView = this.state.filtri.tempo.min > TEMPO.min || this.state.filtri.tempo.max < TEMPO.max;        
-        let calorieView = this.state.filtri.calorie.min > CALORIE.min || this.state.filtri.calorie.max < CALORIE.max;
+        let tempoView = filtri.tempo.min > TEMPO.min || filtri.tempo.max < TEMPO.max;        
+        let calorieView = filtri.calorie.min > CALORIE.min || filtri.calorie.max < CALORIE.max;
 
-        let ingredienti = this.state.filtri.ingredienti;
+        let ingredienti = filtri.ingredienti;
         
         return (
 
@@ -105,7 +147,8 @@ export default class Home extends Component {
                         <div className="col-md-2 pr-0 mb-3">                            
                             <DropdownSelect 
                                 placeholder="Tipologia"
-                                defaultSelected='Tipologia'
+                                selected={filtri.tipologia == ''? 'Tipologia' : filtri.tipologia}
+                                //defaultSelected='Tipologia'
                                 handleChange={(e) => {
                                         //console.log(e.target)
                                         let filtri = this.state.filtri;
@@ -120,7 +163,8 @@ export default class Home extends Component {
                         <div className="col-md-2 pr-0 mb-3">                           
                             <DropdownSelect 
                                 placeholder="Difficoltà"
-                                defaultSelected='Difficoltà'
+                                selected={filtri.difficolta==''?'Difficoltà':filtri.difficolta}
+                                //defaultSelected='Difficoltà'
                                 handleChange={(e) => {
                                         //console.log(e.target)
                                         let filtri = this.state.filtri;
@@ -143,7 +187,7 @@ export default class Home extends Component {
                                     this.state.filtri.tempo.min,
                                     this.state.filtri.tempo.max
                                 ]}                            
-                                change={this.onChangeTempo}
+                                slideStop={this.onChangeTempo}
                                 //slideStop={(e) => console.log(e.target)}
                                 step={TEMPO.step}
                                 min={TEMPO.min}
@@ -167,7 +211,7 @@ export default class Home extends Component {
                                     this.state.filtri.calorie.min,
                                     this.state.filtri.calorie.max
                                 ]}                    
-                                change={this.onChangeCalorie}
+                                slideStop={this.onChangeCalorie}
                                 step={CALORIE.step}
                                 min={CALORIE.min}
                                 max={CALORIE.max}
@@ -229,35 +273,40 @@ export default class Home extends Component {
                    
                     <div className="row pb-3 mb-4 px-4">
                         <div className="col-md-12">
-                            <strong className="mr-1">Filtri:</strong>    
+                            <strong className="mr-2">Filtri:</strong>    
 
                             {this.state.filtri.ricetta!='' && 
-                                <div className=" mx-1 p-1 d-inline">
+                                <div className=" mx-1 my-1 p-1 d-inline-block">
+                                    {this.filterRemove('ricetta')}
                                     {this.state.filtri.ricetta}
                                 </div>
                             }
 
                             {this.state.filtri.tipologia!=0 && 
-                                <div className=" mx-1 p-1 d-inline">
+                                <div className=" mx-2 p-1 d-inline-block">
+                                    {this.filterRemove('tipologia')}
                                     {this.state.filtri.tipologia}
                                 </div>
                             }
 
                             {this.state.filtri.difficolta!=0 && 
-                                <div className=" mx-1 p-1 d-inline">
+                                <div className=" mx-2 p-1 d-inline-block">
+                                    {this.filterRemove('difficolta')}
                                     {this.state.filtri.difficolta}
                                 </div>
                             }
 
                             {tempoView  && 
-                                <div className=" mx-1 p-1 d-inline">
+                                <div className=" mx-2 p-1 d-inline-block">
+                                    {this.filterRemove('tempo')}
                                     Tmin: {this.state.filtri.tempo.min}&nbsp;
                                     Tmax: {this.state.filtri.tempo.max}
                                 </div>
                             }
 
                             {calorieView  && 
-                                <div className=" mx-1 p-1 d-inline">
+                                <div className=" mx-2 p-1 d-inline-block">
+                                    {this.filterRemove('calorie')}
                                     KcalMin: {this.state.filtri.calorie.min}&nbsp;
                                     KcalMax: {this.state.filtri.calorie.max}
                                 </div>
@@ -266,7 +315,8 @@ export default class Home extends Component {
                             {ingredienti.length>0  && 
                                 ingredienti.map((i,k) => {
                                     return(
-                                        <div key={k} className=" mx-1 p-1 d-inline">
+                                        <div key={k} className=" mx-2 p-1 d-inline-block">
+                                            {this.filterRemove('ingrediente',i)}
                                             {i}
                                         </div>
                                     )

@@ -83497,6 +83497,8 @@ __webpack_require__.r(__webpack_exports__);
 var CheckField = function CheckField(_ref) {
   var name = _ref.name,
       placeholder = _ref.placeholder,
+      _ref$style = _ref.style,
+      style = _ref$style === void 0 ? {} : _ref$style,
       _ref$divClassName = _ref.divClassName,
       divClassName = _ref$divClassName === void 0 ? null : _ref$divClassName,
       _ref$className = _ref.className,
@@ -83508,6 +83510,7 @@ var CheckField = function CheckField(_ref) {
       value = _ref.value,
       handleChange = _ref.handleChange;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    style: style,
     className: divClassName
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
     htmlFor: name + value
@@ -84849,15 +84852,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var html_react_parser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! html-react-parser */ "./node_modules/html-react-parser/index.js");
 /* harmony import */ var html_react_parser__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(html_react_parser__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _utils_form_CheckField__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/form/CheckField */ "./resources/js/components/utils/form/CheckField.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
-
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -84874,6 +84870,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -84916,11 +84913,31 @@ function (_Component) {
       this.getRemoteData();
     }
   }, {
+    key: "componentWillReceiveProps",
+    value: function componentWillReceiveProps() {
+      if (this.props.filtri !== undefined) this.recallWithFilter();
+    }
+  }, {
+    key: "recallWithFilter",
+    value: function recallWithFilter() {
+      var filtri = this.props.filtri;
+      var query = '';
+      Object.keys(filtri).forEach(function (f, i) {
+        if (f == 'tempo') {
+          query += 'tempo=' + filtri[f].min + '-' + filtri[f].max + '&'; //query += 'Tmax=' + filtri[f].max + '&';
+        } else if (f == 'calorie') {
+          query += 'calorie=' + filtri[f].min + '-' + filtri[f].max + '&'; //query += 'Kmax=' + filtri[f].max + '&';
+        } else if (f == 'ingredienti') query += 'ingredienti=' + JSON.stringify(filtri[f]);else query += filtri[f] != '' ? f + '=' + filtri[f] + '&' : '';
+      }); //console.log(query)
+
+      this.getRemoteData(query);
+    }
+  }, {
     key: "getRemoteData",
-    value: function getRemoteData(type, id) {
+    value: function getRemoteData(query) {
       var _this2 = this;
 
-      var url = this.props.url + '/ricette?only=blog';
+      var url = this.props.url + '/ricette?only=blog&' + query;
       var headers = {
         headers: {
           'Accept': 'application/json'
@@ -84930,14 +84947,10 @@ function (_Component) {
         loader: true
       });
       return axios.get(url, headers).then(function (result) {
-        var _data$ricette;
-
         var data = _this2.state.data;
         var remoteData = result.data;
         var pagination = remoteData.pagination;
-
-        (_data$ricette = data.ricette).push.apply(_data$ricette, _toConsumableArray(remoteData.data));
-
+        data.ricette = remoteData.data;
         data.page = pagination.current_page;
         data.total = pagination.total;
         data.perPage = pagination.per_page; //console.log(remoteData);
@@ -84975,7 +84988,13 @@ function (_Component) {
           key: key
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "card mb-4 box-shadow"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          style: {
+            right: '4px'
+          },
+          divClassName: "position-absolute p-2",
+          name: 'ingrediente_' + key
+        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
           to: _this3.props.url + '/blog/' + rc.id
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
           className: "card-img-top",
@@ -85092,8 +85111,8 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Home).call(this, props));
     _this.state = {
       filtri: {
-        tipologia: 0,
-        difficolta: 0,
+        tipologia: '',
+        difficolta: '',
         tempo: {
           min: TEMPO.min,
           max: TEMPO.max
@@ -85102,7 +85121,7 @@ function (_Component) {
           min: CALORIE.min,
           max: CALORIE.max
         },
-        Ricetta: '',
+        ricetta: '',
         ingredienti: []
       },
       loader: false
@@ -85135,12 +85154,65 @@ function (_Component) {
       });
     }
   }, {
-    key: "render",
-    value: function render() {
+    key: "filterRemove",
+    value: function filterRemove(entry, ingr) {
       var _this2 = this;
 
+      var _onClick = function onClick() {
+        var filtri = _this2.state.filtri;
+
+        switch (entry) {
+          case 'ricetta':
+            filtri.ricetta = '';
+            break;
+
+          case 'tipologia':
+            filtri.tipologia = 0;
+            break;
+
+          case 'difficolta':
+            filtri.difficolta = 0;
+            break;
+
+          case 'tempo':
+            filtri.tempo.min = TEMPO.min;
+            filtri.tempo.max = TEMPO.max;
+            break;
+
+          case 'calorie':
+            filtri.calorie.min = CALORIE.min;
+            filtri.calorie.max = CALORIE.max;
+            break;
+
+          case 'ingrediente':
+            filtri.ingredienti = filtri.ingredienti.filter(function (i) {
+              return i != ingr;
+            });
+        }
+
+        _this2.setState({
+          filtri: filtri
+        });
+      };
+
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        onClick: function onClick() {
+          return _onClick();
+        },
+        className: "btn-clear d-inline mr-2 active"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fa fa-times",
+        "aria-hidden": "true"
+      }));
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      var filtri = this.state.filtri;
       var tipologia = {
-        0: 'Tutte',
+        //0:'Tutte',
         'primo': 'Primo',
         'secondo': 'Secondo',
         'contorno': 'Contorno',
@@ -85148,16 +85220,16 @@ function (_Component) {
         'antipasto': 'Antipasto'
       };
       var difficolta = {
-        0: 'Tutte',
+        //0:'Tutte',
         'facile': 'Facile',
         'media': 'Media',
         'difficile': 'Difficile'
       };
       var urlRicetta = this.props.url + '/ricette/search';
       var urlIngrediente = this.props.url + '/ingredienti/search';
-      var tempoView = this.state.filtri.tempo.min > TEMPO.min || this.state.filtri.tempo.max < TEMPO.max;
-      var calorieView = this.state.filtri.calorie.min > CALORIE.min || this.state.filtri.calorie.max < CALORIE.max;
-      var ingredienti = this.state.filtri.ingredienti;
+      var tempoView = filtri.tempo.min > TEMPO.min || filtri.tempo.max < TEMPO.max;
+      var calorieView = filtri.calorie.min > CALORIE.min || filtri.calorie.max < CALORIE.max;
+      var ingredienti = filtri.ingredienti;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "slider-blog "
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
@@ -85174,13 +85246,14 @@ function (_Component) {
         className: "col-md-2 pr-0 mb-3"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_DropdownSelect__WEBPACK_IMPORTED_MODULE_3__["default"], {
         placeholder: "Tipologia",
-        defaultSelected: "Tipologia",
+        selected: filtri.tipologia == '' ? 'Tipologia' : filtri.tipologia //defaultSelected='Tipologia'
+        ,
         handleChange: function handleChange(e) {
           //console.log(e.target)
-          var filtri = _this2.state.filtri;
+          var filtri = _this3.state.filtri;
           filtri.tipologia = e.target.value;
 
-          _this2.setState({
+          _this3.setState({
             filtri: filtri
           });
         },
@@ -85189,13 +85262,14 @@ function (_Component) {
         className: "col-md-2 pr-0 mb-3"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_DropdownSelect__WEBPACK_IMPORTED_MODULE_3__["default"], {
         placeholder: "Difficolt\xE0",
-        defaultSelected: "Difficolt\xE0",
+        selected: filtri.difficolta == '' ? 'Difficoltà' : filtri.difficolta //defaultSelected='Difficoltà'
+        ,
         handleChange: function handleChange(e) {
           //console.log(e.target)
-          var filtri = _this2.state.filtri;
+          var filtri = _this3.state.filtri;
           filtri.difficolta = e.target.value;
 
-          _this2.setState({
+          _this3.setState({
             filtri: filtri
           });
         },
@@ -85208,7 +85282,7 @@ function (_Component) {
         className: "col-md-6 pl-4"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_slider__WEBPACK_IMPORTED_MODULE_6___default.a, {
         value: [this.state.filtri.tempo.min, this.state.filtri.tempo.max],
-        change: this.onChangeTempo //slideStop={(e) => console.log(e.target)}
+        slideStop: this.onChangeTempo //slideStop={(e) => console.log(e.target)}
         ,
         step: TEMPO.step,
         min: TEMPO.min,
@@ -85223,7 +85297,7 @@ function (_Component) {
         className: "col-md-7 pl-3 p-0"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_slider__WEBPACK_IMPORTED_MODULE_6___default.a, {
         value: [this.state.filtri.calorie.min, this.state.filtri.calorie.max],
-        change: this.onChangeCalorie,
+        slideStop: this.onChangeCalorie,
         step: CALORIE.step,
         min: CALORIE.min,
         max: CALORIE.max,
@@ -85248,10 +85322,10 @@ function (_Component) {
         },
         onClick: function onClick(res) {
           //console.log(res)
-          var filtri = _this2.state.filtri;
+          var filtri = _this3.state.filtri;
           filtri.ricetta = res.titolo;
 
-          _this2.setState({
+          _this3.setState({
             filtri: filtri
           });
         }
@@ -85271,10 +85345,10 @@ function (_Component) {
         },
         onClick: function onClick(res) {
           //console.log(res)
-          var filtri = _this2.state.filtri;
+          var filtri = _this3.state.filtri;
           if (!filtri.ingredienti.includes(res.titolo)) filtri.ingredienti.push(res.titolo);
 
-          _this2.setState({
+          _this3.setState({
             filtri: filtri
           });
         }
@@ -85283,22 +85357,22 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-12"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", {
-        className: "mr-1"
+        className: "mr-2"
       }, "Filtri:"), this.state.filtri.ricetta != '' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: " mx-1 p-1 d-inline"
-      }, this.state.filtri.ricetta), this.state.filtri.tipologia != 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: " mx-1 p-1 d-inline"
-      }, this.state.filtri.tipologia), this.state.filtri.difficolta != 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: " mx-1 p-1 d-inline"
-      }, this.state.filtri.difficolta), tempoView && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: " mx-1 p-1 d-inline"
-      }, "Tmin: ", this.state.filtri.tempo.min, "\xA0 Tmax: ", this.state.filtri.tempo.max), calorieView && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: " mx-1 p-1 d-inline"
-      }, "KcalMin: ", this.state.filtri.calorie.min, "\xA0 KcalMax: ", this.state.filtri.calorie.max), ingredienti.length > 0 && ingredienti.map(function (i, k) {
+        className: " mx-1 my-1 p-1 d-inline-block"
+      }, this.filterRemove('ricetta'), this.state.filtri.ricetta), this.state.filtri.tipologia != 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: " mx-2 p-1 d-inline-block"
+      }, this.filterRemove('tipologia'), this.state.filtri.tipologia), this.state.filtri.difficolta != 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: " mx-2 p-1 d-inline-block"
+      }, this.filterRemove('difficolta'), this.state.filtri.difficolta), tempoView && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: " mx-2 p-1 d-inline-block"
+      }, this.filterRemove('tempo'), "Tmin: ", this.state.filtri.tempo.min, "\xA0 Tmax: ", this.state.filtri.tempo.max), calorieView && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: " mx-2 p-1 d-inline-block"
+      }, this.filterRemove('calorie'), "KcalMin: ", this.state.filtri.calorie.min, "\xA0 KcalMax: ", this.state.filtri.calorie.max), ingredienti.length > 0 && ingredienti.map(function (i, k) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           key: k,
-          className: " mx-1 p-1 d-inline"
-        }, i);
+          className: " mx-2 p-1 d-inline-block"
+        }, _this3.filterRemove('ingrediente', i), i);
       }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
         className: "mb-5"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Blog__WEBPACK_IMPORTED_MODULE_1__["default"], {

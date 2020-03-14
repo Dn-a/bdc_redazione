@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 
-const CheckField = ({name , placeholder, divClassName=null,className='', label, required, checked, defaultChecked, value, handleChange}) => (
-    <div className={divClassName}>
+const CheckField = ({name , placeholder, style={}, divClassName=null,className='', label, required, checked, defaultChecked, value, handleChange}) => (
+    <div style={style} className={divClassName}>
     <label htmlFor={name+value}>
         <input
             type="checkbox"

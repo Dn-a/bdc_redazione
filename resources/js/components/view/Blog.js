@@ -1,6 +1,7 @@
 import React, { Component , Fragment } from 'react';
 import { Link } from 'react-router-dom'
 import parse from 'html-react-parser';
+import CheckField from '../utils/form/CheckField';
 
 
 const FIELDS = [
@@ -33,9 +34,37 @@ export default class Blog extends Component {
         this.getRemoteData();
     }
 
-    getRemoteData(type,id){
+    componentWillReceiveProps(){
+        if(this.props.filtri!==undefined)
+            this.recallWithFilter();
+    }
 
-        let url = this.props.url+'/ricette?only=blog';
+    recallWithFilter(){
+
+        let filtri = this.props.filtri;
+        let query = '';
+
+        Object.keys(filtri).forEach((f,i) => {
+            if(f == 'tempo'){
+                query += 'tempo=' + filtri[f].min + '-' + filtri[f].max + '&';
+                //query += 'Tmax=' + filtri[f].max + '&';
+            }else if(f == 'calorie'){
+                query += 'calorie=' + filtri[f].min + '-' + filtri[f].max + '&';
+                //query += 'Kmax=' + filtri[f].max + '&';
+            }else if(f == 'ingredienti')
+                query += 'ingredienti=' + JSON.stringify(filtri[f]);
+            else
+                query += filtri[f]!=''? f + '=' + filtri[f] + '&' : '';
+        });
+
+        //console.log(query)
+
+        this.getRemoteData(query)
+    }
+
+    getRemoteData(query){        
+
+        let url = this.props.url+'/ricette?only=blog&'+query;
 
         let headers = {headers: {'Accept': 'application/json'}};
 
@@ -49,7 +78,7 @@ export default class Blog extends Component {
                 let remoteData = result.data;
                 let pagination = remoteData.pagination;
 
-                data.ricette.push(...remoteData.data);
+                data.ricette = remoteData.data;
                 data.page = pagination.current_page;
                 data.total = pagination.total;
                 data.perPage = pagination.per_page;
@@ -86,7 +115,12 @@ export default class Blog extends Component {
                                     <div className="col-md-4" key={key}>
                                         
                                         <div className="card mb-4 box-shadow">
-                                            <Link to={this.props.url+'/blog/'+rc.id}>
+                                            <CheckField 
+                                            style={{right:'4px'}}
+                                            divClassName="position-absolute p-2"
+                                            name={'ingrediente_'+key}  
+                                            />
+                                            <Link to={this.props.url+'/blog/'+rc.id}>                                                
                                                 <img className="card-img-top" src={rc.img} alt="Card image cap" />
                                             </Link>
                                             <div className="card-body">
