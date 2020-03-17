@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class IngredienteController extends Controller
 {   
-    private $lmtSearch = 15;
+    private $lmtSearch = 5;
 
     
     public function index(Request $request)
@@ -20,12 +20,18 @@ class IngredienteController extends Controller
         $only = $request->input('only') ?: '';
         //$blog = in_array('blog', explode('-',$only));
 
-        //$user = Auth::user();
+        $user = Auth::user();
+
+        $isRedattore = Auth::check() && $user->ruolo->titolo !='autore';
 
         $ingrediente = Ingrediente::
-            orderBy('id','DESC')->paginate($this->lmtSearch);
+            where(function($query) use($isRedattore) {
+                if(!$isRedattore)
+                    $query->where('attivo',1);
+            })
+            ->orderBy('id','DESC')->paginate($this->lmtSearch);
 
-        return new IngredienteCollection($ingrediente);
+        return new IngredienteCollection($ingrediente,true);
     }
 
 
@@ -37,7 +43,8 @@ class IngredienteController extends Controller
         //$blog = in_array('blog', explode('-',$only));
         
         $ingrediente = Ingrediente::
-        where(function($query) use($arr) {
+        where('attivo',1)
+        ->where(function($query) use($arr) {
             $query->where('titolo','like', $arr[0].'%')
             ->orWhere('calorie','like', $arr[0].'%');            
         })    
@@ -65,9 +72,13 @@ class IngredienteController extends Controller
                 'img' => 'required|string|min:1|max:2048'
             ]);
 
+            $user = Auth::user();
 
             $data = $request->all();
-
+            
+            if($user->ruolo->titolo!='autore')
+                $data['attivo'] = 1;
+                
             $ingrediente = new Ingrediente();
             
             $ingrediente->fill($data)->save();                  
@@ -94,7 +105,22 @@ class IngredienteController extends Controller
     
     public function update(Request $request, Ingrediente $ingrediente)
     {
-        //
+        try{
+            //return response()->json($request->all(),422);exit;
+            //Validate
+            $request->validate([
+                'approva' => 'required|integer',
+            ]);
+            
+            $data = ['attivo' => $request->approva];            
+                            
+            $ingrediente->update($data);
+
+            return response()->json(['insert' =>'Ingrediente approvato!'],201);
+
+        }catch( \Illuminate\Database\QueryException $e){
+            return response()->json(['msg' => $e->getMessage() ],500);
+        }
     }
 
     

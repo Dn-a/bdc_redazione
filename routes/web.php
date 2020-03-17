@@ -44,16 +44,16 @@ if(request()->header('accept')=='application/json'){
     //
     Route::middleware(['auth','ruolo:admin|caporedattore|redattore'])->group( function () {
 
+      Route::get('/{name4}', 'HomeController@index')
+        ->where('name4', 'autori|redattori|verifiche|approvate|validate|ingredienti')->name('home_3');
+        
       Route::get('/{name3}/{id}', 'HomeController@index')
       ->where(
         [
-          'name3' =>'verifiche',
+          'name3' =>'verifiche|ingredienti',
           'id' => '[0-9]+'
         ]
       );
-
-      Route::get('/{name4}', 'HomeController@index')
-        ->where('name4', 'autori|redattori|verifiche|approvate|validate')->name('home_3');
 
     });
     
@@ -62,13 +62,13 @@ if(request()->header('accept')=='application/json'){
     Route::middleware(['auth'])->group( function () {
 
       Route::get('/{name5}', 'HomeController@index')
-      ->where('name5', 'gestione-ricette|ingredienti|')->name('home_4');
+      ->where('name5', 'gestione-ricette')->name('home_4');
       
         // View
         Route::get('/{name6}/{id}', 'HomeController@index')
         ->where(
           [
-            'name6' =>'gestione-ricette|ingredienti',
+            'name6' =>'gestione-ricette',
             'id' => '[0-9]+'
           ]
         );
@@ -138,6 +138,10 @@ Route::middleware(['auth','ruolo:admin|caporedattore|redattore'])->group( functi
   // Ricette
     Route::post('print-ricetta/{ricetta}', 'RicettaController@pdfGenerate');
     Route::put('ricette/verifica/{ricetta}', 'RicettaController@verifica');
+
+  // Ingredienti
+    Route::get('ingredienti', 'IngredienteController@index')->name('ingredienti');
+    Route::put('ingredienti/{ingrediente}', 'IngredienteController@update');   
     
 });
 
@@ -145,8 +149,9 @@ Route::middleware(['auth','ruolo:admin|caporedattore|redattore'])->group( functi
 //
 Route::middleware(['auth','ruolo:admin|caporedattore|redattore|autore'])->group( function () {
 
-  // Ingredienti    
-    Route::resource('ingredienti', 'IngredienteController',['as' => 'ingredienti']);
+  // Ingredienti  
+    Route::post('ingredienti', 'IngredienteController@store');    
+    //Route::resource('ingredienti', 'IngredienteController',['as' => 'ingredienti']);
 
   // Ricette
     Route::post('ricette', 'RicettaController@store');

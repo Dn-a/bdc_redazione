@@ -1,6 +1,6 @@
 import React, { Component , Fragment, useState, useEffect } from 'react';
 import parse from 'html-react-parser';
-import { EditButton, ConfirmButton } from '../utils/Button';
+import { EditButton, ConfirmButton, CloseButton } from '../utils/Button';
 import CheckField from './../utils/form/CheckField';
 import {User} from './../Env';
 
@@ -114,9 +114,21 @@ export default class Ricetta extends Component {
             //console.log(result);
 
             let ricetta = this.state.ricetta;
-
+            let msg = ''; 
+            
             ricetta.fase = result.data.fase;
-            let msg = ricetta.fase=='idonea' ? 'Ricetta Validata!' : 'Ricetta Approvata!';
+            switch(ricetta.fase){
+                case 'idonea':
+                    msg = 'Ricetta Validata!';
+                    break;
+                case 'approvata':
+                    msg = 'Ricetta Approvata!';
+                    break;
+                case 'scartata':
+                    msg = 'Ricetta Scartata!';
+                    break;
+            }
+            
             this.setState({ ricetta : ricetta , validationMessage:msg , verificationLoader : false});
             return result;
 
@@ -353,6 +365,16 @@ const Validazione = (props) => {
     let classValid = props.user.ruolo=='redattore' ? 'validazione ': '';
     return(
         <div >
+            <CloseButton 
+            //style={style}
+            className={"w-100 py-2 "}
+            onClick={(a) => props.onClick(props.state.ricetta.id,'scartata')
+            }
+            >
+                Scarta
+                <img className={"loader-2"+(props.state.verificationLoader==true?' d-inline-block':'')} src={props.url+"/img/loader_2.gif"}></img>
+            </CloseButton>
+
             <ConfirmButton 
             //style={style}
             className={"w-100 "+ classValid + props.className}

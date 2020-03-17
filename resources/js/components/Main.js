@@ -15,6 +15,7 @@ import Autori from './view/Autori';
 import AddEditRicetta from './view/AddEditRicetta';
 import Ricetta from './view/Ricetta';
 import Ricette from './view/Ricette';
+import Ingredienti from './view/Ingredienti';
 import Verifiche from './view/Verifiche';
 
 const routes = [
@@ -34,6 +35,7 @@ const routes = [
 
     {path: "/redattori", name:"Redattori", title:'Gestione Redattori', icon:'fa-users', Component: Redattori},   
     {path: "/autori", name:"Autori", title:'Gestione Autori', icon:'fa-address-card-o', Component: Autori},    
+    {path: "/ingredienti", name:"Ingredienti", title:'Gestione Ingredienti', icon:'fa-list-ul', Component: Ingredienti},    
 ];
 
 const MainTitle = ()  => {
@@ -198,7 +200,7 @@ export default class Main extends Component {
                     </aside>
                 }
                 
-                <main id="content" className={"py-4 "+(ruolo!=''?'logged':'')}>
+                <main id="content" className={"py-4 pb-5 "+(ruolo!=''?'logged':'')}>
                     
                     <MainTitle />
 

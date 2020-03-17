@@ -7,6 +7,7 @@ use App\Http\Resources\RicettaResource;
 use App\Ricetta;
 use App\RicettaIngrediente;
 use App\Verifica;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PDF;
@@ -27,6 +28,8 @@ class RicettaController extends Controller
         $viewValidate = in_array('validate', explode('-',$only));
         
         $user = Auth::user();
+
+        $isCaporedattore =  Auth::check() && $user->ruolo->titolo == 'caporedattore';
 
         // FILTRI
         $ricetta = $request->input('ricetta');
@@ -75,12 +78,14 @@ class RicettaController extends Controller
                                 $query->where('titolo','<>','bozza');
                                 $query->where('titolo','<>','approvata');
                                 $query->where('titolo','<>','idonea');
+                                $query->where('titolo','<>','scartata');
                             }
                             elseif($user->ruolo->titolo =='caporedattore' ){
                                 $query->where('titolo','<>','bozza');                            
                                 $query->where('titolo','<>','inviata');                            
                                 $query->where('titolo','<>','validazione');
                                 $query->where('titolo','<>','approvata');
+                                $query->where('titolo','<>','scartata');
                             }
                         }elseif($viewValidate){
                             if($user->ruolo->titolo =='redattore' ){                                
@@ -101,7 +106,7 @@ class RicettaController extends Controller
         return new RicettaCollection(
             $ricette, 
             true,
-            $this->moreField($blog, $viewRicette) 
+            $this->moreField($blog, $viewRicette, $viewVerifiche, $isCaporedattore) 
         );
     }
 
@@ -116,6 +121,8 @@ class RicettaController extends Controller
 
         $user = Auth::user();
 
+        $isCaporedattore = Auth::check() && $user->ruolo->titolo=='caporedattore';
+
         $ricette = Ricetta::
         where(function($query) use ($blog, $user, $viewRicette, $viewVerifiche) {
             if($blog || !Auth::check())                        
@@ -124,12 +131,17 @@ class RicettaController extends Controller
                 });
             elseif($viewVerifiche && Auth::check())
                 $query->whereHas('fase', function($query)  use($user) {
-                    if($user->ruolo->titolo =='redattore' )
+                    if($user->ruolo->titolo =='redattore' ){
                         $query->where('titolo','<>','bozza');
-                    elseif($user->ruolo->titolo =='caporedattore' ){
+                        $query->where('titolo','<>','approvata');
+                        $query->where('titolo','<>','idonea');
+                        $query->where('titolo','<>','scartata');
+                    }elseif($user->ruolo->titolo =='caporedattore' ){
                         $query->where('titolo','<>','bozza');                            
                         $query->where('titolo','<>','inviata');                            
                         $query->where('titolo','<>','validazione');
+                        $query->where('titolo','<>','approvata');
+                        $query->where('titolo','<>','scartata');
                     }
                 });
             
@@ -162,20 +174,20 @@ class RicettaController extends Controller
         return  new RicettaCollection(
             $ricette,
             false,
-            $this->moreField($blog, $viewRicette)
+            $this->moreField($blog, $viewRicette, $viewVerifiche, $isCaporedattore)
         );
     }
 
-    private function moreField($blog=false, $viewRicette=false, $viewRicetta=false)
+    private function moreField($blog=false, $viewRicette=false, $viewRicetta=false, $viewVerifiche=false, $isCaporedattore=false)
     {
         $moreFields = [            
         ];
 
-        if(!$blog && !$viewRicette)
+        if(!$blog && !$viewRicette && !$viewVerifiche)
             $moreFields =  array_merge($moreFields,
                 ['ingredienti', 'modalita_preparazione','porzioni','autore', 'tipologia','data_creazione','fase']
             );
-        else if($viewRicette)
+        else if($viewRicette || $viewVerifiche)
             $moreFields =  array_merge($moreFields,
                 ['tipologia','data_creazione','fase']
             );
@@ -187,6 +199,11 @@ class RicettaController extends Controller
         if($viewRicetta)
         $moreFields =  array_merge($moreFields,
             ['note']
+        );
+
+        if($isCaporedattore)
+        $moreFields =  array_merge($moreFields,
+            ['redattore']
         );
         
         return $moreFields;
@@ -283,8 +300,20 @@ class RicettaController extends Controller
         if( $ricetta->id_fase=='2' && Auth::check() && $user->ruolo->titolo =='redattore' )
             $ricetta->update(['id_fase' => 3]);
 
-        else if( $ricetta->id_fase=='4' && Auth::check() && $user->ruolo->titolo =='caporedattore' )
-            $ricetta->update(['id_fase' => 6]);
+        else if( $ricetta->id_fase=='4' && Auth::check() && $user->ruolo->titolo =='caporedattore' ){
+            
+            $verifica = Verifica::where('id_ricetta',$ricetta->id);
+            $idFase = 6;
+
+            $check = $verifica->exists();
+
+            if($check)
+                $verifica->update([
+                    'id_fase' => $idFase
+                ]);                
+
+            $ricetta->update(['id_fase' => $idFase]);
+        }
 
         return new RicettaResource(
             $ricetta, 
@@ -386,6 +415,8 @@ class RicettaController extends Controller
                 $arrayRicetta['id_fase'] = 4;
             elseif($request->fase == 'approvata')
                 $arrayRicetta['id_fase'] = 7;
+            elseif($request->fase == 'scartata')
+                $arrayRicetta['id_fase'] = 5;
 
             $ricetta->update($arrayRicetta);
 
@@ -401,10 +432,13 @@ class RicettaController extends Controller
                     'id_redattore' => $user->redattore->id,
                     'id_fase' => $arrayRicetta['id_fase']
                 ]);
-            else
-                $verifica->update([
-                    'id_fase' => $arrayRicetta['id_fase']
-                ]);
+            else{
+                $update = [ 'id_fase' => $arrayRicetta['id_fase'] ];
+                date_default_timezone_set("Europe/Rome");
+                if($arrayRicetta['id_fase'] == 7)
+                   $update = array_merge($update, ['data_approvazione' => Carbon::now()] );
+                $verifica->update($update);
+            }
            
             return response()->json(['fase' => $request->fase],201);
 

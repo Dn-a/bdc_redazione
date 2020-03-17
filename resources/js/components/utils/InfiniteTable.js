@@ -124,7 +124,7 @@ export default class InfiniteTable extends Component {
                 //console.log(res.data);
 
 			}).catch((error) => {
-                //if(error.response===undefined) return;
+                if(error.response===undefined) return;
                 if(error.response.data!==undefined)
                     console.log(error.response.data);
                 else
@@ -224,8 +224,7 @@ export default class InfiniteTable extends Component {
     // il numero di righe iniziali potrebbero non essere sufficienti a riempire l'area dello schermo.
     // MoreData provvede a recuperare un numero di righe sufficienti ad attivare la barra di scorrimento verticale
     _moreData(){
-        let content = document.getElementById('content');
-
+        let content = document.getElementById('content');        
         if(content.offsetHeight >= content.scrollHeight &&  this.state.moreData ){
             let page = this.state.data.page;
             this.state.moreData = false;

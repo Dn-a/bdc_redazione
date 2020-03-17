@@ -11,7 +11,7 @@ class Ingrediente extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'titolo', 'calorie', 'unita_misura', 'img'
+        'titolo', 'attivo', 'calorie', 'unita_misura', 'img'
     ];
 
 }

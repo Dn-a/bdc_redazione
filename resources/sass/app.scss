@@ -17,6 +17,7 @@ a {
 }
 #redazione {
     height: 100vh;
+    overflow: hidden;
 }
 .constraint {
     max-width: 1100px;
@@ -110,6 +111,11 @@ ul{
     .btn.confirm {
         background-color: #30a681;
     }
+    .btn.close{
+        font-weight: 400;
+        font-size: 1em;
+        text-shadow: none;
+    }
 /*--- SIDEBAR ---*/
     #sidebar {
         padding-top:55px;
@@ -200,7 +206,6 @@ ul{
         overflow: auto;
         height: 88%;
         width: 100%;
-        display: inline-table;
         transition: all 0.3s;        
     }
 /*--- Breadcrumb ---*/   
@@ -348,7 +353,7 @@ ul{
     footer {
         position: relative;
         color:#cbcdce;        
-        bottom: -56px;
+        bottom: -30px;
         width: 100%;
         display: inline-table;
         background-color: #31383d;       
@@ -401,7 +406,7 @@ ul{
     .search-field .btn-clear{
         position: absolute;
         right: 4px;
-        bottom: 5px;
+        bottom: 4px;
         display: none;
         padding: 2.1px 7.5px;
     }
@@ -419,7 +424,7 @@ ul{
     display: none;
     position: absolute;
     right: 4px;
-    bottom:7px;
+    bottom: 6px;
     &.active{
         display: inline-block;
     }

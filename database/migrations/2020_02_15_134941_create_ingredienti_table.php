@@ -15,7 +15,7 @@ class CreateIngredientiTable extends Migration
     {
         Schema::create('ingredienti', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('titolo',50);
+            $table->string('titolo',50)->unique();
             $table->float('calorie');
             $table->string('unita_misura',10);
             $table->string('img',2048);

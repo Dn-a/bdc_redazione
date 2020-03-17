@@ -14,6 +14,9 @@ const COLUMNS = [
     User().ruolo !='autore'?
         ({ title: 'Autore', field: 'autore', style: {textTransform:'capitalize'}})
     :null,
+    User().ruolo =='caporedattore'?
+        ({ title: 'Redattore', field: 'redattore', style: {textTransform:'capitalize'}})
+    :null,
     { title: 'Tipologia', field: 'tipologia', render: (cell,row) => row.tipologia.titolo.charAt(0).toUpperCase()+row.tipologia.titolo.slice(1)},
     { title: 'Difficoltà', field: 'difficolta', style: {textTransform:'capitalize'}},
     { title: 'Tempi', field: 'tempo_cottura', render:(cell,row) => 
@@ -30,16 +33,21 @@ const COLUMNS = [
     { title: 'Creato il', field:'data_creazione', render: cell => new Date(cell).toLocaleDateString("it-IT",{year:"numeric",month:"2-digit", day:"2-digit"})},
   ].map((a) => { if(a!=null) return a; return false; } );
 
+
 const COLUMNS_VALIDATE = [
 { title: 'id', field: 'id' , align:'right'},
 { title: 'Titolo', field: 'titolo',img:'', render: (cell,row) => 
     {
+        let style = {fontSize:'0.8em'}
         return(
             <div style={{display: 'inline-block'}}>
                 <span style={{textTransform:'capitalize',fontWeight:'600'}}>{row['titolo']}</span>
                 <div>
                     <div>di: {row['autore']}</div>
-                    <span>Data creazione: {new Date(row['data_creazione']).toLocaleDateString("it-IT",{year:"numeric",month:"2-digit", day:"2-digit"})}</span> &nbsp;
+                    <div style={style}>Data creazione: {new Date(row['data_creazione']).toLocaleDateString("it-IT",{year:"numeric",month:"2-digit", day:"2-digit"})}</div>
+                    {User().ruolo=='caporedattore' &&
+                        <div style={style}>Data approvazione: {new Date(row['data_approvazione']).toLocaleDateString("it-IT",{year:"numeric",month:"2-digit", day:"2-digit"})}</div>
+                    }
                 </div>
             </div>
         );
@@ -148,6 +156,8 @@ export default  class Verifiche extends Component {
 
         this.state = {
             rows: '',
+            rowsValidate: '',
+            rowsScartate: '',
             loader: false,
             show:false,
             reloadInfiniteTable:0,
@@ -156,6 +166,8 @@ export default  class Verifiche extends Component {
 
         this.url = this.props.url+'/ricette';        
         this._handleSearchFieldCallback = this._handleSearchFieldCallback.bind(this);   
+        this._handleSearchFieldValidateCallback = this._handleSearchFieldValidateCallback.bind(this);
+        this._handleSearchFieldScartateCallback = this._handleSearchFieldScartateCallback.bind(this);
 
     }
 
@@ -228,6 +240,38 @@ export default  class Verifiche extends Component {
 
     }
 
+    _handleSearchFieldValidateCallback(data,reset){
+
+        //console.log(rows);
+
+        let rowsValidate = this.state.rowsValidate;
+
+        rowsValidate = data.data;
+        this.setState({rowsValidate});
+
+        if(reset){
+            rowsValidate = '';
+            this.setState({rowsValidate});
+        }
+
+    }
+
+    _handleSearchFieldScartateCallback(data,reset){
+
+        //console.log(rows);
+
+        let rowsScartate = this.state.rowsScartate;
+
+        rowsScartate = data.data;
+        this.setState({rowsScartate});
+
+        if(reset){
+            rowsScartate = '';
+            this.setState({rowsScartate});
+        }
+
+    }
+
 
     render() {
 
@@ -241,6 +285,7 @@ export default  class Verifiche extends Component {
                     <div className="nav nav-tabs" id="nav-tab" role="tablist">
                         <a className="nav-item nav-link active" id="nav-verifiche-tab" data-toggle="tab" href="#nav-verifiche" role="tab" aria-controls="nav-verifiche" aria-selected="true">Verifiche</a>
                         <a className="nav-item nav-link" id="nav-validati-tab" data-toggle="tab" href="#nav-validati" role="tab" aria-controls="nav-validati" aria-selected="false">Validate</a>
+                        <a className="nav-item nav-link" id="nav-scartate-tab" data-toggle="tab" href="#nav-scartate" role="tab" aria-controls="nav-scartate" aria-selected="false">Scartate</a>
                     </div>
                 </nav>
 
@@ -289,9 +334,8 @@ export default  class Verifiche extends Component {
 
                             <div className="col-md-6">
                                 <SearchField showList={false} 
-                                url={this.url+'/search'}
-                                query='only=validate'
-                                callback={this._handleSearchFieldCallback}
+                                url={this.props.url+'/verifiche/search'}
+                                callback={this._handleSearchFieldValidateCallback}
                                 />
                             </div>
 
@@ -304,12 +348,12 @@ export default  class Verifiche extends Component {
                         <div className="row">
                             <div className="col-md-12">
                                 <InfiniteTable
-                                    id='tb-ricette'
+                                    id='tb-ricette-validate'
                                     reload={this.state.reloadInfiniteTable}
-                                    url={this.url}
-                                    query='only=validate'
+                                    url={this.props.url+'/verifiche'}
+                                    //query='only=validate'
                                     columns={COLUMNS_VALIDATE}
-                                    externalRows={this.state.rows}
+                                    externalRows={this.state.rowsValidate}
                                     onActions={(element,type) => {                                                                                                          
 
                                         if(type=='stampa'){
@@ -341,6 +385,42 @@ export default  class Verifiche extends Component {
 
                                     }}
                                     //onClick={(row) => history.push(this.props.url+'/verifiche/'+row.id) }
+                                />
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div className="tab-pane fade" id="nav-scartate" role="tabpanel" aria-labelledby="nav-scartate-tab">
+                        
+                        <div className="row mb-3 px-2">
+
+                            <div className="col-md-6">
+                                <SearchField showList={false}
+                                url={this.props.url+'/verifiche/search'}
+                                query='only=scartate'
+                                callback={this._handleSearchFieldScartateCallback}
+                                />
+                            </div>
+
+                            <div className="col-md-6 text-right">
+                            
+                            </div>
+
+                        </div>
+
+                        <div className="row">
+                            <div className="col-md-12">
+                                <InfiniteTable
+                                    id='tb-ricette-scartate'
+                                    reload={this.state.reloadInfiniteTable}
+                                    url={this.props.url+'/verifiche'}
+                                    query='only=scartate'
+                                    columns={COLUMNS}
+                                    externalRows={this.state.rowsScartate}
+                                    onClick={(row) =>                                 
+                                            history.push(this.props.url+'/verifiche/'+row.id)
+                                    }
                                 />
                             </div>
                         </div>

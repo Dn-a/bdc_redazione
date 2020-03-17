@@ -153,7 +153,7 @@ export default class Blog extends Component {
                                     return(                            
                                             <div className="col-md-4" key={key}>
                                                 
-                                                <div className="card mb-4 box-shadow">
+                                                <div className="card mb-5 box-shadow">
                                                     
                                                     <CheckField 
                                                         style={{right:'4px'}}

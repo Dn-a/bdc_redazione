@@ -7,6 +7,7 @@ import INFO_ERROR from '../utils/form/InfoError';
 
 const email_reg_exp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const whitespace_reg_ex = /^[^\s].*/;
+const url_reg_ex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
 
 const FIELDS = [
     'titolo',
@@ -136,8 +137,13 @@ export default class IngredienteModal extends Component {
                     error.unita_misura = INFO_ERROR['caratteri'];
                 break;
             case 'img':
-                if( value.length > 0 && !whitespace_reg_ex.test(value))
-                    error.img = INFO_ERROR['caratteri'];                
+                if(value.length > 0 && !whitespace_reg_ex.test(value))
+                    error.img = INFO_ERROR['caratteri'];
+                else if(value.length > 2048)
+                    error.img = INFO_ERROR['limite_caratteri'];
+                else if(!url_reg_ex.test(value))
+                    error.img = INFO_ERROR['img'];                
+                break;                
         }
 
         data[field] = value.trim();

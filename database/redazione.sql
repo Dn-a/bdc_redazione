@@ -7988,33 +7988,35 @@ REPLACE INTO `fasi` (`id`, `titolo`) VALUES
 CREATE TABLE IF NOT EXISTS `ingredienti` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `titolo` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `attivo` tinyint(1) NOT NULL DEFAULT '0',
   `calorie` double(8,2) NOT NULL,
   `unita_misura` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `img` varchar(2048) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `titolo` (`titolo`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dump dei dati della tabella redazione.ingredienti: ~18 rows (circa)
 /*!40000 ALTER TABLE `ingredienti` DISABLE KEYS */;
-REPLACE INTO `ingredienti` (`id`, `titolo`, `calorie`, `unita_misura`, `img`) VALUES
-	(1, 'spaghetti', 158.00, 'g', 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Spaghetti_chitarra.png/1200px-Spaghetti_chitarra.png'),
-	(2, 'guanciale', 655.00, 'g', 'https://www.intavoliamo.it/Info/media/k2/items/cache/8da476f72f06a276b1f930cdb28c21f1_XL.jpg'),
-	(3, 'tuorlo d\'uovo', 322.00, 'g', 'https://www.orticaweb.it/wp-content/uploads/2017/09/TuorloUovo.jpg'),
-	(4, 'pecorino romano', 387.00, 'g', 'https://www.volpetti.com/wp-content/uploads/2018/04/12-pecorino-romano_001.jpg'),
-	(5, 'sale fino', 0.00, 'q.b.', 'https://www.isaporidibau.it/wp-content/uploads/2015/02/sale-600x450.jpg'),
-	(6, 'pepe nero', 251.00, 'q.b.', 'https://file.cure-naturali.it/site/image/content/18441.jpg?format=jpg'),
-	(7, 'patate', 77.00, 'g', 'https://www.dissapore.com/wp-content/uploads/2019/12/patate-a-pasta-gialla-800x531.jpg'),
-	(8, 'Petto di pollo', 165.00, 'g', 'https://cucinare.meglio.it/img/i/petto-di-pollo.1200x900.jpg'),
-	(9, 'Zenzero fresco', 80.00, 'g', 'https://www.miraherba.de/2166-large_default/miraherba-bio-di-radice-di-zenzero-fresco-100-g.jpg'),
-	(10, 'Olio di semi', 884.00, 'g', 'https://www.cibocrudo.com/immagini/prod2-44242-1-340x0-0-olio-di-semi-di-girasole.jpg'),
-	(11, 'Mandorle pelate', 600.00, 'g', 'https://www.planethoreca.it/shop/8399-large_default/mandorle-pelate-36-38-back-europ-25kg.jpg'),
-	(12, 'Farina 00', 364.00, 'g', 'https://www.infonutrizione.it/wp-content/uploads/2012/06/farina00.jpg'),
-	(13, 'Cipolla', 40.00, 'g', 'https://filecdn.nonsprecare.it/wp-content/uploads/2015/06/come-coltivare-cipolle.jpg'),
-	(14, 'Salsa di soia', 53.00, 'g', 'https://static.sushilabroma.it/2018/03/salsa-soia-kikkoman-150ml.jpg'),
-	(15, 'Acqua', 0.00, 'g', 'https://wips.plug.it/cips/supereva/cms/2016/10/acqua.jpg?w=850&a=r'),
-	(16, 'farina di ceci', 387.00, 'g', 'https://www.molinorossiangelo.it/wp-content/uploads/2018/03/FARINA-DI-CECI.jpg'),
-	(17, 'panini al sesamo', 263.00, 'pezzo/i', 'http://www.ricetteperbimby.it/foto-ricette/panini-al-sesamo-bimby.jpg'),
-	(18, 'prezzemolo', 36.00, 'g', 'https://www.piuvivi.com/images/immagini/erbe/prezzemolo-benefici-usi-controindicazioni.jpg');
+REPLACE INTO `ingredienti` (`id`, `titolo`, `attivo`, `calorie`, `unita_misura`, `img`) VALUES
+	(1, 'spaghetti', 1, 158.00, 'g', 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Spaghetti_chitarra.png/1200px-Spaghetti_chitarra.png'),
+	(2, 'guanciale', 1, 655.00, 'g', 'https://www.intavoliamo.it/Info/media/k2/items/cache/8da476f72f06a276b1f930cdb28c21f1_XL.jpg'),
+	(3, 'tuorlo d\'uovo', 1, 322.00, 'g', 'https://www.orticaweb.it/wp-content/uploads/2017/09/TuorloUovo.jpg'),
+	(4, 'pecorino romano', 1, 387.00, 'g', 'https://www.volpetti.com/wp-content/uploads/2018/04/12-pecorino-romano_001.jpg'),
+	(5, 'sale fino', 1, 0.00, 'q.b.', 'https://www.isaporidibau.it/wp-content/uploads/2015/02/sale-600x450.jpg'),
+	(6, 'pepe nero', 1, 251.00, 'q.b.', 'https://file.cure-naturali.it/site/image/content/18441.jpg?format=jpg'),
+	(7, 'patate', 1, 77.00, 'g', 'https://www.dissapore.com/wp-content/uploads/2019/12/patate-a-pasta-gialla-800x531.jpg'),
+	(8, 'Petto di pollo', 1, 165.00, 'g', 'https://cucinare.meglio.it/img/i/petto-di-pollo.1200x900.jpg'),
+	(9, 'Zenzero fresco', 1, 80.00, 'g', 'https://www.miraherba.de/2166-large_default/miraherba-bio-di-radice-di-zenzero-fresco-100-g.jpg'),
+	(10, 'Olio di semi', 1, 884.00, 'g', 'https://www.cibocrudo.com/immagini/prod2-44242-1-340x0-0-olio-di-semi-di-girasole.jpg'),
+	(11, 'Mandorle pelate', 1, 600.00, 'g', 'https://www.planethoreca.it/shop/8399-large_default/mandorle-pelate-36-38-back-europ-25kg.jpg'),
+	(12, 'Farina 00', 1, 364.00, 'g', 'https://www.infonutrizione.it/wp-content/uploads/2012/06/farina00.jpg'),
+	(13, 'Cipolla', 1, 40.00, 'g', 'https://filecdn.nonsprecare.it/wp-content/uploads/2015/06/come-coltivare-cipolle.jpg'),
+	(14, 'Salsa di soia', 1, 53.00, 'g', 'https://static.sushilabroma.it/2018/03/salsa-soia-kikkoman-150ml.jpg'),
+	(15, 'Acqua', 1, 0.00, 'g', 'https://wips.plug.it/cips/supereva/cms/2016/10/acqua.jpg?w=850&a=r'),
+	(16, 'farina di ceci', 1, 387.00, 'g', 'https://www.molinorossiangelo.it/wp-content/uploads/2018/03/FARINA-DI-CECI.jpg'),
+	(17, 'panini al sesamo', 1, 263.00, 'pezzo/i', 'http://www.ricetteperbimby.it/foto-ricette/panini-al-sesamo-bimby.jpg'),
+	(18, 'prezzemolo', 1, 36.00, 'g', 'https://www.piuvivi.com/images/immagini/erbe/prezzemolo-benefici-usi-controindicazioni.jpg');
 /*!40000 ALTER TABLE `ingredienti` ENABLE KEYS */;
 
 -- Dump della struttura di tabella redazione.migrations
@@ -8098,9 +8100,9 @@ CREATE TABLE IF NOT EXISTS `ricette` (
   CONSTRAINT `ricette_id_autore_foreign` FOREIGN KEY (`id_autore`) REFERENCES `autori` (`id`),
   CONSTRAINT `ricette_id_fase_foreign` FOREIGN KEY (`id_fase`) REFERENCES `fasi` (`id`),
   CONSTRAINT `ricette_id_tipologia_foreign` FOREIGN KEY (`id_tipologia`) REFERENCES `tipologie` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dump dei dati della tabella redazione.ricette: ~3 rows (circa)
+-- Dump dei dati della tabella redazione.ricette: ~4 rows (circa)
 /*!40000 ALTER TABLE `ricette` DISABLE KEYS */;
 REPLACE INTO `ricette` (`id`, `titolo`, `tempo_preparazione`, `tempo_cottura`, `intro`, `modalita_preparazione`, `porzioni`, `calorie`, `difficolta`, `id_fase`, `id_autore`, `id_tipologia`, `note`, `img`, `data_creazione`) VALUES
 	(19, 'Spaghetti alla Carbonara', 15, 10, 'Gli spaghetti alla Carbonara, o più semplicemente la carbonara, è uno dei primi piatti più amati della cucina italiana, è inoltre considerato un piatto classico della cucina romana.', '<strong>1 </strong><br/> Cuocete gli spaghetti in acqua bollente e con poco sale. la cottura deve essere al dente<br/>\n<strong>2 </strong> <br/>\nNel frattempo tagliate a dadini la pancetta o il guanciale di maiale (secondo la tradizione è quest\'ultimo che andrebbe utilizzato), lasciando sciogliere in un tegame senza olio<br/>\n<strong>3 </strong> <br/>\nQuando la pancetta o il guanciale appariranno parzialmente sciolti aggiungete un pochino di acqua di cottura e cucinare a fuoco moderato per circa 10 minuti<br/>\n<strong>4 </strong> <br/>\nSbattete in un recipiente quattro tuorli d\'uovo, come per fare una comune frittata, e aggiungete il pecorino grattugiate e un buon pizzico di pepe nero<br/>\n<strong>5 </strong> <br/>\nVersate la pasta scolata e fatela saltare nella padella con la pancetta o il guanciale bollente<br/>\n<strong>6 </strong> <br/>\nSpegnete la fiamma e unite le uova preparate col formaggio, amalgamandole finchè non risulteranno rapprese e servite.', 4, 680.00, 'facile', 7, 8, 1, 'note', 'https://blog.giallozafferano.it/lebistro/wp-content/uploads/2018/10/PASTA-ALLA-CARBONARA.jpg', '2020-03-10 03:24:19'),
@@ -8119,9 +8121,9 @@ CREATE TABLE IF NOT EXISTS `ricette_ingredienti` (
   KEY `ricette_ingredienti_id_ingrediente_foreign` (`id_ingrediente`),
   CONSTRAINT `ricette_ingredienti_id_ingrediente_foreign` FOREIGN KEY (`id_ingrediente`) REFERENCES `ingredienti` (`id`),
   CONSTRAINT `ricette_ingredienti_id_ricetta_foreign` FOREIGN KEY (`id_ricetta`) REFERENCES `ricette` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=296 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=298 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dump dei dati della tabella redazione.ricette_ingredienti: ~22 rows (circa)
+-- Dump dei dati della tabella redazione.ricette_ingredienti: ~23 rows (circa)
 /*!40000 ALTER TABLE `ricette_ingredienti` DISABLE KEYS */;
 REPLACE INTO `ricette_ingredienti` (`id`, `id_ricetta`, `id_ingrediente`, `quantita`) VALUES
 	(184, 19, 1, 320),
@@ -8172,7 +8174,7 @@ CREATE TABLE IF NOT EXISTS `tipologie` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dump dei dati della tabella redazione.tipologie: ~5 rows (circa)
+-- Dump dei dati della tabella redazione.tipologie: ~4 rows (circa)
 /*!40000 ALTER TABLE `tipologie` DISABLE KEYS */;
 REPLACE INTO `tipologie` (`id`, `titolo`) VALUES
 	(1, 'primo'),
@@ -8202,10 +8204,10 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dump dei dati della tabella redazione.users: ~3 rows (circa)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 REPLACE INTO `users` (`id`, `email`, `id_ruolo`, `password`, `email_verified_at`, `remember_token`, `created_at`, `updated_at`) VALUES
-	(9, 'antonino.dinatale@email.com', 3, '$2y$10$LrLJ8qEkCG4Kj0n9bSww5uIU06Wlg8o8gIT1ejttu/b5GH.EpFUQW', NULL, 'ndcvlPhScaRXrdCyyDawYBteKNZxQ4gehEGuEsrqlxXRfHXEj8faFlqa4W55', '2020-03-02 23:21:37', '2020-03-02 23:21:37'),
-	(10, 'mario.rossi@email.com', 1, '$2y$10$Vjb7yyV9yWlvWqcBFN5W2O187cY3TOFRmForU.Nz55brbXSgGpzbi', NULL, 'SL1JM6gfQAGrsYXUfaK7vnwZV9Kjl0DSAksr7bzHy5vMaqdXhw3MoUnGxxkb', '2020-03-03 23:17:37', '2020-03-03 23:17:37'),
+	(9, 'antonino.dinatale@email.com', 3, '$2y$10$LrLJ8qEkCG4Kj0n9bSww5uIU06Wlg8o8gIT1ejttu/b5GH.EpFUQW', NULL, 'xELCify1LGMLmAxqPDj72v7vhdzZyUIEpSAlWJtaYuGfxqcAQOjjhRE4byVY', '2020-03-02 23:21:37', '2020-03-02 23:21:37'),
+	(10, 'mario.rossi@email.com', 1, '$2y$10$Vjb7yyV9yWlvWqcBFN5W2O187cY3TOFRmForU.Nz55brbXSgGpzbi', NULL, 'uB7Zmss8ZUmzUwZ4mxNNR27xtKOPXvhxKGDaXDIBzqTotu88loUOnWv5KMBy', '2020-03-03 23:17:37', '2020-03-03 23:17:37'),
 	(12, 'franco.sole@email.com', 2, '$2y$10$igh.Rmd0x5l8ofr1x/WfQOhWD6LuvSSLU10NahGEqqSBrGx6qSeC6', NULL, NULL, '2020-03-05 00:00:20', '2020-03-05 00:00:20'),
-	(13, 'renzo.arbore@email.com', 1, '$2y$10$ICppkVMUe57t8ma7TOSxnesOiiKpGnD7G53SCqXuorCH/SJ9vftP.', NULL, 'JaPfj4gt0l9xPaLh7stSNgWUSDL9vsOENb4A6XNH9fEzY0sUwygk93phBd9I', '2020-03-13 00:56:49', '2020-03-13 00:56:49');
+	(13, 'renzo.arbore@email.com', 1, '$2y$10$ICppkVMUe57t8ma7TOSxnesOiiKpGnD7G53SCqXuorCH/SJ9vftP.', NULL, 'zatRzMaqGLn8VyEAGy3qPjc0lcylVF0rDPqDp6OrPb2odb6vOr6DcPVyOlKF', '2020-03-13 00:56:49', '2020-03-13 00:56:49');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 -- Dump della struttura di tabella redazione.verifiche
@@ -8223,14 +8225,14 @@ CREATE TABLE IF NOT EXISTS `verifiche` (
   CONSTRAINT `verifiche_id_fase_foreign` FOREIGN KEY (`id_fase`) REFERENCES `fasi` (`id`),
   CONSTRAINT `verifiche_id_redattore_foreign` FOREIGN KEY (`id_redattore`) REFERENCES `redattori` (`id`),
   CONSTRAINT `verifiche_id_ricetta_foreign` FOREIGN KEY (`id_ricetta`) REFERENCES `ricette` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dump dei dati della tabella redazione.verifiche: ~2 rows (circa)
+-- Dump dei dati della tabella redazione.verifiche: ~4 rows (circa)
 /*!40000 ALTER TABLE `verifiche` DISABLE KEYS */;
 REPLACE INTO `verifiche` (`id`, `id_ricetta`, `id_redattore`, `id_fase`, `data_creazione`, `data_approvazione`) VALUES
-	(7, 19, 2, 7, '2020-03-12 01:34:01', NULL),
-	(8, 20, 2, 7, '2020-03-13 02:04:55', NULL),
-	(9, 21, 2, 7, '2020-03-17 02:31:51', NULL);
+	(7, 19, 2, 7, '2020-03-12 01:34:01', '2020-03-15 20:10:22'),
+	(8, 20, 2, 7, '2020-03-13 02:04:55', '2020-03-16 20:10:22'),
+	(9, 21, 2, 7, '2020-03-17 02:31:51', '2020-03-14 20:10:22');
 /*!40000 ALTER TABLE `verifiche` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

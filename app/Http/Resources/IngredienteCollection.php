@@ -9,6 +9,7 @@ class IngredienteCollection extends ResourceCollection
     protected $withFields = [
         'id',
         'titolo',
+        'attivo',
         'calorie',
         'unita_misura',
         'img'   

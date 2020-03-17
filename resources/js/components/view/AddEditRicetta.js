@@ -547,7 +547,9 @@ export default class AddEditRicetta extends Component {
                         </div>
 
                         <div className="col-md-8 mb-5" style={{paddingTop:'34px'}}>
-                            <span className="mr-4">Se non trovi un ingrediente, crealo!</span>
+                            {/* <span className="mr-4">Se non trovi un ingrediente, crealo!</span> */}
+                            <span>Se non trovi un ingrediente, crealo! </span>
+                            <span>è necessario attendere l'approvazione da parte della redazione prima di poterlo inserire nella tua ricetta. </span>
 
                             <Button
                                 className='btn-light'

@@ -80970,7 +80970,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _view_AddEditRicetta__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./view/AddEditRicetta */ "./resources/js/components/view/AddEditRicetta.js");
 /* harmony import */ var _view_Ricetta__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./view/Ricetta */ "./resources/js/components/view/Ricetta.js");
 /* harmony import */ var _view_Ricette__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./view/Ricette */ "./resources/js/components/view/Ricette.js");
-/* harmony import */ var _view_Verifiche__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./view/Verifiche */ "./resources/js/components/view/Verifiche.js");
+/* harmony import */ var _view_Ingredienti__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./view/Ingredienti */ "./resources/js/components/view/Ingredienti.js");
+/* harmony import */ var _view_Verifiche__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./view/Verifiche */ "./resources/js/components/view/Verifiche.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -81011,6 +81012,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 var routes = [{
   path: "/",
   name: "Home",
@@ -81022,7 +81024,7 @@ var routes = [{
   name: "Verifiche",
   title: 'Validazione Ricette',
   icon: 'fa-gavel',
-  Component: _view_Verifiche__WEBPACK_IMPORTED_MODULE_13__["default"]
+  Component: _view_Verifiche__WEBPACK_IMPORTED_MODULE_14__["default"]
 }, {
   path: "/verifiche/:ricetta",
   name: "Verifica",
@@ -81073,6 +81075,12 @@ var routes = [{
   title: 'Gestione Autori',
   icon: 'fa-address-card-o',
   Component: _view_Autori__WEBPACK_IMPORTED_MODULE_9__["default"]
+}, {
+  path: "/ingredienti",
+  name: "Ingredienti",
+  title: 'Gestione Ingredienti',
+  icon: 'fa-list-ul',
+  Component: _view_Ingredienti__WEBPACK_IMPORTED_MODULE_13__["default"]
 }];
 
 var MainTitle = function MainTitle() {
@@ -81256,7 +81264,7 @@ function (_Component) {
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, name)));
       })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("main", {
         id: "content",
-        className: "py-4 " + (ruolo != '' ? 'logged' : '')
+        className: "py-4 pb-5 " + (ruolo != '' ? 'logged' : '')
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(MainTitle, null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, routes.map(function (_ref4, key) {
         var path = _ref4.path,
             Component = _ref4.Component;
@@ -81346,6 +81354,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 var email_reg_exp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 var whitespace_reg_ex = /^[^\s].*/;
+var url_reg_ex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi;
 var FIELDS = ['titolo', 'calorie', 'unita_misura', 'img'];
 var HIDE_FIELD = [];
 
@@ -81463,7 +81472,8 @@ function (_Component) {
           break;
 
         case 'img':
-          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.img = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['caratteri'];
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.img = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['caratteri'];else if (value.length > 2048) error.img = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['limite_caratteri'];else if (!url_reg_ex.test(value)) error.img = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['img'];
+          break;
       }
 
       data[field] = value.trim();
@@ -82837,7 +82847,7 @@ function (_Component) {
         }); //console.log(res.data);
 
       })["catch"](function (error) {
-        //if(error.response===undefined) return;
+        if (error.response === undefined) return;
         if (error.response.data !== undefined) console.log(error.response.data);else console.log(error.response);
         if (error.response.status == 401) if (window.confirm('Devi effettuare il Login, Clicca ok per essere reindirizzato.')) window.location.href = _this4.home + '/login';
       });
@@ -84501,9 +84511,7 @@ function (_Component) {
         style: {
           paddingTop: '34px'
         }
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "mr-4"
-      }, "Se non trovi un ingrediente, crealo!"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_9__["Button"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Se non trovi un ingrediente, crealo! "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "\xE8 necessario attendere l'approvazione da parte della redazione prima di poterlo inserire nella tua ricetta. "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_9__["Button"], {
         className: "btn-light",
         onClick: this._handleShowModal
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
@@ -85025,7 +85033,7 @@ function (_Component) {
           className: "col-md-4",
           key: key
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "card mb-4 box-shadow"
+          className: "card mb-5 box-shadow"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_3__["default"], {
           style: {
             right: '4px'
@@ -85437,6 +85445,254 @@ function (_Component) {
 
 /***/ }),
 
+/***/ "./resources/js/components/view/Ingredienti.js":
+/*!*****************************************************!*\
+  !*** ./resources/js/components/view/Ingredienti.js ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Ingredienti; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Env__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../Env */ "./resources/js/components/Env.js");
+/* harmony import */ var _utils_SearchField__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/SearchField */ "./resources/js/components/utils/SearchField.js");
+/* harmony import */ var _utils_Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/Button */ "./resources/js/components/utils/Button.js");
+/* harmony import */ var _utils_InfiniteTable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/InfiniteTable */ "./resources/js/components/utils/InfiniteTable.js");
+/* harmony import */ var _modal_IngredienteModal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../modal/IngredienteModal */ "./resources/js/components/modal/IngredienteModal.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+
+
+var COLUMNS = [{
+  title: 'id',
+  field: 'id',
+  align: 'right'
+}, {
+  title: 'Titolo',
+  field: 'titolo',
+  img: ''
+}, Object(_Env__WEBPACK_IMPORTED_MODULE_1__["User"])().ruolo != 'autore' ? {
+  title: 'Autore',
+  field: 'autore',
+  style: {
+    textTransform: 'capitalize'
+  }
+} : null, {
+  title: 'Calorie',
+  field: 'calorie'
+}, {
+  title: 'Unità di misura',
+  field: 'unita_misura'
+}, {
+  title: 'Fase',
+  field: 'fase',
+  style: {
+    textTransform: 'capitalize'
+  }
+}, {
+  title: 'Approvazione',
+  field: 'actions',
+  render: function render(cell, row, handle) {
+    if (row.attivo == '0') return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_3__["Button"], {
+      className: "btn-light",
+      title: "Rimuovi Ricetta",
+      onClick: function onClick(e) {
+        e.stopPropagation();
+
+        if (confirm("Sicuro di volerlo approvare?")) {
+          handle(row, 'approva');
+        }
+      }
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fa fa-gavel",
+      "aria-hidden": "true"
+    }, " Approva"));
+  }
+}].map(function (a) {
+  if (a != null) return a;
+  return false;
+});
+;
+
+var Ingredienti =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(Ingredienti, _Component);
+
+  function Ingredienti(props) {
+    var _this;
+
+    _classCallCheck(this, Ingredienti);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Ingredienti).call(this, props));
+    _this.state = {
+      rows: '',
+      loader: false,
+      show: false,
+      reloadInfiniteTable: 0,
+      errorRegMessage: ''
+    };
+    _this.url = _this.props.url + '/ingredienti';
+    _this._handleCloseModal = _this._handleCloseModal.bind(_assertThisInitialized(_this));
+    _this._handleShowModal = _this._handleShowModal.bind(_assertThisInitialized(_this));
+    _this._handleSearchFieldCallback = _this._handleSearchFieldCallback.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(Ingredienti, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {//this.getRemoteData();
+    }
+  }, {
+    key: "_handleCloseModal",
+    value: function _handleCloseModal() {
+      this.setState({
+        show: false
+      });
+    }
+  }, {
+    key: "_handleShowModal",
+    value: function _handleShowModal() {
+      this.setState({
+        show: true
+      });
+    }
+  }, {
+    key: "_handleSearchFieldCallback",
+    value: function _handleSearchFieldCallback(data, reset) {
+      //console.log(rows);
+      var rows = this.state.rows;
+      rows = data.data;
+      this.setState({
+        rows: rows
+      });
+
+      if (reset) {
+        rows = '';
+        this.setState({
+          rows: rows
+        });
+      }
+    }
+  }, {
+    key: "setRemoteData",
+    value: function setRemoteData($id) {
+      var _this2 = this;
+
+      var url = this.props.url + '/ingredienti/' + $id;
+      var headers = {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      };
+      var sendData = {};
+      sendData.approva = 1;
+      sendData._method = 'put';
+      sendData._token = CSRF_TOKEN; //console.log(sendData);return;
+
+      return axios.post(url, sendData, headers).then(function (result) {
+        //console.log(result);
+        _this2.setState({
+          reloadInfiniteTable: ++_this2.state.reloadInfiniteTable
+        });
+
+        return result;
+      })["catch"](function (error) {
+        console.error(error.response);
+        var msg = '';
+
+        if (error.response !== undefined) {
+          if (error.response.data.errors) msg = error.response.data.errors;else if (error.response.data.msg) msng = error.response.data.msg;
+        }
+
+        _this2.setState({
+          errorRegMessage: msg
+        });
+
+        throw error;
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      var user = Object(_Env__WEBPACK_IMPORTED_MODULE_1__["User"])();
+      var history = this.props.router.history;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "container-fluid pl-3 constraint"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row mb-3 px-2"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_SearchField__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        showList: false,
+        url: this.url + '/search',
+        callback: this._handleSearchFieldCallback
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-6 text-right"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_3__["AddButton"], {
+        onClick: this._handleShowModal
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fa fa-plus-circle",
+        "aria-hidden": "true"
+      }), "\xA0Nuova Ricetta"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modal_IngredienteModal__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        url: this.props.url,
+        show: this.state.show,
+        onHide: this._handleCloseModal,
+        callback: function callback(row) {
+          _this3.setState({
+            reloadInfiniteTable: ++_this3.state.reloadInfiniteTable
+          });
+        }
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-12"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_InfiniteTable__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        id: "tb-ingredienti",
+        reload: this.state.reloadInfiniteTable,
+        url: this.url,
+        columns: COLUMNS,
+        externalRows: this.state.rows,
+        onActions: function onActions(row, type) {
+          return _this3.setRemoteData(row.id);
+        }
+      }))));
+    }
+  }]);
+
+  return Ingredienti;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/view/Redattori.js":
 /*!***************************************************!*\
   !*** ./resources/js/components/view/Redattori.js ***!
@@ -85826,8 +86082,22 @@ function (_Component) {
       return axios.post(url, sendData, headers).then(function (result) {
         //console.log(result);
         var ricetta = _this3.state.ricetta;
+        var msg = '';
         ricetta.fase = result.data.fase;
-        var msg = ricetta.fase == 'idonea' ? 'Ricetta Validata!' : 'Ricetta Approvata!';
+
+        switch (ricetta.fase) {
+          case 'idonea':
+            msg = 'Ricetta Validata!';
+            break;
+
+          case 'approvata':
+            msg = 'Ricetta Approvata!';
+            break;
+
+          case 'scartata':
+            msg = 'Ricetta Scartata!';
+            break;
+        }
 
         _this3.setState({
           ricetta: ricetta,
@@ -86022,7 +86292,16 @@ var Validazione = function Validazione(props) {
   };
   var fase = props.user.ruolo == 'redattore' ? 'idonea' : 'approvata';
   var classValid = props.user.ruolo == 'redattore' ? 'validazione ' : '';
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_2__["ConfirmButton"] //style={style}
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_2__["CloseButton"] //style={style}
+  , {
+    className: "w-100 py-2 ",
+    onClick: function onClick(a) {
+      return props.onClick(props.state.ricetta.id, 'scartata');
+    }
+  }, "Scarta", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    className: "loader-2" + (props.state.verificationLoader == true ? ' d-inline-block' : ''),
+    src: props.url + "/img/loader_2.gif"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_2__["ConfirmButton"] //style={style}
   , {
     className: "w-100 " + classValid + props.className,
     onClick: function onClick(a) {
@@ -86489,6 +86768,12 @@ var COLUMNS = [{
   style: {
     textTransform: 'capitalize'
   }
+} : null, Object(_Env__WEBPACK_IMPORTED_MODULE_2__["User"])().ruolo == 'caporedattore' ? {
+  title: 'Redattore',
+  field: 'redattore',
+  style: {
+    textTransform: 'capitalize'
+  }
 } : null, {
   title: 'Tipologia',
   field: 'tipologia',
@@ -86536,6 +86821,9 @@ var COLUMNS_VALIDATE = [{
   field: 'titolo',
   img: '',
   render: function render(cell, row) {
+    var style = {
+      fontSize: '0.8em'
+    };
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       style: {
         display: 'inline-block'
@@ -86545,11 +86833,19 @@ var COLUMNS_VALIDATE = [{
         textTransform: 'capitalize',
         fontWeight: '600'
       }
-    }, row['titolo']), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "di: ", row['autore']), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Data creazione: ", new Date(row['data_creazione']).toLocaleDateString("it-IT", {
+    }, row['titolo']), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "di: ", row['autore']), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: style
+    }, "Data creazione: ", new Date(row['data_creazione']).toLocaleDateString("it-IT", {
       year: "numeric",
       month: "2-digit",
       day: "2-digit"
-    })), " \xA0"));
+    })), Object(_Env__WEBPACK_IMPORTED_MODULE_2__["User"])().ruolo == 'caporedattore' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: style
+    }, "Data approvazione: ", new Date(row['data_approvazione']).toLocaleDateString("it-IT", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }))));
   }
 }, {
   title: 'Azioni',
@@ -86678,6 +86974,8 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Verifiche).call(this, props));
     _this.state = {
       rows: '',
+      rowsValidate: '',
+      rowsScartate: '',
       loader: false,
       show: false,
       reloadInfiniteTable: 0,
@@ -86685,6 +86983,8 @@ function (_Component) {
     };
     _this.url = _this.props.url + '/ricette';
     _this._handleSearchFieldCallback = _this._handleSearchFieldCallback.bind(_assertThisInitialized(_this));
+    _this._handleSearchFieldValidateCallback = _this._handleSearchFieldValidateCallback.bind(_assertThisInitialized(_this));
+    _this._handleSearchFieldScartateCallback = _this._handleSearchFieldScartateCallback.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -86754,6 +87054,40 @@ function (_Component) {
       }
     }
   }, {
+    key: "_handleSearchFieldValidateCallback",
+    value: function _handleSearchFieldValidateCallback(data, reset) {
+      //console.log(rows);
+      var rowsValidate = this.state.rowsValidate;
+      rowsValidate = data.data;
+      this.setState({
+        rowsValidate: rowsValidate
+      });
+
+      if (reset) {
+        rowsValidate = '';
+        this.setState({
+          rowsValidate: rowsValidate
+        });
+      }
+    }
+  }, {
+    key: "_handleSearchFieldScartateCallback",
+    value: function _handleSearchFieldScartateCallback(data, reset) {
+      //console.log(rows);
+      var rowsScartate = this.state.rowsScartate;
+      rowsScartate = data.data;
+      this.setState({
+        rowsScartate: rowsScartate
+      });
+
+      if (reset) {
+        rowsScartate = '';
+        this.setState({
+          rowsScartate: rowsScartate
+        });
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this3 = this;
@@ -86782,7 +87116,15 @@ function (_Component) {
         role: "tab",
         "aria-controls": "nav-validati",
         "aria-selected": "false"
-      }, "Validate"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "Validate"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        className: "nav-item nav-link",
+        id: "nav-scartate-tab",
+        "data-toggle": "tab",
+        href: "#nav-scartate",
+        role: "tab",
+        "aria-controls": "nav-scartate",
+        "aria-selected": "false"
+      }, "Scartate"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "tab-content pt-4",
         id: "nav-tabContent"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -86827,9 +87169,8 @@ function (_Component) {
         className: "col-md-6"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_SearchField__WEBPACK_IMPORTED_MODULE_3__["default"], {
         showList: false,
-        url: this.url + '/search',
-        query: "only=validate",
-        callback: this._handleSearchFieldCallback
+        url: this.props.url + '/verifiche/search',
+        callback: this._handleSearchFieldValidateCallback
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-6 text-right"
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -86837,12 +87178,12 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-12"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_InfiniteTable__WEBPACK_IMPORTED_MODULE_5__["default"], {
-        id: "tb-ricette",
+        id: "tb-ricette-validate",
         reload: this.state.reloadInfiniteTable,
-        url: this.url,
-        query: "only=validate",
+        url: this.props.url + '/verifiche' //query='only=validate'
+        ,
         columns: COLUMNS_VALIDATE,
-        externalRows: this.state.rows,
+        externalRows: this.state.rowsValidate,
         onActions: function onActions(element, type) {
           if (type == 'stampa') {
             var fieldPrint = _this3.state.fieldPrint;
@@ -86869,6 +87210,36 @@ function (_Component) {
           }
         } //onClick={(row) => history.push(this.props.url+'/verifiche/'+row.id) }
 
+      })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "tab-pane fade",
+        id: "nav-scartate",
+        role: "tabpanel",
+        "aria-labelledby": "nav-scartate-tab"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row mb-3 px-2"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_SearchField__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        showList: false,
+        url: this.props.url + '/verifiche/search',
+        query: "only=scartate",
+        callback: this._handleSearchFieldScartateCallback
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-6 text-right"
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-12"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_InfiniteTable__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        id: "tb-ricette-scartate",
+        reload: this.state.reloadInfiniteTable,
+        url: this.props.url + '/verifiche',
+        query: "only=scartate",
+        columns: COLUMNS,
+        externalRows: this.state.rowsScartate,
+        onClick: function onClick(row) {
+          return history.push(_this3.props.url + '/verifiche/' + row.id);
+        }
       }))))));
     }
   }]);

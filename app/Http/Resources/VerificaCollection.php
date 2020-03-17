@@ -4,17 +4,15 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class RicettaCollection extends ResourceCollection
+class VerificaCollection extends ResourceCollection
 {
     protected $withFields = [
         'id',
         'titolo',
-        'tempo_preparazione',
-        'tempo_cottura',
-        'intro',   
-        'calorie',
-        'difficolta',        
-        'img'   
+        'autore',        
+        'intro',
+        'img',
+        'data_creazione'
     ];
     protected $withPagination;
 
@@ -56,33 +54,33 @@ class RicettaCollection extends ResourceCollection
     {
         $fields = $this->withFields;
 
+        if(in_array('id',$fields)){
+            $id = $item->ricetta->id;
+            $item['id'] = $id;
+        }
+        if(in_array('titolo',$fields)){
+            $titolo = $item->ricetta->titolo;
+            $item['titolo'] = $titolo;
+        }
         if(in_array('autore',$fields)){
-            $autore = ucfirst($item->autore->nome).' '.ucfirst($item->autore->cognome);
+            $autore = ucfirst($item->ricetta->autore->nome).' '.ucfirst($item->ricetta->autore->cognome);
             $item['autore'] = $autore;
-        }
-        if(in_array('tipologia',$fields)){
-            $tipologia = $item->tipologia;
-            $item['tipologia'] = $tipologia;
-        }
-        if(in_array('ingredienti',$fields)){
-            $ingredienti = $item->ingredienti;
-            for($i=0; $i < count($ingredienti); $i++)            
-            {
-                $ingredienti[$i]['quantita'] = $ingredienti[$i]['pivot']['quantita'];
-                unset(
-                    $ingredienti[$i]['pivot']
-                    //,$ingredienti[$i]['img']
-                );
-            }
-            $item['ingredienti'] = $ingredienti;
-        }
+        } 
         if(in_array('redattore',$fields)){
             $redattore = ucfirst($item->redattore->nome).' '.ucfirst($item->redattore->cognome);
             $item['redattore'] = $redattore;
-        }
+        }        
         if(in_array('fase',$fields)){
             $fase = $item->fase->titolo;
             $item['fase'] = $fase;
+        }
+        if(in_array('img',$fields)){
+            $img = $item->ricetta->img;
+            $item['img'] = $img;
+        }
+        if(in_array('tipologia',$fields)){
+            $tipologia = $item->ricetta->tipologia;
+            $item['tipologia'] = $tipologia;
         }
 
         if(empty($this->withFields)) return $item;
