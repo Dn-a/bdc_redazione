@@ -80919,13 +80919,14 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*!****************************************!*\
   !*** ./resources/js/components/Env.js ***!
   \****************************************/
-/*! exports provided: URL_HOME, User */
+/*! exports provided: URL_HOME, User, ASSETS */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "URL_HOME", function() { return URL_HOME; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "User", function() { return User; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ASSETS", function() { return ASSETS; });
 var URL_HOME = window.location.hostname == 'www.dn-a.it' ? '/noleggio' : '';
 
 var User = function User() {
@@ -80937,6 +80938,9 @@ var User = function User() {
   return config;
 };
 
+var ASSETS = {
+  loader_gif: URL_HOME + '/img/loader.gif'
+};
 
 
 /***/ }),
@@ -81031,19 +81035,9 @@ var routes = [{
   title: 'Ricetta',
   icon: 'fa-home',
   Component: _view_Ricetta__WEBPACK_IMPORTED_MODULE_11__["default"]
-}, {
-  path: "/validate",
-  name: "Validate",
-  title: 'Ricette Validate',
-  icon: 'fa-thumbs-up',
-  Component: _view_Verifiche__WEBPACK_IMPORTED_MODULE_13__["default"]
-}, {
-  path: "/approvate",
-  name: "Approvate",
-  title: 'Ricette Approvate',
-  icon: 'fa-thumbs-up',
-  Component: _view_Verifiche__WEBPACK_IMPORTED_MODULE_13__["default"]
-}, {
+}, //{path: "/validate", name:"Validate", title:'Ricette Validate', icon:'fa-thumbs-up', Component: Validate},
+//{path: "/approvate", name:"Approvate", title:'Ricette Approvate', icon:'fa-thumbs-up', Component: Validate},
+{
   path: "/gestione-ricette/new",
   name: "Nuova-Ricetta",
   title: 'Nuova Ricetta',
@@ -83233,6 +83227,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 // - resetAfterClick: boolean
 // - onClick: handle
 // - patternList: Object - {id:'id', fields:{titolo:[],calorie:[]}
+// - loaderPath: string
 
 var SearchField =
 /*#__PURE__*/
@@ -83437,7 +83432,7 @@ function (_Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "img-loader " + (this.state.loader ? "active" : '')
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-        src: "../img/loader.gif"
+        src: this.props.loaderPath !== undefined ? this.props.loaderPath : "../img/loader.gif"
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "info-search"
       }, this.state.infoSearch), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -83508,7 +83503,8 @@ var CheckField = function CheckField(_ref) {
       checked = _ref.checked,
       defaultChecked = _ref.defaultChecked,
       value = _ref.value,
-      handleChange = _ref.handleChange;
+      handleChange = _ref.handleChange,
+      onChange = _ref.onChange;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     style: style,
     className: divClassName
@@ -83522,7 +83518,7 @@ var CheckField = function CheckField(_ref) {
     className: 'darken-3 ' + className,
     required: required,
     placeholder: placeholder,
-    onChange: handleChange,
+    onChange: handleChange ? handleChange : onChange ? onChange : null,
     checked: checked,
     defaultChecked: defaultChecked,
     value: value
@@ -84195,7 +84191,7 @@ function (_Component) {
           break;
 
         case 'modalita_preparazione':
-          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.modalita_preparazione = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['caratteri'];else if (value.length > 2048) error.modalita_preparazione = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['limite_caratteri'];
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.modalita_preparazione = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['caratteri'];else if (value.length > 3096) error.modalita_preparazione = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['limite_caratteri'];
           break;
 
         case 'ingrediente_' + id:
@@ -84311,17 +84307,12 @@ function (_Component) {
         'facile': 'Facile',
         'media': 'Media',
         'difficile': 'Difficile'
-      };
-      var objFid2 = {
-        1: 'Primo',
-        2: 'Secondo',
-        3: 'Contorno',
-        4: 'Dolce',
-        5: 'Antipasto'
-      };
+      }; //let objFid2 = {1:'Primo',2:'Secondo',3:'Contorno',4:'Dolce',5:'Antipasto'};
+
+      var objFid2 = JSON.parse(user.tipologie);
       var styleHR = {
         margin: '35px 0 20px'
-      }; //console.log(data.ingredienti)        
+      }; //console.log(objFid2)        
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("article", {
         className: "col-md-12 constraint"
@@ -84479,6 +84470,7 @@ function (_Component) {
         searchClassName: "w-100",
         showList: true,
         url: this.props.url + '/ingredienti/search',
+        loaderPath: _Env__WEBPACK_IMPORTED_MODULE_2__["ASSETS"].loader_gif,
         patternList: {
           id: 'id',
           fields: {
@@ -84863,9 +84855,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -84902,8 +84894,14 @@ function (_Component) {
         total: 0,
         perPage: 0
       },
+      kcalSelcted: {
+        id: [],
+        titolo: [],
+        kcal: []
+      },
       loader: false
     };
+    _this.handleKcalSelected = _this.handleKcalSelected.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -84966,11 +84964,43 @@ function (_Component) {
       });
     }
   }, {
+    key: "handleKcalSelected",
+    value: function handleKcalSelected(e) {
+      var checked = e.target.checked;
+      var value = JSON.parse(e.target.value);
+      var kcalSelcted = this.state.kcalSelcted;
+
+      if (!checked) {
+        kcalSelcted.id = kcalSelcted.id.filter(function (id) {
+          return id != value.id;
+        });
+        kcalSelcted.titolo = kcalSelcted.titolo.filter(function (titolo) {
+          return titolo != value.titolo;
+        });
+        kcalSelcted.kcal = kcalSelcted.kcal.filter(function (kcal) {
+          return kcal != value.kcal;
+        });
+      } else {
+        kcalSelcted.id.push(value.id);
+        kcalSelcted.titolo.push(value.titolo);
+        kcalSelcted.kcal.push(value.kcal);
+      }
+
+      this.setState({
+        kcalSelcted: kcalSelcted
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this3 = this;
 
-      var data = this.state.data; //console.log(this.props);
+      var data = this.state.data;
+      var kcalSelcted = this.state.kcalSelcted;
+      var titoloKcal = kcalSelcted.titolo;
+      var totKcal = kcalSelcted.kcal.length > 0 ? kcalSelcted.kcal.reduce(function (a, b) {
+        return a + b;
+      }) : 0; //console.log(this.props);
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", {
         className: "container-fluid blog"
@@ -84980,7 +85010,15 @@ function (_Component) {
         className: "img-loader active"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
         src: this.props.url + '/img/loader.gif'
-      }))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, kcalSelcted.id.length > 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row mb-5"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-12"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Ricette selezionate: "), "| ", titoloKcal.map(function (t, id) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+          key: id
+        }, t, " | ");
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "kcal totali: "), totKcal))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row"
       }, data.ricette.map(function (rc, key) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -84993,7 +85031,14 @@ function (_Component) {
             right: '4px'
           },
           divClassName: "position-absolute p-2",
-          name: 'ingrediente_' + key
+          name: 'ingrediente_' + key,
+          value: JSON.stringify({
+            id: rc.id,
+            titolo: rc.titolo,
+            kcal: rc.calorie
+          }),
+          checked: kcalSelcted.id.includes(rc.id),
+          handleChange: _this3.handleKcalSelected
         }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
           to: _this3.props.url + '/blog/' + rc.id
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
@@ -85028,7 +85073,7 @@ function (_Component) {
           className: "fa fa-free-code-camp",
           "aria-hidden": "true"
         }), "\xA0", rc.calorie, " Kcal")))));
-      })));
+      }))));
     }
   }]);
 
@@ -85056,10 +85101,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_form_DropdownSelect__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/form/DropdownSelect */ "./resources/js/components/utils/form/DropdownSelect.js");
 /* harmony import */ var _utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/form/InputField */ "./resources/js/components/utils/form/InputField.js");
 /* harmony import */ var _utils_form_RangeField__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/form/RangeField */ "./resources/js/components/utils/form/RangeField.js");
-/* harmony import */ var react_bootstrap_slider__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-bootstrap-slider */ "./node_modules/react-bootstrap-slider/dist/react-bootstrap-slider.js");
-/* harmony import */ var react_bootstrap_slider__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react_bootstrap_slider__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var bootstrap_slider_dist_css_bootstrap_slider_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! bootstrap-slider/dist/css/bootstrap-slider.css */ "./node_modules/bootstrap-slider/dist/css/bootstrap-slider.css");
-/* harmony import */ var bootstrap_slider_dist_css_bootstrap_slider_css__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(bootstrap_slider_dist_css_bootstrap_slider_css__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _Env__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./../Env */ "./resources/js/components/Env.js");
+/* harmony import */ var react_bootstrap_slider__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-bootstrap-slider */ "./node_modules/react-bootstrap-slider/dist/react-bootstrap-slider.js");
+/* harmony import */ var react_bootstrap_slider__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react_bootstrap_slider__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var bootstrap_slider_dist_css_bootstrap_slider_css__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! bootstrap-slider/dist/css/bootstrap-slider.css */ "./node_modules/bootstrap-slider/dist/css/bootstrap-slider.css");
+/* harmony import */ var bootstrap_slider_dist_css_bootstrap_slider_css__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(bootstrap_slider_dist_css_bootstrap_slider_css__WEBPACK_IMPORTED_MODULE_8__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -85077,6 +85123,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -85211,14 +85258,13 @@ function (_Component) {
       var _this3 = this;
 
       var filtri = this.state.filtri;
-      var tipologia = {
-        //0:'Tutte',
-        'primo': 'Primo',
-        'secondo': 'Secondo',
-        'contorno': 'Contorno',
-        'dolce': 'Dolce',
-        'antipasto': 'Antipasto'
-      };
+      var user = Object(_Env__WEBPACK_IMPORTED_MODULE_6__["User"])(); //let tipologia = {'primo':'Primo','secondo':'Secondo','contorno':'Contorno','dolce':'Dolce','antipasto':'Antipasto'};
+
+      var TIPOLOGIE = JSON.parse(user.tipologie);
+      var tipologia = {};
+      Object.keys(TIPOLOGIE).map(function (k) {
+        return tipologia[TIPOLOGIE[k].toLowerCase()] = TIPOLOGIE[k];
+      });
       var difficolta = {
         //0:'Tutte',
         'facile': 'Facile',
@@ -85249,9 +85295,11 @@ function (_Component) {
         selected: filtri.tipologia == '' ? 'Tipologia' : filtri.tipologia //defaultSelected='Tipologia'
         ,
         handleChange: function handleChange(e) {
-          //console.log(e.target)
+          var el = e.target; //let value = el.options[el.selectedIndex].text.toLowerCase();
+          //console.log(value);
+
           var filtri = _this3.state.filtri;
-          filtri.tipologia = e.target.value;
+          filtri.tipologia = el.value;
 
           _this3.setState({
             filtri: filtri
@@ -85278,9 +85326,9 @@ function (_Component) {
         className: "col-md-4 ml-2 mr-3 row mb-3"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-5 pl-3 pr-0"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Tempo Cottura")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "Tempo Cottura"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-6 pl-4"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_slider__WEBPACK_IMPORTED_MODULE_6___default.a, {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_slider__WEBPACK_IMPORTED_MODULE_7___default.a, {
         value: [this.state.filtri.tempo.min, this.state.filtri.tempo.max],
         slideStop: this.onChangeTempo //slideStop={(e) => console.log(e.target)}
         ,
@@ -85293,9 +85341,9 @@ function (_Component) {
         className: "col-md-3 ml-3 row"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-5 pl-4 p-0"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Calorie")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "Calorie"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-md-7 pl-3 p-0"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_slider__WEBPACK_IMPORTED_MODULE_6___default.a, {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap_slider__WEBPACK_IMPORTED_MODULE_7___default.a, {
         value: [this.state.filtri.calorie.min, this.state.filtri.calorie.max],
         slideStop: this.onChangeCalorie,
         step: CALORIE.step,
@@ -86401,6 +86449,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_SearchField__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/SearchField */ "./resources/js/components/utils/SearchField.js");
 /* harmony import */ var _utils_Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/Button */ "./resources/js/components/utils/Button.js");
 /* harmony import */ var _utils_InfiniteTable__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/InfiniteTable */ "./resources/js/components/utils/InfiniteTable.js");
+/* harmony import */ var _utils_form_CheckField__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../utils/form/CheckField */ "./resources/js/components/utils/form/CheckField.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -86418,6 +86467,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -86477,7 +86527,143 @@ var COLUMNS = [{
   if (a != null) return a;
   return false;
 });
-;
+var COLUMNS_VALIDATE = [{
+  title: 'id',
+  field: 'id',
+  align: 'right'
+}, {
+  title: 'Titolo',
+  field: 'titolo',
+  img: '',
+  render: function render(cell, row) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: {
+        display: 'inline-block'
+      }
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      style: {
+        textTransform: 'capitalize',
+        fontWeight: '600'
+      }
+    }, row['titolo']), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "di: ", row['autore']), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Data creazione: ", new Date(row['data_creazione']).toLocaleDateString("it-IT", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    })), " \xA0"));
+  }
+}, {
+  title: 'Azioni',
+  field: 'actions',
+  render: function render(cell, row, handle) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      style: {
+        display: 'inline-block'
+      }
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      divClassName: "d-inline mr-3",
+      name: "id_" + row.id,
+      label: "ID",
+      onChange: function onChange(e) {
+        return handle(e, 'check');
+      }
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      divClassName: "d-inline mr-3",
+      name: "titolo_" + row.id,
+      label: "Titolo",
+      onChange: function onChange(e) {
+        return handle(e, 'check');
+      }
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      divClassName: "d-inline mr-3",
+      name: "tempo_preparazione_" + row.id,
+      label: "Tempo preparazione",
+      onChange: function onChange(e) {
+        return handle(e, 'check');
+      }
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      divClassName: "d-inline mr-3",
+      name: "tempo_cottura_" + row.id,
+      label: "Tempo cottura",
+      onChange: function onChange(e) {
+        return handle(e, 'check');
+      }
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      divClassName: "d-inline mr-3",
+      name: "intro_" + row.id,
+      label: "Intro",
+      onChange: function onChange(e) {
+        return handle(e, 'check');
+      }
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      divClassName: "d-inline mr-3",
+      name: "modalita_preparazione_" + row.id,
+      label: "Modalit\xE0 preparazione",
+      onChange: function onChange(e) {
+        return handle(e, 'check');
+      }
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      divClassName: "d-inline mr-3",
+      name: "porzioni_" + row.id,
+      label: "Porzioni",
+      onChange: function onChange(e) {
+        return handle(e, 'check');
+      }
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      divClassName: "d-inline mr-3",
+      name: "calorie_" + row.id,
+      label: "Calorie",
+      onChange: function onChange(e) {
+        return handle(e, 'check');
+      }
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      divClassName: "d-inline mr-3",
+      name: "difficolta_" + row.id,
+      label: "Difficolt\xE0",
+      onChange: function onChange(e) {
+        return handle(e, 'check');
+      }
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      divClassName: "d-inline mr-3",
+      name: "tipologia_" + row.id,
+      label: "Tipologia",
+      onChange: function onChange(e) {
+        return handle(e, 'check');
+      }
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      divClassName: "d-inline mr-3",
+      name: "note_" + row.id,
+      label: "Note",
+      onChange: function onChange(e) {
+        return handle(e, 'check');
+      }
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      divClassName: "d-inline mr-3",
+      name: "ingredienti_" + row.id,
+      label: "Ingredienti",
+      onChange: function onChange(e) {
+        return handle(e, 'check');
+      }
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      divClassName: "d-inline",
+      name: "data_creazione_" + row.id,
+      label: "Data Creazione",
+      onChange: function onChange(e) {
+        return handle(e, 'check');
+      }
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_4__["Button"], {
+      className: "btn-light",
+      onClick: function onClick(a) {
+        return handle({
+          id: row.id,
+          el: a
+        }, 'stampa');
+      }
+    }, "Stampa"));
+  }
+}].map(function (a) {
+  if (a != null) return a;
+  return false;
+});
 
 var Verifiche =
 /*#__PURE__*/
@@ -86494,11 +86680,10 @@ function (_Component) {
       rows: '',
       loader: false,
       show: false,
-      reloadInfiniteTable: 0
+      reloadInfiniteTable: 0,
+      fieldPrint: {}
     };
     _this.url = _this.props.url + '/ricette';
-    _this._handleCloseModal = _this._handleCloseModal.bind(_assertThisInitialized(_this));
-    _this._handleShowModal = _this._handleShowModal.bind(_assertThisInitialized(_this));
     _this._handleSearchFieldCallback = _this._handleSearchFieldCallback.bind(_assertThisInitialized(_this));
     return _this;
   }
@@ -86508,17 +86693,47 @@ function (_Component) {
     value: function componentDidMount() {//this.getRemoteData();
     }
   }, {
-    key: "_handleCloseModal",
-    value: function _handleCloseModal() {
-      this.setState({
-        show: false
-      });
-    }
-  }, {
-    key: "_handleShowModal",
-    value: function _handleShowModal() {
-      this.setState({
-        show: true
+    key: "getRemoteData",
+    value: function getRemoteData(id) {
+      var _this2 = this;
+
+      var url = this.props.url + '/print-ricetta/' + id;
+      var headers = {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      };
+      var sendData = {};
+      sendData.fields = this.state.fieldPrint[id];
+      sendData._token = CSRF_TOKEN; //this.setState({loader : true});
+      //console.log(sendData);return;
+
+      return axios.post(url, sendData, headers).then(function (result) {
+        var base64 = result.data;
+        console.log(base64);
+        var linkSource = 'data:application/pdf;base64,' + base64;
+        var downloadLink = document.createElement("a");
+        var fileName = 'ricetta.pdf';
+        downloadLink.href = linkSource;
+        downloadLink.download = fileName;
+        downloadLink.click(); //this.setState({ loader : false});
+
+        return result;
+      })["catch"](function (error) {
+        console.error(error.response);
+        var msg = '';
+
+        if (error.response !== undefined) {
+          if (error.response.data.errors) msg = error.response.data.errors;else if (error.response.data.msg) msng = error.response.data.msg;
+        }
+
+        _this2.setState({
+          errorRegMessage: msg,
+          loader: false
+        });
+
+        throw error;
       });
     }
   }, {
@@ -86541,12 +86756,40 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var user = Object(_Env__WEBPACK_IMPORTED_MODULE_2__["User"])();
       var history = this.props.router.history;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container-fluid pl-3 constraint"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "nav nav-tabs",
+        id: "nav-tab",
+        role: "tablist"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        className: "nav-item nav-link active",
+        id: "nav-verifiche-tab",
+        "data-toggle": "tab",
+        href: "#nav-verifiche",
+        role: "tab",
+        "aria-controls": "nav-verifiche",
+        "aria-selected": "true"
+      }, "Verifiche"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+        className: "nav-item nav-link",
+        id: "nav-validati-tab",
+        "data-toggle": "tab",
+        href: "#nav-validati",
+        role: "tab",
+        "aria-controls": "nav-validati",
+        "aria-selected": "false"
+      }, "Validate"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "tab-content pt-4",
+        id: "nav-tabContent"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "tab-pane fade show active",
+        id: "nav-verifiche",
+        role: "tabpanel",
+        "aria-labelledby": "nav-verifiche-tab"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "row mb-3 px-2"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -86571,9 +86814,62 @@ function (_Component) {
         columns: COLUMNS,
         externalRows: this.state.rows,
         onClick: function onClick(row) {
-          return history.push(_this2.props.url + '/verifiche/' + row.id);
+          return history.push(_this3.props.url + '/verifiche/' + row.id);
         }
-      }))));
+      })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "tab-pane fade",
+        id: "nav-validati",
+        role: "tabpanel",
+        "aria-labelledby": "nav-validati-tab"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row mb-3 px-2"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-6"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_SearchField__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        showList: false,
+        url: this.url + '/search',
+        query: "only=validate",
+        callback: this._handleSearchFieldCallback
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-6 text-right"
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "col-md-12"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_InfiniteTable__WEBPACK_IMPORTED_MODULE_5__["default"], {
+        id: "tb-ricette",
+        reload: this.state.reloadInfiniteTable,
+        url: this.url,
+        query: "only=validate",
+        columns: COLUMNS_VALIDATE,
+        externalRows: this.state.rows,
+        onActions: function onActions(element, type) {
+          if (type == 'stampa') {
+            var fieldPrint = _this3.state.fieldPrint;
+            if (fieldPrint[element.id] !== undefined && fieldPrint[element.id].length > 0) _this3.getRemoteData(element.id); //console.log(this.state.fieldPrint[element.id])
+          } else {
+            var el = element.target;
+            var array = el.name.split('_');
+            var id = el.name.split('_').slice(-1)[0];
+            array.pop();
+            var name = array.join('_');
+            var _fieldPrint = _this3.state.fieldPrint;
+            if (!el.checked) _fieldPrint[id] = _fieldPrint[id].filter(function (f) {
+              return f != name;
+            });else {
+              if (_fieldPrint[id] === undefined) _fieldPrint[id] = [];
+
+              _fieldPrint[id].push(name);
+            }
+
+            _this3.setState({
+              fieldPrint: _fieldPrint
+            }); //console.log(name)
+
+          }
+        } //onClick={(row) => history.push(this.props.url+'/verifiche/'+row.id) }
+
+      }))))));
     }
   }]);
 

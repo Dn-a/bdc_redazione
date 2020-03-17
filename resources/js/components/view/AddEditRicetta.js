@@ -1,6 +1,6 @@
 import React, { Component , Fragment } from 'react';
 import parse from 'html-react-parser';
-import {User} from './../Env';
+import {User,ASSETS} from './../Env';
 import {URL_HOME} from '../Env';
 
 import SearchField from '../utils/SearchField';
@@ -290,7 +290,7 @@ export default class AddEditRicetta extends Component {
             case 'modalita_preparazione':
                 if(value.length > 0 && !whitespace_reg_ex.test(value))
                     error.modalita_preparazione = INFO_ERROR['caratteri'];
-                else if(value.length > 2048)
+                else if(value.length > 3096)
                     error.modalita_preparazione = INFO_ERROR['limite_caratteri'];
                 break;
             case 'ingrediente_'+id:
@@ -427,11 +427,12 @@ export default class AddEditRicetta extends Component {
         let errorRegMessage = this.state.errorRegMessage;
 
         let objFid = {'facile':'Facile','media':'Media','difficile':'Difficile'};
-        let objFid2 = {1:'Primo',2:'Secondo',3:'Contorno',4:'Dolce',5:'Antipasto'};
+        //let objFid2 = {1:'Primo',2:'Secondo',3:'Contorno',4:'Dolce',5:'Antipasto'};
+        let objFid2 = JSON.parse(user.tipologie);
 
         let styleHR = {margin: '35px 0 20px'};
         
-        //console.log(data.ingredienti)        
+        //console.log(objFid2)        
         
         return (
             <article className="col-md-12 constraint">
@@ -516,6 +517,7 @@ export default class AddEditRicetta extends Component {
                                 searchClassName='w-100'
                                 showList={true}
                                 url={this.props.url+'/ingredienti/search'}
+                                loaderPath={ASSETS.loader_gif}
                                 patternList={{id:'id', fields:{titolo:[],calorie:[]}} }//id di ritorno; i fields vengono usati come titolo
                                 reloadOnClick={false}
                                 resetAfterClick={true}                                

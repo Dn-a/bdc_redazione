@@ -5,6 +5,7 @@ import SearchField from '../utils/SearchField';
 import DropdownSelect from '../utils/form/DropdownSelect';
 import InputField from '../utils/form/InputField';
 import RangeField from '../utils/form/RangeField';
+import {User} from './../Env';
 
 import ReactBootstrapSlider from 'react-bootstrap-slider';
 import "bootstrap-slider/dist/css/bootstrap-slider.css";
@@ -111,9 +112,14 @@ export default class Home extends Component {
     render() {
         let filtri = this.state.filtri;
 
-        let tipologia = {
-            //0:'Tutte',
-            'primo':'Primo','secondo':'Secondo','contorno':'Contorno','dolce':'Dolce','antipasto':'Antipasto'};
+        let user = User();
+
+        //let tipologia = {'primo':'Primo','secondo':'Secondo','contorno':'Contorno','dolce':'Dolce','antipasto':'Antipasto'};
+
+        let TIPOLOGIE = JSON.parse(user.tipologie);
+        let tipologia = {};
+        Object.keys(TIPOLOGIE).map((k) => tipologia[TIPOLOGIE[k].toLowerCase()] = TIPOLOGIE[k] )
+
         let difficolta = {
             //0:'Tutte',
             'facile':'Facile','media':'Media','difficile':'Difficile'};
@@ -150,9 +156,11 @@ export default class Home extends Component {
                                 selected={filtri.tipologia == ''? 'Tipologia' : filtri.tipologia}
                                 //defaultSelected='Tipologia'
                                 handleChange={(e) => {
-                                        //console.log(e.target)
+                                        let el = e.target;
+                                        //let value = el.options[el.selectedIndex].text.toLowerCase();
+                                        //console.log(value);
                                         let filtri = this.state.filtri;
-                                        filtri.tipologia = e.target.value;
+                                        filtri.tipologia = el.value;
                                         this.setState({filtri : filtri })
                                     }
                                 }
@@ -178,7 +186,7 @@ export default class Home extends Component {
 
                         <div className="col-md-4 ml-2 mr-3 row mb-3">
 
-                            <div className="col-md-5 pl-3 pr-0"><strong>Tempo Cottura</strong></div>    
+                            <div className="col-md-5 pl-3 pr-0">Tempo Cottura</div>    
 
                             <div className="col-md-6 pl-4">
 
@@ -202,7 +210,7 @@ export default class Home extends Component {
 
                         <div className="col-md-3 ml-3 row">
 
-                            <div className="col-md-5 pl-4 p-0"><strong>Calorie</strong></div>   
+                            <div className="col-md-5 pl-4 p-0">Calorie</div>   
 
                             <div className="col-md-7 pl-3 p-0">
 

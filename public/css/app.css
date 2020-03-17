@@ -11646,6 +11646,11 @@ header {
 
 /*--Slider Field --*/
 
+.slider.slider.slider-horizontal {
+  -webkit-transform: scale(0.9);
+          transform: scale(0.9);
+}
+
 .slider-handle {
   background-color: #30a681 !important;
   background-image: none !important;

@@ -9,6 +9,7 @@ use App\RicettaIngrediente;
 use App\Verifica;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PDF;
 
 class RicettaController extends Controller
 {
@@ -23,6 +24,7 @@ class RicettaController extends Controller
         $blog = in_array('blog', explode('-',$only));
         $viewRicette = in_array('ricette', explode('-',$only));
         $viewVerifiche = in_array('verifiche', explode('-',$only));
+        $viewValidate = in_array('validate', explode('-',$only));
         
         $user = Auth::user();
 
@@ -35,7 +37,7 @@ class RicettaController extends Controller
         $ingredienti = $request->input('ingredienti') ? json_decode($request->input('ingredienti')) : null;
 
         $ricette = Ricetta::
-            where(function($query) use ($blog, $user, $viewRicette, $viewVerifiche,
+            where(function($query) use ($blog, $user, $viewRicette, $viewVerifiche, $viewValidate,
                 $ricetta, $tipologia, $difficolta, $tempo, $calorie, $ingredienti
             ) {
                 if($ricetta)
@@ -61,19 +63,33 @@ class RicettaController extends Controller
                     });
                 }                
 
-                if($blog || !Auth::check())                      
+                if($blog || !Auth::check())                     
                     //$query->where('stato', 'approvata');
                     $query->whereHas('fase', function($query) {
                         $query->where('titolo','approvata');
                     });
-                elseif($viewVerifiche && Auth::check())                    
-                    $query->whereHas('fase', function($query)  use($user) {
-                        if($user->ruolo->titolo =='redattore' )
-                            $query->where('titolo','<>','bozza');
-                        elseif($user->ruolo->titolo =='caporedattore' ){
-                            $query->where('titolo','<>','bozza');                            
-                            $query->where('titolo','<>','inviata');                            
-                            $query->where('titolo','<>','validazione');
+                elseif(Auth::check())                    
+                    $query->whereHas('fase', function($query)  use($user, $viewVerifiche, $viewValidate ) {
+                        if($viewVerifiche){
+                            if($user->ruolo->titolo =='redattore' ){
+                                $query->where('titolo','<>','bozza');
+                                $query->where('titolo','<>','approvata');
+                                $query->where('titolo','<>','idonea');
+                            }
+                            elseif($user->ruolo->titolo =='caporedattore' ){
+                                $query->where('titolo','<>','bozza');                            
+                                $query->where('titolo','<>','inviata');                            
+                                $query->where('titolo','<>','validazione');
+                                $query->where('titolo','<>','approvata');
+                            }
+                        }elseif($viewValidate){
+                            if($user->ruolo->titolo =='redattore' ){                                
+                                $query->where('titolo','idonea')
+                                ->orWhere('titolo','approvata');
+                            }
+                            elseif($user->ruolo->titolo =='caporedattore' ){                                
+                                $query->where('titolo','approvata');
+                            }
                         }
                     });
                 
@@ -192,7 +208,7 @@ class RicettaController extends Controller
                 $request->validate([
                     'titolo' => 'required|string|min:1|max:50',
                     'intro' => 'required|string|max:255',
-                    'modalita_preparazione' => 'required|string|max:1024',
+                    'modalita_preparazione' => 'required|string|max:3096',
                     'porzioni' => 'required|integer',
                     'calorie' => 'required|regex:/^\d+(\.\d{1,6})?$/',
                     'tempo_preparazione' => 'required|integer',
@@ -293,7 +309,7 @@ class RicettaController extends Controller
                 $request->validate([
                     'titolo' => 'required|string|min:1|max:50',
                     'intro' => 'required|string|max:255',
-                    'modalita_preparazione' => 'required|string|max:1024',
+                    'modalita_preparazione' => 'required|string|max:3096',
                     'porzioni' => 'required|integer',
                     'calorie' => 'required|regex:/^\d+(\.\d{1,6})?$/',
                     'tempo_preparazione' => 'required|integer',
@@ -410,5 +426,66 @@ class RicettaController extends Controller
             return response()->json(['msg' => $e->getMessage() ],500);
         }
 
+    }
+
+    public function pdfGenerate(Request $request, Ricetta $ricetta)
+    {
+        //return $request->fields;
+        $default = [
+            'id',
+            'titolo',
+            'autore',
+            'tipologia',
+            'intro',
+            'modalita_preparazione',// => 'Modalità preparazione',
+            'tempo_preparazione',// => 'Tempo preparazione',
+            'tempo_cottura',// => 'tempo cottura',
+            'porzioni',
+            'calorie',
+            'ingredienti',
+            'data_creazione',// => 'data creazione',
+            'note'
+        ];
+
+        $fields = [];
+        foreach($default as $df)
+            if(in_array($df,$request->fields))
+                $fields[] = $df;
+
+        // $fields = isset($request->fields)? $request->fields : [
+        //     'id',
+        //     'titolo',
+        //     'autore',
+        //     'tipologia',
+        //     'intro',
+        //     'modalita_preparazione',// => 'Modalità preparazione',
+        //     'tempo_preparazione',// => 'Tempo preparazione',
+        //     'tempo_cottura',// => 'tempo cottura',
+        //     'porzioni',
+        //     'calorie',
+        //     'ingredienti',
+        //     'data_creazione',// => 'data creazione',
+        //     'note'
+        // ];
+
+        /*if($id!=null){
+            $ricetta = Ricetta::where('id',$id)->first();
+            //$resource = new RicettaResource($ricetta);
+        }*/
+
+        $array = [        
+            'rows' => [$ricetta],
+            'columns' =>  $fields,   
+            'fase' => $ricetta->fase->titolo,            
+        ];
+
+        //return view('pdf.ricetta', $array);
+        //PDF::setOptions(['dpi' => 96, 'fontHeightRatio' => '0.5']);
+        //$pdf = PDF::loadView('pdf.ricevuta_pagamento', $array);
+        $pdf = PDF::loadView('pdf.ricetta', $array)->setPaper('a4', 'landscape');
+        $file = $pdf->download('ricetta.pdf');
+        $blob = base64_encode($file);
+
+        return $blob;
     }
 }

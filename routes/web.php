@@ -101,7 +101,7 @@ if(request()->header('accept')=='application/json'){
   Route::get('ingredienti/search/{val}', 'IngredienteController@search')->name('ingredienti.search');
 
 
-// Ricette
+// Ricette  
   Route::get('ricette/{ricetta}', 'RicettaController@show');
   Route::get('ricette/search/{val}', 'RicettaController@search')->name('ricette.search');
   Route::get('ricette', 'RicettaController@index')->name('ricette');  
@@ -136,6 +136,7 @@ Route::middleware(['auth','ruolo:admin|caporedattore|redattore'])->group( functi
     Route::resource('verifiche', 'VerificaController',['as' => 'verifiche']);
 
   // Ricette
+    Route::post('print-ricetta/{ricetta}', 'RicettaController@pdfGenerate');
     Route::put('ricette/verifica/{ricetta}', 'RicettaController@verifica');
     
 });

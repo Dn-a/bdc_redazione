@@ -61,7 +61,7 @@ class IngredienteController extends Controller
             $request->validate([
                 'titolo' => 'required|string|min:1|max:50',
                 'calorie' => 'required|regex:/^\d+(\.\d{1,6})?$/',
-                'unita_misura' => 'required|string|min:1|max:5',
+                'unita_misura' => 'required|string|min:1|max:10',
                 'img' => 'required|string|min:1|max:2048'
             ]);
 

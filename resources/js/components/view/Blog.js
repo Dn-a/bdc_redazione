@@ -26,8 +26,11 @@ export default class Blog extends Component {
                 total : 0,
                 perPage : 0,
             },
+            kcalSelcted:{id:[],titolo:[],kcal:[]},
             loader: false
         };
+
+        this.handleKcalSelected = this.handleKcalSelected.bind(this)
     }
 
     componentDidMount(){       
@@ -99,9 +102,32 @@ export default class Blog extends Component {
 			});
     }
 
+    handleKcalSelected(e){
+        let checked = e.target.checked;
+        let value = JSON.parse(e.target.value);
+
+        let kcalSelcted = this.state.kcalSelcted;
+
+        if(!checked){
+            kcalSelcted.id = kcalSelcted.id.filter(id => id != value.id)  
+            kcalSelcted.titolo = kcalSelcted.titolo.filter(titolo => titolo != value.titolo)  
+            kcalSelcted.kcal = kcalSelcted.kcal.filter(kcal => kcal != value.kcal)  
+        }
+        else{
+            kcalSelcted.id.push(value.id)  
+            kcalSelcted.titolo.push(value.titolo)
+            kcalSelcted.kcal.push(value.kcal)
+        }
+        
+        this.setState({kcalSelcted: kcalSelcted})
+    }
+    
+
     render() {
         let data = this.state.data;
-        
+        let kcalSelcted = this.state.kcalSelcted;
+        let titoloKcal = kcalSelcted.titolo;
+        let totKcal = kcalSelcted.kcal.length>0 ? kcalSelcted.kcal.reduce((a,b) => a+b) : 0;
         //console.log(this.props);
 
         return (
@@ -109,51 +135,71 @@ export default class Blog extends Component {
                 {this.state.loader?
                     (<div className="text-center"><div className="img-loader active"><img src={this.props.url+'/img/loader.gif'} /></div></div>)
                 :
-                    (<div className="row">
-                        {data.ricette.map((rc,key) =>{
-                            return(                            
-                                    <div className="col-md-4" key={key}>
-                                        
-                                        <div className="card mb-4 box-shadow">
-                                            <CheckField 
-                                            style={{right:'4px'}}
-                                            divClassName="position-absolute p-2"
-                                            name={'ingrediente_'+key}  
-                                            />
-                                            <Link to={this.props.url+'/blog/'+rc.id}>                                                
-                                                <img className="card-img-top" src={rc.img} alt="Card image cap" />
-                                            </Link>
-                                            <div className="card-body">
-                                                <Link to={this.props.url+'/blog/'+rc.id}>
-                                                    <h5 className="card-title">{rc.titolo}</h5>
-                                                </Link>
-                                                <p className="card-text">{parse(rc.intro)}</p>
-                                            </div>
-                                            <div className="card-footer bg-transparent">
+                    (
+                        <Fragment>
+                            
+                            {kcalSelcted.id.length > 0 &&
+                                <div className="row mb-5">
+                                    <div className="col-md-12">
+                                        <strong>Ricette selezionate: </strong>
+                                        | {titoloKcal.map((t,id) => <span key={id}>{t} | </span>)}
+                                        <div><strong>kcal totali: </strong>{totKcal}</div>
+                                    </div>
+                                </div>
+                            }
+
+                            <div className="row">
+                                {data.ricette.map((rc,key) =>{
+                                    return(                            
+                                            <div className="col-md-4" key={key}>
                                                 
-                                                <div className="row">
-                                                    <div className="info col-sm-3 col-md-3 text-center px-1">
-                                                        <i className="fa fa-star-half-o" aria-hidden="true"></i>
-                                                        &nbsp;{rc.difficolta}
+                                                <div className="card mb-4 box-shadow">
+                                                    
+                                                    <CheckField 
+                                                        style={{right:'4px'}}
+                                                        divClassName="position-absolute p-2"
+                                                        name={'ingrediente_'+key}
+                                                        value={JSON.stringify({id:rc.id,titolo:rc.titolo,kcal:rc.calorie})}
+                                                        checked={kcalSelcted.id.includes(rc.id)}
+                                                        handleChange={this.handleKcalSelected}
+                                                    />
+
+                                                    <Link to={this.props.url+'/blog/'+rc.id}>                                                
+                                                        <img className="card-img-top" src={rc.img} alt="Card image cap" />
+                                                    </Link>
+                                                    <div className="card-body">
+                                                        <Link to={this.props.url+'/blog/'+rc.id}>
+                                                            <h5 className="card-title">{rc.titolo}</h5>
+                                                        </Link>
+                                                        <p className="card-text">{parse(rc.intro)}</p>
                                                     </div>
-                                                    <div className="info col-sm-3 col-md-4 text-center px-1">
-                                                        <i className="fa fa-clock-o" aria-hidden="true"> </i>
-                                                        &nbsp;{(rc.tempo_preparazione+rc.tempo_cottura)} min
-                                                    </div>
-                                                    <div className="info col-sm-6 col-md-5 text-center px-1">
-                                                        <i className="fa fa-free-code-camp" aria-hidden="true"></i>
-                                                        &nbsp;{rc.calorie} Kcal
+                                                    <div className="card-footer bg-transparent">
+                                                        
+                                                        <div className="row">
+                                                            <div className="info col-sm-3 col-md-3 text-center px-1">
+                                                                <i className="fa fa-star-half-o" aria-hidden="true"></i>
+                                                                &nbsp;{rc.difficolta}
+                                                            </div>
+                                                            <div className="info col-sm-3 col-md-4 text-center px-1">
+                                                                <i className="fa fa-clock-o" aria-hidden="true"> </i>
+                                                                &nbsp;{(rc.tempo_preparazione+rc.tempo_cottura)} min
+                                                            </div>
+                                                            <div className="info col-sm-6 col-md-5 text-center px-1">
+                                                                <i className="fa fa-free-code-camp" aria-hidden="true"></i>
+                                                                &nbsp;{rc.calorie} Kcal
+                                                            </div>
+                                                        </div>
+
                                                     </div>
                                                 </div>
-
+                                                
                                             </div>
-                                        </div>
                                         
-                                    </div>
-                                
-                            )
-                        })}
-                    </div>)
+                                    )
+                                })}
+                            </div>
+                        </Fragment>
+                    )
                 }
             </section>
 

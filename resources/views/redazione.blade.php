@@ -20,27 +20,32 @@
         $menu = array('home');
         $user = Auth::user();
         $ruolo = $nome = '';
+        $tipologie = [];
         
+        $cn=1;
+        foreach($tipologia as $v)
+            $tipologie[$cn++] = ucfirst($v['titolo']);
+
         if(isset($user)){
             $ruolo = $user->ruolo->titolo;
             $user = $ruolo=='autore' ? $user->autore : $user->redattore;
             $nome = $user->nome;// .' '. $user->cognome;
-        
+            
             if($ruolo == 'caporedattore') $menu = array_merge($menu,['redattori','approvate']);
             if($ruolo == 'redattore') $menu = array_merge($menu,['validate']);
             if($ruolo != 'autore') $menu = array_merge($menu,['autori','ingredienti','verifiche']);
             if($ruolo == 'autore') $menu = array_merge($menu,['ricette']);
+        }
 
-            echo "<script>
+        echo "<script>
                     let menu =".json_encode($menu).'; '.
                     "const USER_CONFIG = {
                         nome:'".$nome."',
+                        tipologie:'".json_encode($tipologie)."',
                         ruolo:'".$ruolo."',".
                         "menu: menu,".
                     '}; //console.log(USER_CONFIG)'.
                 "</script>";
-        
-        }
             
     @endphp
 

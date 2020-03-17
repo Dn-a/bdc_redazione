@@ -19,7 +19,7 @@ class CreateRicetteTable extends Migration
             $table->integer('tempo_preparazione')->nullable();
             $table->integer('tempo_cottura')->nullable();
             $table->string('intro')->nullable();
-            $table->string('modalita_preparazione',2048)->nullable();
+            $table->string('modalita_preparazione',3096)->nullable();
             $table->integer('porzioni')->nullable();
             $table->float('calorie')->nullable();
             $table->enum('difficolta',['facile','media','difficile'])->default('facile');
