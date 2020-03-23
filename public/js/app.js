@@ -81459,7 +81459,7 @@ function (_Component) {
 
       switch (field) {
         case 'titolo':
-          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.titolo = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['caratteri'];
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.titolo = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['caratteri'];else if (value.length > 50) error.titolo = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['limite_caratteri'];
           break;
 
         case 'calorie':
@@ -81468,7 +81468,7 @@ function (_Component) {
 
         case 'unita_misura':
           value = value.toLowerCase();
-          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.unita_misura = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['caratteri'];
+          if (value.length > 0 && !whitespace_reg_ex.test(value)) error.unita_misura = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['caratteri'];else if (value.length > 10) error.unita_misura = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_4__["default"]['limite_caratteri'];
           break;
 
         case 'img':
@@ -85660,7 +85660,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fa fa-plus-circle",
         "aria-hidden": "true"
-      }), "\xA0Nuova Ricetta"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modal_IngredienteModal__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      }), "\xA0Nuovo Ingrediente"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modal_IngredienteModal__WEBPACK_IMPORTED_MODULE_5__["default"], {
         url: this.props.url,
         show: this.state.show,
         onHide: this._handleCloseModal,

@@ -126,6 +126,8 @@ export default class IngredienteModal extends Component {
             case 'titolo':
                 if( value.length > 0 && !whitespace_reg_ex.test(value))
                     error.titolo = INFO_ERROR['caratteri'];
+                else if( value.length > 50)
+                    error.titolo = INFO_ERROR['limite_caratteri'];
                 break;
             case 'calorie':
                 if(isNaN(value) ||  !whitespace_reg_ex.test(value))
@@ -135,6 +137,8 @@ export default class IngredienteModal extends Component {
                 value = value.toLowerCase();
                 if( value.length > 0 && !whitespace_reg_ex.test(value))
                     error.unita_misura = INFO_ERROR['caratteri'];
+                else if( value.length > 10)
+                    error.unita_misura = INFO_ERROR['limite_caratteri'];
                 break;
             case 'img':
                 if(value.length > 0 && !whitespace_reg_ex.test(value))

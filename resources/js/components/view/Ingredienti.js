@@ -145,7 +145,7 @@ export default  class Ingredienti extends Component {
                     <div className="col-md-6 text-right">
                         <AddButton onClick={this._handleShowModal}>
                         <i className="fa fa-plus-circle" aria-hidden="true"></i>
-                        &nbsp;Nuova Ricetta</AddButton>
+                        &nbsp;Nuovo Ingrediente</AddButton>
 
                         <IngredienteModal 
                         url={this.props.url}
