@@ -1,5 +1,6 @@
 import React, { Component , Fragment, useState} from 'react';
 import ReactDOM from 'react-dom';
+import {URL_HOME} from './Env';
 
 import {Router, Switch, Route, Link, NavLink} from "react-router-dom";
 import history from './history';
@@ -45,7 +46,7 @@ const MainTitle = ()  => {
             routes.map(({path, title, icon},key) => {
                 if(title=='Home' || title=='Ricetta' || title=='Verifica') return;
             return(
-            <Route key={key} exact path={path} >
+            <Route key={key} exact path={URL_HOME + path} >
                 <div className="px-2 pl-4 mt-2 mb-5 constraint">
                     <h3>
                         <i className={"fa "+icon} aria-hidden="true"> </i>
@@ -97,7 +98,7 @@ export default class Main extends Component {
         };
 
         const host = window.location.hostname;
-        this.home = host=='www.dn-a.it'? '/noleggio':'';
+        this.home = host== 'www.g-soluzioniassicurative.it'? '/redazione':'';
         this.url = this.home;
 
         this._handleShowLogin = this._handleShowLogin.bind(this);
@@ -135,7 +136,7 @@ export default class Main extends Component {
                                 </button>
                             }
                             
-                            <a className="navbar-brand" href={'/'+this.url}>
+                            <a className="navbar-brand" href={this.url}>
                                 <div className='logo'><img src={this.url+'/img/logo.png'} /></div>                                
                             </a>
 
@@ -187,7 +188,7 @@ export default class Main extends Component {
                                         if(menu.indexOf(name.toLowerCase())==-1) return;
                                         return(
                                             <li key={key} >
-                                                <NavLink exact to={path} title={name}>
+                                                <NavLink exact to={URL_HOME + path} title={name}>
                                                     <i className={"fa "+icon} aria-hidden="true"></i>
                                                     <span>{name}</span>
                                                 </NavLink>
@@ -208,7 +209,7 @@ export default class Main extends Component {
                         {
                             routes.map(({path, Component},key) => {
                                 return(
-                                    <Route key={key} path={path} exact
+                                    <Route key={key} path={URL_HOME + path} exact
                                         component={(router) => <Component router={router} url={this.url} />}
                                     />
                                 )
@@ -219,7 +220,9 @@ export default class Main extends Component {
                 </main>
 
                 <footer className={"p-3 "+(ruolo!=''?'logged':'')}>
-                    <div className="container-fluid constraint"><strong>Powered by</strong> Di Natale Antonino</div>
+                    <div className="container-fluid constraint"><strong>Studente:</strong> Di Natale Antonino
+                    <span> - <strong>matricola:</strong> 0012253</span>
+                    </div>
                 </footer>
 
             </Router>

@@ -242,6 +242,7 @@ export default class Home extends Component {
                                 searchClassName="w-100"
                                 showList={true}
                                 resetAfterClick={true}
+                                reloadOnClick={false}
                                 patternList={{id:'id', fields:{titolo:[]}} }
                                 onClick={(res) => {
                                         //console.log(res)
@@ -262,6 +263,7 @@ export default class Home extends Component {
                                 searchClassName="w-100"
                                 showList={true}
                                 resetAfterClick={true}
+                                reloadOnClick={false}
                                 patternList={{id:'id', fields:{titolo:[]}} }
                                 onClick={(res) => {
                                         //console.log(res)

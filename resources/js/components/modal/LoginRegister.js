@@ -1,6 +1,6 @@
 import React, { Component , Fragment } from 'react';
 import cx from "classnames";
-import {URL_HOME} from '../Env';
+import {URL_HOME,ASSETS} from '../Env';
 import Modal from 'react-bootstrap/Modal';
 
 import AddEditModal from '../utils/AddEditModal';
@@ -435,7 +435,7 @@ export default class LoginRegister extends Component {
                                         onClick={this._handleOnRegister}
                                     >
                                         CONFERMA REGISTRAZIONE
-                                        <img className={"loader-2"+(this.state.loader==true?' d-inline-block':'')} src="../img/loader_2.gif"></img>
+                                        <img className={"loader-2"+(this.state.loader==true?' d-inline-block':'')} src={ASSETS.loader_2}></img>
                                     </AddButton>
                                 </div> 
 
@@ -486,7 +486,7 @@ export default class LoginRegister extends Component {
                                         ref={e => (this.submitForm = e)}
                                         type="submit"
                                         />                            
-                                        <img className={"loader-2"+(this.state.loaderLogin==true?' d-inline-block':'')} src="../img/loader_2.gif"></img>
+                                        <img className={"loader-2"+(this.state.loaderLogin==true?' d-inline-block':'')} src={ASSETS.loader_2}></img>
                                     </AddButton>
                                     {/*&nbsp; <a target='_blank' href={this.props.url+'/password/reset'}>Password dimenticata?</a>*/}
                                 </div> 
