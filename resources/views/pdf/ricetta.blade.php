@@ -7,7 +7,7 @@
         <style>
             body{
                 background: #fff;
-                font-size: 0.7em;
+                font-size: 0.6em;
             }
             .clear{
                 clear: both;
