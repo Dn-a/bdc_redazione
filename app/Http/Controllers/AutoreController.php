@@ -12,25 +12,25 @@ use Illuminate\Support\Facades\Hash;
 class AutoreController extends Controller
 {
     private $lmtSearch = 15;
-    
+
     public function index(Request $request)
     {
         $page = $request->input('per-page') ?: 10;
 
         // view che mostra lo storico noleggi
         $only = $request->input('only') ?: '';
-        
+
         $user = Auth::user();
         $ruolo = $user->ruolo->titolo;
-        
+
         if($ruolo=='autore') return response()->json([],404);
 
         $redattore = Autore::orderBy('id','DESC')->paginate($page);
 
         return new AutoreCollection(
-            $redattore, 
+            $redattore,
             true
-            //$this->moreField($ruolo) 
+            //$this->moreField($ruolo)
         );
     }
 
@@ -41,13 +41,13 @@ class AutoreController extends Controller
 
         $only = $request->input('only') ?: '';
         //$noleggi = in_array('noleggi', explode('-',$only));
-        
+
         $user = Auth::user(); $ruolo = $user->ruolo->titolo;
 
         if($ruolo=='autore') return response()->json([],404);
 
         $redattore = Autore::
-        where(function($query) use($arr) {
+        whereHas('user', function($query) use($arr) {
             $query->where('nome',$arr[0])
             ->orWhere('cognome',$arr[0])
             ->orWhere('nome','like',$arr[0].'%')
@@ -64,7 +64,7 @@ class AutoreController extends Controller
             ->orWhere('telefono','like',"$arr[0]%")
             ->orWhere('cellulare','like',"$arr[0]%");
             //->orWhereHas('email','like',"$arr[0]%")
-        })    
+        })
         ->limit($this->lmtSearch)->get();
 
 
@@ -74,22 +74,22 @@ class AutoreController extends Controller
         );
     }
 
-    
+
     public function create()
     {
         //
     }
 
-    
+
     public function registrazione(Request $request)
-    {   
+    {
         try{
-            
+
             //return response()->json($request->all(),201);exit;
 
             $request->validate([
                 'nome' => 'required|string|max:50',
-                'cognome' => 'required|string|max:50',            
+                'cognome' => 'required|string|max:50',
                 'data_nascita' => 'required|date',
                 'telefono' => 'required|string|max:12',
                 'cellulare' => 'required|string|max:12',
@@ -99,7 +99,7 @@ class AutoreController extends Controller
                 'email' => 'required|string|email|max:50|unique:users',
                 'password' => 'required|string|min:8'
             ]);
-            
+
             //return response()->json($request->all(),201);exit;
 
             $data = $request->all();
@@ -108,15 +108,15 @@ class AutoreController extends Controller
             $blob = base64_encode($temp);
             $data['privacy'] = $blob;
 
-            $user = User::create([            
+            $user = User::create([
+                'nome' => $data['nome'],
+                'cognome' => $data['cognome'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password'])
             ]);
-                
+
             Autore::create(
                 [
-                    'nome' => $data['nome'],
-                    'cognome' => $data['cognome'],
                     'data_nascita' => $data['data_nascita'],
                     'telefono' => $data['telefono'],
                     'cellulare' => $data['cellulare'],
@@ -128,33 +128,33 @@ class AutoreController extends Controller
             );
 
             Auth::login($user,true);
-            
+
             return response()->json(['registration' =>'Registrazione avvenuta con Successo!'],201);
-        
+
         }catch( \Illuminate\Database\QueryException $e){
             return response()->json(['msg' => $e->getMessage() ],500);
-        }   
+        }
     }
 
-    
+
     public function show(Autore $autore)
     {
         //
     }
 
-   
+
     public function edit(Autore $autore)
     {
         //
     }
 
-    
+
     public function update(Request $request, Autore $autore)
     {
         //
     }
 
-    
+
     public function destroy(Autore $autore)
     {
         //

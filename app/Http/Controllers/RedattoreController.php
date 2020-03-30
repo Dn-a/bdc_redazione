@@ -19,18 +19,18 @@ class RedattoreController extends Controller
 
         // view che mostra lo storico noleggi
         $only = $request->input('only') ?: '';
-        
+
         $user = Auth::user();
         $ruolo = $user->ruolo->titolo;
-        
+
         if($ruolo!='caporedattore') return response()->json([],404);
 
         $redattore = Redattore::orderBy('id','DESC')->paginate($page);
 
         return new RedattoreCollection(
-            $redattore, 
+            $redattore,
             true
-            //$this->moreField($ruolo) 
+            //$this->moreField($ruolo)
         );
     }
 
@@ -41,13 +41,13 @@ class RedattoreController extends Controller
 
         $only = $request->input('only') ?: '';
         //$noleggi = in_array('noleggi', explode('-',$only));
-        
+
         $user = Auth::user(); $ruolo = $user->ruolo->titolo;
 
         if($ruolo!='caporedattore') return response()->json([],404);
 
         $redattore = Redattore::
-        where(function($query) use($arr) {
+        whereHas('user', function($query) use($arr) {
             $query->where('nome',$arr[0])
             ->orWhere('cognome',$arr[0])
             ->orWhere('nome','like',$arr[0].'%')
@@ -63,7 +63,7 @@ class RedattoreController extends Controller
             })
             //->orWhereHas('email','like',"$arr[0]%")
             ->orWhere('matricola','like',"$arr[0]%");
-        })    
+        })
         ->limit($this->lmtSearch)->get();
 
 
@@ -73,13 +73,13 @@ class RedattoreController extends Controller
         );
     }
 
-   
+
     public function create()
     {
         //
     }
 
-   
+
     public function store(Request $request)
     {
         $user = Auth::user();
@@ -103,21 +103,20 @@ class RedattoreController extends Controller
             $data = $request->all();
             $data['matricola'] = strtoupper($request->matricola);
 
-            $user = User::create([            
+            $user = User::create([
+                'nome' => $data['nome'],
+                'cognome' => $data['cognome'],
                 'email' => $data['email'],
                 'id_ruolo' => 2,
                 'password' => Hash::make($data['password'])
             ]);
-            
+
             Redattore::create(
                 [
-                    'nome' => $data['nome'],
-                    'cognome' => $data['cognome'],
                     'matricola' => $data['matricola'],
-
                     'id_user' => $user->id
                 ]
-            );            
+            );
 
             return response()->json(['registration' =>'Registrazione redattore completata!'],201);
 
@@ -126,25 +125,25 @@ class RedattoreController extends Controller
         }
     }
 
-    
+
     public function show(Redattore $redattore)
     {
         //
     }
 
-    
+
     public function edit(Redattore $redattore)
     {
         //
     }
 
-    
+
     public function update(Request $request, Redattore $redattore)
     {
         //
     }
 
-    
+
     public function destroy(Redattore $redattore)
     {
         //

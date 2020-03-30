@@ -15,8 +15,8 @@ class CreateAutoriTable extends Migration
     {
         Schema::create('autori', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nome',50);
-            $table->string('cognome',50);
+            //$table->string('nome',50); ridondate
+            //$table->string('cognome',50); ridondate
             $table->date('data_nascita');
             $table->unsignedInteger('id_user');
             $table->string('telefono',12);

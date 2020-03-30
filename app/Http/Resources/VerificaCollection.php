@@ -9,7 +9,7 @@ class VerificaCollection extends ResourceCollection
     protected $withFields = [
         'id',
         'titolo',
-        'autore',        
+        'autore',
         'intro',
         'img',
         'data_creazione'
@@ -63,13 +63,13 @@ class VerificaCollection extends ResourceCollection
             $item['titolo'] = $titolo;
         }
         if(in_array('autore',$fields)){
-            $autore = ucfirst($item->ricetta->autore->nome).' '.ucfirst($item->ricetta->autore->cognome);
+            $autore = ucfirst($item->ricetta->autore->user->nome).' '.ucfirst($item->ricetta->autore->user->cognome);
             $item['autore'] = $autore;
-        } 
+        }
         if(in_array('redattore',$fields)){
-            $redattore = ucfirst($item->redattore->nome).' '.ucfirst($item->redattore->cognome);
+            $redattore = ucfirst($item->redattore->user->nome).' '.ucfirst($item->redattore->user->cognome);
             $item['redattore'] = $redattore;
-        }        
+        }
         if(in_array('fase',$fields)){
             $fase = $item->fase->titolo;
             $item['fase'] = $fase;

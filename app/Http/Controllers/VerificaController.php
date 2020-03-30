@@ -17,23 +17,22 @@ class VerificaController extends Controller
         $page = $request->input('per-page') ?: 9;
 
         // view
-        $only = $request->input('only') ?: '';        
+        $only = $request->input('only') ?: '';
+        $viewValidate = in_array('validate', explode('-',$only));
         $viewScartate = in_array('scartate', explode('-',$only));
-        
 
         $user = Auth::user();
 
         $isCaporedattore = $user->ruolo->titolo=='caporedattore';
 
         $ricette = Verifica::
-            where(function($query) use ($viewScartate){
+            where(function($query) use ($user, $viewScartate, $viewValidate){
                 if($viewScartate)
                     $query->where('id_fase',5);
-            })
-            ->where(function($query) use ($user){
-                if($user->ruolo=='redattore')
-                    $query->where('id_redattore',$user->redattore->id);
-                elseif($user->ruolo=='caporedattore')
+                else if($user->ruolo->titolo=='redattore' && $viewValidate)
+                    $query->where('id_redattore',$user->redattore->id)
+                    ->where('id_fase',4);
+                else if($user->ruolo->titolo=='caporedattore' && $viewValidate)
                     $query->where('id_fase',7);
             })
             ->orderBy('data_creazione','DESC')->paginate($page);
@@ -50,7 +49,8 @@ class VerificaController extends Controller
     {
         $arr = explode(' ',$val);
 
-        $only = $request->input('only') ?: '';        
+        $only = $request->input('only') ?: '';
+        $viewValidate = in_array('validate', explode('-',$only));
         $viewScartate = in_array('scartate', explode('-',$only));
 
         $user = Auth::user();
@@ -58,20 +58,22 @@ class VerificaController extends Controller
         $isCaporedattore = $user->ruolo->titolo=='caporedattore';
 
         $ricette = Verifica::
-            where(function($query) use ($viewScartate){
+            where(function($query) use ($viewScartate, $viewValidate){
                 if($viewScartate)
                     $query->where('id_fase',5);
+                else if($viewValidate)
+                    $query->whereIn('id_fase',[4,7]);
             })
             ->where(function($query) use ($user){
                 if($user->ruolo=='redattore')
-                    $query->where('id_redattore',$user->redattore->id);
+                    $query->where('id_redattore', $user->redattore->id);
                 elseif($user->ruolo=='caporedattore')
                     $query->where('id_fase',7);
             })
             ->whereHas('ricetta', function($query) use($arr) {
                 $query->where('titolo','like', $arr[0].'%')
                 ->orWhere('calorie','like', $arr[0].'%')
-                ->orWhere('difficolta','like', $arr[0].'%')    
+                ->orWhere('difficolta','like', $arr[0].'%')
                 ->orWhereHas('autore',function($query) use($arr) {
                     $query->where('nome',$arr[0])
                     ->orWhere('cognome',$arr[0])
@@ -86,8 +88,8 @@ class VerificaController extends Controller
                             $query->where('cognome','like',$arr[1].'%')
                             ->where('nome','like',$arr[0].'%');
                     });
-                });            
-            })            
+                });
+            })
             ->limit($this->lmtSearch)->get();
 
 
@@ -100,7 +102,7 @@ class VerificaController extends Controller
 
     private function moreField($viewScartate=false, $isCaporedattore=false )
     {
-        $moreFields = [         
+        $moreFields = [
         ];
 
         if($viewScartate)
@@ -111,43 +113,43 @@ class VerificaController extends Controller
             $moreFields =  array_merge($moreFields,
                 ['redattore','data_approvazione']
             );
-        
+
         return $moreFields;
     }
-    
+
     public function create()
     {
         //
     }
 
-    
+
     public function store(Request $request)
     {
         //
     }
 
-    
+
     public function show(Verifica $verifica)
     {
         //
     }
 
-   
+
     public function edit(Verifica $verifica)
     {
         //
     }
 
-    
+
     public function update(Request $request, Verifica $verifica)
     {
         //
     }
 
-    
+
     public function destroy(Verifica $verifica)
     {
         //
     }
-    
+
 }

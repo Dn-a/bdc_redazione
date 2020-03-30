@@ -11,10 +11,10 @@ class RicettaCollection extends ResourceCollection
         'titolo',
         'tempo_preparazione',
         'tempo_cottura',
-        'intro',   
+        'intro',
         'calorie',
-        'difficolta',        
-        'img'   
+        'difficolta',
+        'img'
     ];
     protected $withPagination;
 
@@ -57,7 +57,7 @@ class RicettaCollection extends ResourceCollection
         $fields = $this->withFields;
 
         if(in_array('autore',$fields)){
-            $autore = ucfirst($item->autore->nome).' '.ucfirst($item->autore->cognome);
+            $autore = ucfirst($item->autore->user->nome).' '.ucfirst($item->autore->user->cognome);
             $item['autore'] = $autore;
         }
         if(in_array('tipologia',$fields)){
@@ -66,7 +66,7 @@ class RicettaCollection extends ResourceCollection
         }
         if(in_array('ingredienti',$fields)){
             $ingredienti = $item->ingredienti;
-            for($i=0; $i < count($ingredienti); $i++)            
+            for($i=0; $i < count($ingredienti); $i++)
             {
                 $ingredienti[$i]['quantita'] = $ingredienti[$i]['pivot']['quantita'];
                 unset(

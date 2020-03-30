@@ -57,6 +57,14 @@ class AutoreCollection extends ResourceCollection
     {
         $fields = $this->withFields;
 
+        if(in_array('nome',$fields)){
+            $nome = $item->user->nome;
+            $item['nome'] = $nome;
+        }
+        if(in_array('cognome',$fields)){
+            $cognome = $item->user->cognome;
+            $item['cognome'] = $cognome;
+        }
         if(in_array('recapiti',$fields)){
             $recapiti = 'tel: '.(string) $item->telefono . ' - cell: '.(string) $item->cellulare;
             $item['recapiti'] = $recapiti;
@@ -73,7 +81,7 @@ class AutoreCollection extends ResourceCollection
             $dataC = $item->dataCreazione();
             $item['data_creazione'] = $dataC;
         }
-        
+
         if(empty($this->withFields)) return $item;
 
         $array = [];

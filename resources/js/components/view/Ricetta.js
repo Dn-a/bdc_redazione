@@ -44,7 +44,7 @@ export default class Ricetta extends Component {
         this.setRemoteData = this.setRemoteData.bind(this);
     }
 
-    componentDidMount(){       
+    componentDidMount(){
         //console.log(this.props.router.match.params.ricetta)
         let ricetta = this.props.router.match.params.ricetta;
         this.getRemoteData(ricetta);
@@ -65,7 +65,7 @@ export default class Ricetta extends Component {
                 let remoteData = result.data;
                 let checked = this.state.checked;
 
-                ricetta = remoteData.data; 
+                ricetta = remoteData.data;
 
                 ricetta.ingredienti.map((i,k) => checked[k] = false)
 
@@ -83,15 +83,15 @@ export default class Ricetta extends Component {
                     else if(error.response.data.message!==undefined)
                         msg = error.response.data.message;
 
-                
-                this.setState({errorRegMessage: msg, loader:false}); 
-                
+
+                this.setState({errorRegMessage: msg, loader:false});
+
                 throw error;
 			});
     }
 
     setRemoteData(id,verifica) {
-        
+
         let url = this.props.url+'/ricette/verifica/'+id;
 
         let headers = {headers: {'Accept': 'application/json',
@@ -114,8 +114,8 @@ export default class Ricetta extends Component {
             //console.log(result);
 
             let ricetta = this.state.ricetta;
-            let msg = ''; 
-            
+            let msg = '';
+
             ricetta.fase = result.data.fase;
             switch(ricetta.fase){
                 case 'idonea':
@@ -128,7 +128,7 @@ export default class Ricetta extends Component {
                     msg = 'Ricetta Scartata!';
                     break;
             }
-            
+
             this.setState({ ricetta : ricetta , validationMessage:msg , verificationLoader : false});
             return result;
 
@@ -140,13 +140,13 @@ export default class Ricetta extends Component {
                     msg = error.response.data.errors;
                 else if(error.response.data.msg)
                     msng = error.response.data.msg;
-            } 
+            }
             this.setState({errorRegMessage: msg, loader:false});
             throw error;
         });
     }
 
- 
+
     render() {
 
         let data = this.state.ricetta;
@@ -162,12 +162,12 @@ export default class Ricetta extends Component {
             bread = 'gestione ricette';
         else if(url.includes('verifiche'))
             bread = 'verifiche';
-        
+
         let errorRegMessage = this.state.errorRegMessage;
-        
+
         return (
             <Fragment>
-                {errorRegMessage!=''? 
+                {errorRegMessage!=''?
                     <p>{errorRegMessage}</p>
                 :
                     <div className="row constraint article">
@@ -176,7 +176,7 @@ export default class Ricetta extends Component {
                             (<div className="col-md-8 text-center"><div className="img-loader active"><img src={this.props.url+'/img/loader.gif'} /></div></div>)
                         :
                             (<article className="col-md-8 pr-4">
-                        
+
                                 <ul className="breadcrumbs">
                                     <li>
                                         <a href="" onClick={
@@ -208,7 +208,7 @@ export default class Ricetta extends Component {
                                         <div >
                                             <div className="title"><strong>Autore</strong></div>
                                             <div>{data.autore}</div>
-                                        </div>                                        
+                                        </div>
                                     </div>
                                     <div className="col-sm-4 info">
                                         <div className="pl-2">
@@ -217,7 +217,7 @@ export default class Ricetta extends Component {
                                         <div >
                                             <div className="title"><strong>Tipologia</strong></div>
                                             <div>{data.tipologia.titolo}</div>
-                                        </div>                                        
+                                        </div>
                                     </div>
                                     <div className="col-sm-4 info">
                                         <div className="pl-2">
@@ -226,8 +226,8 @@ export default class Ricetta extends Component {
                                         <div >
                                             <div className="title"><strong>Difficoltà</strong></div>
                                             <div>{data.difficolta}</div>
-                                        </div>                                        
-                                    </div>                                
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div className="content">
@@ -243,7 +243,7 @@ export default class Ricetta extends Component {
                                             <div >
                                                 <div className="title"><strong>porzioni</strong></div>
                                                 <div>{data.porzioni}</div>
-                                            </div>                                        
+                                            </div>
                                         </div>
                                         <div className="col-sm-4 info px-3">
                                             <div className="">
@@ -252,7 +252,7 @@ export default class Ricetta extends Component {
                                             <div >
                                                 <div className="title"><strong>preparazione</strong></div>
                                                 <div>{data.tempo_preparazione} min</div>
-                                            </div>                                        
+                                            </div>
                                         </div>
                                         <div className="col-sm-4 info px-4">
                                             <div className="">
@@ -261,22 +261,22 @@ export default class Ricetta extends Component {
                                             <div >
                                                 <div className="title"><strong>cottura</strong></div>
                                                 <div>{data.tempo_cottura} min</div>
-                                            </div>                                        
+                                            </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div className="ingredienti mb-5">
                                         <h5><strong>Ingredienti</strong></h5>
                                         <hr/>
                                         <ul>
                                             {data.ingredienti.map((i,k) => {
-                                                let checked = this.state.checked;                                                                
-                                                                
+                                                let checked = this.state.checked;
+
                                                 return(
-                                                    <div key={k} 
+                                                    <div key={k}
                                                     //className="form-control"
                                                     >
-                                                        <CheckField 
+                                                        <CheckField
                                                             name={'ingrediente_'+k }
                                                             divClassName={(checked[k]? 'checked':'') }
                                                             className='mr-3'
@@ -299,18 +299,18 @@ export default class Ricetta extends Component {
                                             })}
                                         </ul>
                                     </div>
-                                    
+
                                     <div className="body mb-5">
                                         <div>
                                             <h5><strong>Modalità Preparazione</strong></h5>
                                             <hr/>
-                                        </div>                                      
+                                        </div>
                                             {
                                                 parse(data.modalita_preparazione)
                                             }
                                     </div>
 
-                                    {data.fase!='approvata' && user.ruolo!='autore' && 
+                                    {data.fase!='approvata' && user.ruolo!='autore' &&
                                         <div className="body mb-3">
                                             <div className="alert alert-secondary">
                                                 <h5><strong>Note per il redattore</strong></h5>
@@ -319,24 +319,24 @@ export default class Ricetta extends Component {
                                         </div>
                                     }
                                 </div>
-                                
+
                                 {(
-                                    user.ruolo=='redattore' && data.fase=='validazione' || 
+                                    user.ruolo=='redattore' && data.fase=='validazione' ||
                                     user.ruolo=='caporedattore' && data.fase=='approvazione'
-                                ) 
+                                )
                                 &&
                                     <Validazione state={this.state} onClick={this.setRemoteData} user={user} url={this.props.url} className="my-3"/>
                                 }
 
-                                {this.state.validationMessage!='' && 
+                                {this.state.validationMessage!='' &&
                                     <div className="alert alert-success" role="alert">
                                         <div>{this.state.validationMessage}</div>
                                     </div>
                                 }
 
                             </article>)
-                        }   
-                        
+                        }
+
                         <aside className="col-md-4 ">
                             {bread=='gestione ricette' || bread=='verifiche'?
                                 <Impostazioni user={user} data={data} url={this.props.url} router={this.props.router} />
@@ -365,7 +365,7 @@ const Validazione = (props) => {
     let classValid = props.user.ruolo=='redattore' ? 'validazione ': '';
     return(
         <div >
-            <CloseButton 
+            <CloseButton
             //style={style}
             className={"w-100 py-2 "}
             onClick={(a) => props.onClick(props.state.ricetta.id,'scartata')
@@ -375,7 +375,7 @@ const Validazione = (props) => {
                 <img className={"loader-2"+(props.state.verificationLoader==true?' d-inline-block':'')} src={props.url+"/img/loader_2.gif"}></img>
             </CloseButton>
 
-            <ConfirmButton 
+            <ConfirmButton
             //style={style}
             className={"w-100 "+ classValid + props.className}
             onClick={(a) => props.onClick(props.state.ricetta.id,fase)
@@ -391,16 +391,16 @@ const Validazione = (props) => {
 const Impostazioni = (props) => {
     let data = props.data;
     let user = props.user;
-    
+
     let history = props.router.history;
     let idRicetta = props.router.match.params.ricetta;
 
     let stati = ['inviata','validazione','idonea','scartata','approvazione','approvata'];
-    
+
     return(
         <div className="gestione p-4">
             <h3 className="mb-3"><strong>Impostazioni</strong></h3>
-            
+
             {user.ruolo=='autore' &&
                 <Fragment>
                     <EditButton className="w-100"
@@ -413,7 +413,7 @@ const Impostazioni = (props) => {
                     {(data.fase!='bozza' && data.fase!='inviata') && <div className="error-div">non puoi effettuare modifiche</div>}
                 </Fragment>
             }
-            
+
             <div className="my-4" >
                 <div><strong>Fase</strong></div>
                 <hr className="mt-1 mb-4" />
@@ -421,17 +421,17 @@ const Impostazioni = (props) => {
                     {
                         stati.map((st,key) => {
                             return(
-                                <div key={key} 
+                                <div key={key}
                                     className={st+" stato col-md-6 mb-2 text-center "+(st==data.fase?'active':'')}
                                 >
                                     <div className=" p-2">{st}</div>
                                 </div>
-                            )        
+                            )
                         })
 
-                    }                                            
+                    }
                 </div>
-            </div>      
+            </div>
 
         </div>
     )
@@ -440,8 +440,8 @@ const Impostazioni = (props) => {
 const ValoriNutrizionali = (props) => {
     let data = props.data;
     return(
-        <div className="blog border border-dark p-4 mb-5">                                
-            <h3 className="mb-3 "><strong>Valori Nutrizionali</strong></h3>        
+        <div className="blog border border-dark p-4 mb-5">
+            <h3 className="mb-3 "><strong>Valori Nutrizionali</strong></h3>
             <div className="mb-2 info" ><i className="fa fa-cutlery" aria-hidden="true"></i> {data.porzioni} porzioni</div>
             <hr style={{borderTop: '1rem solid #333'}} />
             <div className="mb-2 info" ><i className="fa fa-free-code-camp" aria-hidden="true"></i> {data.calorie} Kcal</div>
@@ -451,7 +451,7 @@ const ValoriNutrizionali = (props) => {
 
 
 class UltimeRicette extends Component {
-    
+
 
     constructor(props) {
         super(props);
@@ -473,18 +473,18 @@ class UltimeRicette extends Component {
 
         return axios.get(url, headers )
 			.then(result => {
-                
+
                 let remoteData = result.data;
                 let data = this.state.data;
 
                 data.ricette.push(...remoteData.data);
-                
-                //console.log(data);
+
+                console.log(data);
                 this.setState({data : data})
 
 			}).catch((error) => {
                 if(error.response===undefined) return;
-                
+
                 if(error.response.data!==undefined)
                     console.log(error.response.data);
                 else
@@ -497,8 +497,8 @@ class UltimeRicette extends Component {
     render(){
 
         return(
-            <div className="blog p-1 mb-3 bg-transparent ultime-ricette">                                
-                <h3 className="mb-3 "><strong>Ricette Recenti</strong></h3>        
+            <div className="blog p-1 mb-3 bg-transparent ultime-ricette">
+                <h3 className="mb-3 "><strong>Ricette Recenti</strong></h3>
                 <div>
                     {
                         this.state.data.ricette.map((r,k) => {

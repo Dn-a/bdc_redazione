@@ -15,8 +15,8 @@ class CreateRedattoriTable extends Migration
     {
         Schema::create('redattori', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nome',50);
-            $table->string("cognome",50);
+            //$table->string('nome',50); ridondate
+            //$table->string('cognome',50); ridondate
             $table->string("matricola",20)->unique();
             $table->unsignedInteger('id_user');
         });

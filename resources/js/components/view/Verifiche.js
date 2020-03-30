@@ -19,7 +19,7 @@ const COLUMNS = [
     :null,
     { title: 'Tipologia', field: 'tipologia', render: (cell,row) => row.tipologia.titolo.charAt(0).toUpperCase()+row.tipologia.titolo.slice(1)},
     { title: 'Difficoltà', field: 'difficolta', style: {textTransform:'capitalize'}},
-    { title: 'Tempi', field: 'tempo_cottura', render:(cell,row) => 
+    { title: 'Tempi', field: 'tempo_cottura', render:(cell,row) =>
         {
             return(
                 <Fragment>
@@ -36,7 +36,7 @@ const COLUMNS = [
 
 const COLUMNS_VALIDATE = [
 { title: 'id', field: 'id' , align:'right'},
-{ title: 'Titolo', field: 'titolo',img:'', render: (cell,row) => 
+{ title: 'Titolo', field: 'titolo',img:'', render: (cell,row) =>
     {
         let style = {fontSize:'0.8em'}
         return(
@@ -53,7 +53,7 @@ const COLUMNS_VALIDATE = [
         );
     }
 },
-{ title: 'Azioni', field:'actions', render: (cell,row,handle) => 
+{ title: 'Azioni', field:'actions', render: (cell,row,handle) =>
     {
         return(
             <div style={{display: 'inline-block'}}>
@@ -129,7 +129,7 @@ const COLUMNS_VALIDATE = [
                 label="Ingredienti"
                 onChange={(e) => handle(e,'check')}
                 />
-                <CheckField 
+                <CheckField
                 divClassName="d-inline"
                 name={"data_creazione_"+row.id}
                 label="Data Creazione"
@@ -164,8 +164,8 @@ export default  class Verifiche extends Component {
             fieldPrint:{}
         };
 
-        this.url = this.props.url+'/ricette';        
-        this._handleSearchFieldCallback = this._handleSearchFieldCallback.bind(this);   
+        this.url = this.props.url+'/ricette';
+        this._handleSearchFieldCallback = this._handleSearchFieldCallback.bind(this);
         this._handleSearchFieldValidateCallback = this._handleSearchFieldValidateCallback.bind(this);
         this._handleSearchFieldScartateCallback = this._handleSearchFieldScartateCallback.bind(this);
 
@@ -176,7 +176,7 @@ export default  class Verifiche extends Component {
     }
 
     getRemoteData(id) {
-        
+
         let url = this.props.url+'/print-ricetta/'+id;
 
         let headers = {headers: {'Accept': 'application/json',
@@ -186,7 +186,7 @@ export default  class Verifiche extends Component {
 
         let sendData = {};
 
-        sendData.fields = this.state.fieldPrint[id];        
+        sendData.fields = this.state.fieldPrint[id];
         sendData._token = CSRF_TOKEN;
 
         //this.setState({loader : true});
@@ -217,12 +217,12 @@ export default  class Verifiche extends Component {
                     msg = error.response.data.errors;
                 else if(error.response.data.msg)
                     msng = error.response.data.msg;
-            } 
+            }
             this.setState({errorRegMessage: msg, loader:false});
             throw error;
         });
     }
-   
+
 
     _handleSearchFieldCallback(data,reset){
 
@@ -284,7 +284,7 @@ export default  class Verifiche extends Component {
                 <nav>
                     <div className="nav nav-tabs" id="nav-tab" role="tablist">
                         <a className="nav-item nav-link active" id="nav-verifiche-tab" data-toggle="tab" href="#nav-verifiche" role="tab" aria-controls="nav-verifiche" aria-selected="true">Verifiche</a>
-                        <a className="nav-item nav-link" id="nav-validati-tab" data-toggle="tab" href="#nav-validati" role="tab" aria-controls="nav-validati" aria-selected="false">Validate</a>
+                        <a className="nav-item nav-link" id="nav-validati-tab" data-toggle="tab" href="#nav-validati" role="tab" aria-controls="nav-validati" aria-selected="false">{(user.ruolo=='caporedattore'?'Approvate':'Validate')}</a>
                         <a className="nav-item nav-link" id="nav-scartate-tab" data-toggle="tab" href="#nav-scartate" role="tab" aria-controls="nav-scartate" aria-selected="false">Scartate</a>
                     </div>
                 </nav>
@@ -292,11 +292,11 @@ export default  class Verifiche extends Component {
                 <div className="tab-content pt-4" id="nav-tabContent">
 
                     <div className="tab-pane fade show active" id="nav-verifiche" role="tabpanel" aria-labelledby="nav-verifiche-tab">
-                        
+
                         <div className="row mb-3 px-2">
 
                             <div className="col-md-6">
-                                <SearchField showList={false} 
+                                <SearchField showList={false}
                                 //patternList={{id:'id',fields:['titolo','cognome']}}
                                 url={this.url+'/search'}
                                 query='only=verifiche'
@@ -305,7 +305,7 @@ export default  class Verifiche extends Component {
                             </div>
 
                             <div className="col-md-6 text-right">
-                            
+
                             </div>
 
                         </div>
@@ -319,7 +319,7 @@ export default  class Verifiche extends Component {
                                     query='only=verifiche'
                                     columns={COLUMNS}
                                     externalRows={this.state.rows}
-                                    onClick={(row) =>                                 
+                                    onClick={(row) =>
                                             history.push(this.props.url+'/verifiche/'+row.id)
                                     }
                                 />
@@ -329,18 +329,18 @@ export default  class Verifiche extends Component {
                     </div>
 
                     <div className="tab-pane fade" id="nav-validati" role="tabpanel" aria-labelledby="nav-validati-tab">
-                        
+
                         <div className="row mb-3 px-2">
 
                             <div className="col-md-6">
-                                <SearchField showList={false} 
+                                <SearchField showList={false}
                                 url={this.props.url+'/verifiche/search'}
                                 callback={this._handleSearchFieldValidateCallback}
                                 />
                             </div>
 
                             <div className="col-md-6 text-right">
-                            
+
                             </div>
 
                         </div>
@@ -351,24 +351,24 @@ export default  class Verifiche extends Component {
                                     id='tb-ricette-validate'
                                     reload={this.state.reloadInfiniteTable}
                                     url={this.props.url+'/verifiche'}
-                                    //query='only=validate'
+                                    query='only=validate'
                                     columns={COLUMNS_VALIDATE}
                                     externalRows={this.state.rowsValidate}
-                                    onActions={(element,type) => {                                                                                                          
+                                    onActions={(element,type) => {
 
                                         if(type=='stampa'){
-                                            let fieldPrint = this.state.fieldPrint; 
+                                            let fieldPrint = this.state.fieldPrint;
                                             if(fieldPrint[element.id]!==undefined && fieldPrint[element.id].length>0)
                                                 this.getRemoteData(element.id)
                                             //console.log(this.state.fieldPrint[element.id])
                                         }else{
                                             let el = element.target;
                                             let array =  el.name.split('_')
-                                            let id = el.name.split('_').slice(-1)[0];       
+                                            let id = el.name.split('_').slice(-1)[0];
                                             array.pop()
                                             let name = array.join('_')
 
-                                            let fieldPrint = this.state.fieldPrint;                                            
+                                            let fieldPrint = this.state.fieldPrint;
 
                                             if(!el.checked)
                                                 fieldPrint[id] = fieldPrint[id].filter(f => f != name)
@@ -376,7 +376,7 @@ export default  class Verifiche extends Component {
                                                 if(fieldPrint[id]===undefined) fieldPrint[id] = []
                                                 fieldPrint[id].push(name)
                                             }
-                                            
+
                                             this.setState({ fieldPrint: fieldPrint})
 
                                             //console.log(name)
@@ -388,11 +388,11 @@ export default  class Verifiche extends Component {
                                 />
                             </div>
                         </div>
-                        
+
                     </div>
 
                     <div className="tab-pane fade" id="nav-scartate" role="tabpanel" aria-labelledby="nav-scartate-tab">
-                        
+
                         <div className="row mb-3 px-2">
 
                             <div className="col-md-6">
@@ -404,7 +404,7 @@ export default  class Verifiche extends Component {
                             </div>
 
                             <div className="col-md-6 text-right">
-                            
+
                             </div>
 
                         </div>
@@ -418,17 +418,17 @@ export default  class Verifiche extends Component {
                                     query='only=scartate'
                                     columns={COLUMNS}
                                     externalRows={this.state.rowsScartate}
-                                    onClick={(row) =>                                 
+                                    onClick={(row) =>
                                             history.push(this.props.url+'/verifiche/'+row.id)
                                     }
                                 />
                             </div>
                         </div>
-                        
+
                     </div>
 
                 </div>
-                
+
             </div>
         );
     }
