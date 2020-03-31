@@ -28,12 +28,20 @@ class VerificaController extends Controller
         $ricette = Verifica::
             where(function($query) use ($user, $viewScartate, $viewValidate){
                 if($viewScartate)
-                    $query->where('id_fase',5);
+                    $query->whereHas('ricetta', function($query) {
+                        $query->where('id_fase',5);
+                    });
                 else if($user->ruolo->titolo=='redattore' && $viewValidate)
                     $query->where('id_redattore',$user->redattore->id)
-                    ->where('id_fase',4);
+                    ->whereHas('ricetta', function($query) {
+                        $query->where('id_fase',4)
+                        ->orWhere('id_fase',6)
+                        ->orWhere('id_fase',7);
+                    });
                 else if($user->ruolo->titolo=='caporedattore' && $viewValidate)
-                    $query->where('id_fase',7);
+                    $query->whereHas('ricetta', function($query) {
+                        $query->where('id_fase',7);
+                    });
             })
             ->orderBy('data_creazione','DESC')->paginate($page);
 
@@ -58,37 +66,43 @@ class VerificaController extends Controller
         $isCaporedattore = $user->ruolo->titolo=='caporedattore';
 
         $ricette = Verifica::
-            where(function($query) use ($viewScartate, $viewValidate){
+            where(function($query) use ($user, $viewScartate, $viewValidate){
                 if($viewScartate)
-                    $query->where('id_fase',5);
-                else if($viewValidate)
-                    $query->whereIn('id_fase',[4,7]);
-            })
-            ->where(function($query) use ($user){
-                if($user->ruolo=='redattore')
-                    $query->where('id_redattore', $user->redattore->id);
-                elseif($user->ruolo=='caporedattore')
-                    $query->where('id_fase',7);
+                    $query->whereHas('ricetta', function($query) {
+                        $query->where('id_fase',5);
+                    });
+                else if($user->ruolo->titolo=='redattore' && $viewValidate)
+                    $query->where('id_redattore',$user->redattore->id)
+                    ->whereHas('ricetta', function($query) {
+                        $query->where('id_fase',4)
+                        ->orWhere('id_fase',6)
+                        ->orWhere('id_fase',7);
+                    });
+                else if($user->ruolo->titolo=='caporedattore' && $viewValidate)
+                    $query->whereHas('ricetta', function($query) {
+                        $query->where('id_fase',7);
+                    });
             })
             ->whereHas('ricetta', function($query) use($arr) {
                 $query->where('titolo','like', $arr[0].'%')
                 ->orWhere('calorie','like', $arr[0].'%')
                 ->orWhere('difficolta','like', $arr[0].'%')
-                ->orWhereHas('autore',function($query) use($arr) {
-                    $query->where('nome',$arr[0])
-                    ->orWhere('cognome',$arr[0])
-                    ->orWhere('nome','like',$arr[0].'%')
-                    ->orWhere('cognome','like',$arr[0].'%')
-                    ->orWhere(function($query) use($arr) {
-                        if(count($arr)==2)
-                            $query->where('cognome','like',$arr[0].' '.$arr[1].'%');
-                    })
-                    ->orWhere(function($query) use($arr) {
-                        if(isset($arr[1]))
-                            $query->where('cognome','like',$arr[1].'%')
-                            ->where('nome','like',$arr[0].'%');
-                    });
-                });
+                // ->orWhereHas('autore',function($query) use($arr) {
+                //     $query->where('nome',$arr[0])
+                //     ->orWhere('cognome',$arr[0])
+                //     ->orWhere('nome','like',$arr[0].'%')
+                //     ->orWhere('cognome','like',$arr[0].'%')
+                //     ->orWhere(function($query) use($arr) {
+                //         if(count($arr)==2)
+                //             $query->where('cognome','like',$arr[0].' '.$arr[1].'%');
+                //     })
+                //     ->orWhere(function($query) use($arr) {
+                //         if(isset($arr[1]))
+                //             $query->where('cognome','like',$arr[1].'%')
+                //             ->where('nome','like',$arr[0].'%');
+                //     });
+                // })
+                ;
             })
             ->limit($this->lmtSearch)->get();
 

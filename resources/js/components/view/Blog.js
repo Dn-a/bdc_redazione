@@ -1,5 +1,5 @@
 import React, { Component , Fragment } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import parse from 'html-react-parser';
 import CheckField from '../utils/form/CheckField';
 
@@ -33,7 +33,7 @@ export default class Blog extends Component {
         this.handleKcalSelected = this.handleKcalSelected.bind(this)
     }
 
-    componentDidMount(){       
+    componentDidMount(){
         this.getRemoteData();
     }
 
@@ -65,7 +65,7 @@ export default class Blog extends Component {
         this.getRemoteData(query)
     }
 
-    getRemoteData(query){        
+    getRemoteData(query){
 
         let url = this.props.url+'/ricette?only=blog&'+query;
 
@@ -92,7 +92,7 @@ export default class Blog extends Component {
 
 			}).catch((error) => {
                 if(error.response===undefined) return;
-                
+
                 if(error.response.data!==undefined)
                     console.log(error.response.data);
                 else
@@ -109,19 +109,19 @@ export default class Blog extends Component {
         let kcalSelcted = this.state.kcalSelcted;
 
         if(!checked){
-            kcalSelcted.id = kcalSelcted.id.filter(id => id != value.id)  
-            kcalSelcted.titolo = kcalSelcted.titolo.filter(titolo => titolo != value.titolo)  
-            kcalSelcted.kcal = kcalSelcted.kcal.filter(kcal => kcal != value.kcal)  
+            kcalSelcted.id = kcalSelcted.id.filter(id => id != value.id)
+            kcalSelcted.titolo = kcalSelcted.titolo.filter(titolo => titolo != value.titolo)
+            kcalSelcted.kcal = kcalSelcted.kcal.filter(kcal => kcal != value.kcal)
         }
         else{
-            kcalSelcted.id.push(value.id)  
+            kcalSelcted.id.push(value.id)
             kcalSelcted.titolo.push(value.titolo)
             kcalSelcted.kcal.push(value.kcal)
         }
-        
+
         this.setState({kcalSelcted: kcalSelcted})
     }
-    
+
 
     render() {
         let data = this.state.data;
@@ -137,7 +137,7 @@ export default class Blog extends Component {
                 :
                     (
                         <Fragment>
-                            
+
                             {kcalSelcted.id.length > 0 &&
                                 <div className="row mb-5">
                                     <div className="col-md-12">
@@ -150,12 +150,12 @@ export default class Blog extends Component {
 
                             <div className="row">
                                 {data.ricette.map((rc,key) =>{
-                                    return(                            
+                                    return(
                                             <div className="col-md-4" key={key}>
-                                                
+
                                                 <div className="card mb-5 box-shadow">
-                                                    
-                                                    <CheckField 
+
+                                                    <CheckField
                                                         style={{right:'4px'}}
                                                         divClassName="position-absolute p-2"
                                                         name={'ingrediente_'+key}
@@ -164,7 +164,7 @@ export default class Blog extends Component {
                                                         handleChange={this.handleKcalSelected}
                                                     />
 
-                                                    <Link to={this.props.url+'/blog/'+rc.id}>                                                
+                                                    <Link to={this.props.url+'/blog/'+rc.id}>
                                                         <img className="card-img-top" src={rc.img} alt="Card image cap" />
                                                     </Link>
                                                     <div className="card-body">
@@ -174,7 +174,7 @@ export default class Blog extends Component {
                                                         <p className="card-text">{parse(rc.intro)}</p>
                                                     </div>
                                                     <div className="card-footer bg-transparent">
-                                                        
+
                                                         <div className="row">
                                                             <div className="info col-sm-3 col-md-3 text-center px-1">
                                                                 <i className="fa fa-star-half-o" aria-hidden="true"></i>
@@ -192,9 +192,9 @@ export default class Blog extends Component {
 
                                                     </div>
                                                 </div>
-                                                
+
                                             </div>
-                                        
+
                                     )
                                 })}
                             </div>

@@ -37,7 +37,7 @@ if(request()->header('accept')=='application/json'){
   if(request()->header('accept')!='application/json'){
 
     Route::get('/{name1}', 'HomeController@index')->name('home')
-    ->where('name1', '|home');      
+    ->where('name1', '|home');
 
     Route::get('/{name2}/{id}', 'HomeController@index')->name('home_2')
     ->where(
@@ -54,7 +54,7 @@ if(request()->header('accept')=='application/json'){
 
       Route::get('/{name4}', 'HomeController@index')
         ->where('name4', 'autori|redattori|verifiche|approvate|validate|ingredienti')->name('home_3');
-        
+
       Route::get('/{name3}/{id}', 'HomeController@index')
       ->where(
         [
@@ -64,14 +64,14 @@ if(request()->header('accept')=='application/json'){
       );
 
     });
-    
+
     // ADMIN | CAPOREDATTORE | REDATTORE | AUTORE
     //
     Route::middleware(['auth'])->group( function () {
 
       Route::get('/{name5}', 'HomeController@index')
       ->where('name5', 'gestione-ricette')->name('home_4');
-      
+
         // View
         Route::get('/{name6}/{id}', 'HomeController@index')
         ->where(
@@ -88,7 +88,7 @@ if(request()->header('accept')=='application/json'){
             'name7' =>'gestione-ricette',
             'name8' =>'new'
           ]
-        );        
+        );
 
         // Edit
         Route::get('/{name9}/{id}/{name10}', 'HomeController@index')
@@ -99,20 +99,20 @@ if(request()->header('accept')=='application/json'){
             'name10' => 'edit'
           ]
         );
-      
+
     });
 
 }
-      
+
 
 // Ingredienti
   Route::get('ingredienti/search/{val}', 'IngredienteController@search')->name('ingredienti.search');
 
 
-// Ricette  
+// Ricette
   Route::get('ricette/{ricetta}', 'RicettaController@show');
   Route::get('ricette/search/{val}', 'RicettaController@search')->name('ricette.search');
-  Route::get('ricette', 'RicettaController@index')->name('ricette');  
+  Route::get('ricette', 'RicettaController@index')->name('ricette');
 
 // Comuni
   Route::get('comuni/search/{val}', 'ComuneController@search')->name('comuni.search');
@@ -149,21 +149,22 @@ Route::middleware(['auth','ruolo:admin|caporedattore|redattore'])->group( functi
 
   // Ingredienti
     Route::get('ingredienti', 'IngredienteController@index')->name('ingredienti');
-    Route::put('ingredienti/{ingrediente}', 'IngredienteController@update');   
-    
+    Route::put('ingredienti/{ingrediente}', 'IngredienteController@update');
+    Route::delete('ingredienti/{ingrediente}', 'IngredienteController@destroy');
+
 });
 
 // ADMIN | CAPOREDATTORE | REDATTORE | AUTORE
 //
 Route::middleware(['auth','ruolo:admin|caporedattore|redattore|autore'])->group( function () {
 
-  // Ingredienti  
-    Route::post('ingredienti', 'IngredienteController@store');    
+  // Ingredienti
+    Route::post('ingredienti', 'IngredienteController@store');
     //Route::resource('ingredienti', 'IngredienteController',['as' => 'ingredienti']);
 
   // Ricette
     Route::post('ricette', 'RicettaController@store');
-    Route::put('ricette/{ricetta}', 'RicettaController@update');    
+    Route::put('ricette/{ricetta}', 'RicettaController@update');
     Route::delete('ricette/{ricetta}', 'RicettaController@destroy');
 
 });

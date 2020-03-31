@@ -18,13 +18,13 @@ class CreateVerificheTable extends Migration
             $table->unsignedInteger('id_ricetta');
             $table->unsignedInteger('id_redattore');
             //$table->enum('stato',['scartata','idonea','approvata'])->default('scartata');
-            $table->unsignedInteger('id_fase')->default(1);
+            //$table->unsignedInteger('id_fase')->default(1); ridondante
             $table->timestamp('data_creazione')->useCurrent();
             $table->timestamp('data_approvazione')->nullable();
         });
 
         Schema::table('verifiche', function($table) {
-        	$table->foreign('id_fase')->references('id')->on('fasi')->onDelete('restrict');
+        	//$table->foreign('id_fase')->references('id')->on('fasi')->onDelete('restrict'); ridondante
         	$table->foreign('id_ricetta')->references('id')->on('ricette')->onDelete('restrict');
         	$table->foreign('id_redattore')->references('id')->on('redattori')->onDelete('restrict');
         });

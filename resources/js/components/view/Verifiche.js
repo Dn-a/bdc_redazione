@@ -48,6 +48,7 @@ const COLUMNS_VALIDATE = [
                     {User().ruolo=='caporedattore' &&
                         <div style={style}>Data approvazione: {new Date(row['data_approvazione']).toLocaleDateString("it-IT",{year:"numeric",month:"2-digit", day:"2-digit"})}</div>
                     }
+                    <div style={style}>fase: {row.fase}</div>
                 </div>
             </div>
         );
@@ -196,7 +197,7 @@ export default  class Verifiche extends Component {
         return axios.post(url,sendData,headers)
         .then(result => {
             let base64 = result.data;
-            console.log(base64);
+            //console.log(base64);
 
             let linkSource = 'data:application/pdf;base64,'+base64;
             let downloadLink = document.createElement("a");
@@ -335,6 +336,7 @@ export default  class Verifiche extends Component {
                             <div className="col-md-6">
                                 <SearchField showList={false}
                                 url={this.props.url+'/verifiche/search'}
+                                query='only=validate'
                                 callback={this._handleSearchFieldValidateCallback}
                                 />
                             </div>

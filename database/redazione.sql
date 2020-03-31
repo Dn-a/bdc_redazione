@@ -7994,7 +7994,7 @@ CREATE TABLE IF NOT EXISTS `ingredienti` (
   UNIQUE KEY `titolo` (`titolo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dump dei dati della tabella redazione.ingredienti: ~19 rows (circa)
+-- Dump dei dati della tabella redazione.ingredienti: ~18 rows (circa)
 /*!40000 ALTER TABLE `ingredienti` DISABLE KEYS */;
 INSERT IGNORE INTO `ingredienti` (`id`, `titolo`, `attivo`, `calorie`, `unita_misura`, `img`) VALUES
 	(1, 'spaghetti', 1, 158.00, 'g', 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Spaghetti_chitarra.png/1200px-Spaghetti_chitarra.png'),
@@ -8204,8 +8204,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dump dei dati della tabella redazione.users: ~4 rows (circa)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT IGNORE INTO `users` (`id`, `nome`, `cognome`, `email`, `id_ruolo`, `password`, `email_verified_at`, `remember_token`, `created_at`, `updated_at`) VALUES
-	(9, 'antonino', 'di natale', 'antonino.dinatale@email.com', 3, '$2y$10$LrLJ8qEkCG4Kj0n9bSww5uIU06Wlg8o8gIT1ejttu/b5GH.EpFUQW', NULL, 'r8g1iC0qWTX6T2xW8e2PlO0myhO8j2Hx9WE0LzULg3jO4z4cIFLidDlBPF06', '2020-03-02 23:21:37', '2020-03-02 23:21:37'),
-	(10, 'mario', 'rossi', 'mario.rossi@email.com', 1, '$2y$10$Vjb7yyV9yWlvWqcBFN5W2O187cY3TOFRmForU.Nz55brbXSgGpzbi', NULL, 'vBzZAUJ86rRpHkmXMiP4esA10SH7UvxNPIIhgl2aIjC07DAfrcn2DwoN4xq1', '2020-03-03 23:17:37', '2020-03-03 23:17:37'),
+	(9, 'antonino', 'di natale', 'antonino.dinatale@email.com', 3, '$2y$10$LrLJ8qEkCG4Kj0n9bSww5uIU06Wlg8o8gIT1ejttu/b5GH.EpFUQW', NULL, '3SZiCQsgpiU1Dx6SiELbNDlQemduZx7RxVsUN5dZjJmmyBiNTaCwW903NUX8', '2020-03-02 23:21:37', '2020-03-02 23:21:37'),
+	(10, 'mario', 'rossi', 'mario.rossi@email.com', 1, '$2y$10$Vjb7yyV9yWlvWqcBFN5W2O187cY3TOFRmForU.Nz55brbXSgGpzbi', NULL, 'gupvWtzxU6YvKKHStQsUI6RByBCtn9DAf8Qr2ZZu1szxVQnBYXJS2IKoJw2G', '2020-03-03 23:17:37', '2020-03-03 23:17:37'),
 	(12, 'franco', 'sole', 'franco.sole@email.com', 2, '$2y$10$igh.Rmd0x5l8ofr1x/WfQOhWD6LuvSSLU10NahGEqqSBrGx6qSeC6', NULL, NULL, '2020-03-05 00:00:20', '2020-03-05 00:00:20'),
 	(13, 'renzo', 'arbore', 'renzo.arbore@email.com', 1, '$2y$10$ICppkVMUe57t8ma7TOSxnesOiiKpGnD7G53SCqXuorCH/SJ9vftP.', NULL, 'zatRzMaqGLn8VyEAGy3qPjc0lcylVF0rDPqDp6OrPb2odb6vOr6DcPVyOlKF', '2020-03-13 00:56:49', '2020-03-13 00:56:49');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
@@ -8215,25 +8215,22 @@ CREATE TABLE IF NOT EXISTS `verifiche` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_ricetta` int(10) unsigned NOT NULL,
   `id_redattore` int(10) unsigned NOT NULL,
-  `id_fase` int(10) unsigned NOT NULL DEFAULT '3',
   `data_creazione` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `data_approvazione` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `verifiche_id_ricetta_foreign` (`id_ricetta`),
   KEY `verifiche_id_redattore_foreign` (`id_redattore`),
-  KEY `verifiche_id_fase_foreign` (`id_fase`),
-  CONSTRAINT `verifiche_id_fase_foreign` FOREIGN KEY (`id_fase`) REFERENCES `fasi` (`id`),
   CONSTRAINT `verifiche_id_redattore_foreign` FOREIGN KEY (`id_redattore`) REFERENCES `redattori` (`id`),
   CONSTRAINT `verifiche_id_ricetta_foreign` FOREIGN KEY (`id_ricetta`) REFERENCES `ricette` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dump dei dati della tabella redazione.verifiche: ~3 rows (circa)
+-- Dump dei dati della tabella redazione.verifiche: ~4 rows (circa)
 /*!40000 ALTER TABLE `verifiche` DISABLE KEYS */;
-INSERT IGNORE INTO `verifiche` (`id`, `id_ricetta`, `id_redattore`, `id_fase`, `data_creazione`, `data_approvazione`) VALUES
-	(7, 19, 2, 7, '2020-03-12 01:34:01', '2020-03-15 20:10:22'),
-	(8, 20, 2, 7, '2020-03-13 02:04:55', '2020-03-16 20:10:22'),
-	(9, 21, 2, 7, '2020-03-17 02:31:51', '2020-03-14 20:10:22'),
-	(12, 25, 2, 6, '2020-03-30 19:16:11', NULL);
+INSERT IGNORE INTO `verifiche` (`id`, `id_ricetta`, `id_redattore`, `data_creazione`, `data_approvazione`) VALUES
+	(7, 19, 2, '2020-03-12 01:34:01', '2020-03-15 20:10:22'),
+	(8, 20, 2, '2020-03-13 02:04:55', '2020-03-16 20:10:22'),
+	(9, 21, 2, '2020-03-17 02:31:51', '2020-03-14 20:10:22'),
+	(12, 25, 2, '2020-03-30 19:16:11', NULL);
 /*!40000 ALTER TABLE `verifiche` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

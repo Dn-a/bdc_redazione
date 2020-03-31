@@ -479,7 +479,7 @@ class UltimeRicette extends Component {
 
                 data.ricette.push(...remoteData.data);
 
-                console.log(data);
+                //console.log(data);
                 this.setState({data : data})
 
 			}).catch((error) => {
@@ -496,6 +496,10 @@ class UltimeRicette extends Component {
 
     render(){
 
+        let history = this.props.history;
+
+        //console.log(history)
+
         return(
             <div className="blog p-1 mb-3 bg-transparent ultime-ricette">
                 <h3 className="mb-3 "><strong>Ricette Recenti</strong></h3>
@@ -506,12 +510,18 @@ class UltimeRicette extends Component {
                             return(
                                 <div className="clearfix" key={k}>
                                     <div className="image float-left mb-3 mr-3">
-                                        <a href={this.props.url+'/blog/'+r.id} >
+                                        <a
+                                        href={this.props.url+'/blog/'+r.id}
+                                        //onClick={(a) => history.push(this.props.url+'/blog/'+r.id)}
+                                        >
                                             <img src={r.img} />
                                         </a>
                                     </div>
                                     <div>
-                                        <a href={this.props.url+'/blog/'+r.id} >{r.titolo} </a>
+                                        <a
+                                        href={this.props.url+'/blog/'+r.id}
+                                        //onClick={(a) => history.push(this.props.url+'/blog/'+r.id)}
+                                        >{r.titolo} </a>
                                         <div>di {r.autore}</div>
                                     </div>
                                     <hr/>

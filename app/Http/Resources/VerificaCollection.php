@@ -12,7 +12,8 @@ class VerificaCollection extends ResourceCollection
         'autore',
         'intro',
         'img',
-        'data_creazione'
+        'data_creazione',
+        'fase'
     ];
     protected $withPagination;
 
@@ -71,7 +72,7 @@ class VerificaCollection extends ResourceCollection
             $item['redattore'] = $redattore;
         }
         if(in_array('fase',$fields)){
-            $fase = $item->fase->titolo;
+            $fase = $item->ricetta->fase->titolo;
             $item['fase'] = $fase;
         }
         if(in_array('img',$fields)){

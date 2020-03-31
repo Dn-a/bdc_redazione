@@ -8,15 +8,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class IngredienteController extends Controller
-{   
+{
     private $lmtSearch = 5;
 
-    
+
     public function index(Request $request)
     {
         $page = $request->input('per-page') ?: 9;
 
-        // view che mostra 
+        // view che mostra
         $only = $request->input('only') ?: '';
         //$blog = in_array('blog', explode('-',$only));
 
@@ -41,25 +41,25 @@ class IngredienteController extends Controller
 
         $only = $request->input('only') ?: '';
         //$blog = in_array('blog', explode('-',$only));
-        
+
         $ingrediente = Ingrediente::
         where('attivo',1)
         ->where(function($query) use($arr) {
             $query->where('titolo','like', $arr[0].'%')
-            ->orWhere('calorie','like', $arr[0].'%');            
-        })    
+            ->orWhere('calorie','like', $arr[0].'%');
+        })
         ->limit($this->lmtSearch)->get();
 
         return  new IngredienteCollection($ingrediente);
     }
-    
+
 
     public function create()
     {
         //
     }
 
-    
+
     public function store(Request $request)
     {
         try{
@@ -75,13 +75,13 @@ class IngredienteController extends Controller
             $user = Auth::user();
 
             $data = $request->all();
-            
+
             if($user->ruolo->titolo!='autore')
                 $data['attivo'] = 1;
-                
+
             $ingrediente = new Ingrediente();
-            
-            $ingrediente->fill($data)->save();                  
+
+            $ingrediente->fill($data)->save();
 
             return response()->json(['insert' =>'Ingrediente creato!'],201);
 
@@ -90,30 +90,30 @@ class IngredienteController extends Controller
         }
     }
 
-    
+
     public function show(Ingrediente $ingrediente)
     {
         //
     }
 
-   
+
     public function edit(Ingrediente $ingrediente)
     {
         //
     }
 
-    
+
     public function update(Request $request, Ingrediente $ingrediente)
     {
         try{
-            //return response()->json($request->all(),422);exit;
+            return response()->json($request->all(),422);exit;
             //Validate
             $request->validate([
                 'approva' => 'required|integer',
             ]);
-            
-            $data = ['attivo' => $request->approva];            
-                            
+
+            $data = ['attivo' => $request->approva];
+
             $ingrediente->update($data);
 
             return response()->json(['insert' =>'Ingrediente approvato!'],201);
@@ -123,9 +123,11 @@ class IngredienteController extends Controller
         }
     }
 
-    
+
     public function destroy(Ingrediente $ingrediente)
     {
-        //
+        $ingrediente->delete();
+
+        return response()->json(['delete' =>'Ingrediente eliminato!'],201);
     }
 }

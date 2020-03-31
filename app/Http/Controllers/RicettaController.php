@@ -79,6 +79,7 @@ class RicettaController extends Controller
                                 $query->where('titolo','<>','approvata');
                                 $query->where('titolo','<>','idonea');
                                 $query->where('titolo','<>','scartata');
+                                $query->where('titolo','<>','approvazione');
                             }
                             elseif($user->ruolo->titolo =='caporedattore' ){
                                 $query->where('titolo','<>','bozza');
@@ -136,6 +137,7 @@ class RicettaController extends Controller
                         $query->where('titolo','<>','approvata');
                         $query->where('titolo','<>','idonea');
                         $query->where('titolo','<>','scartata');
+                        $query->where('titolo','<>','approvazione');
                     }elseif($user->ruolo->titolo =='caporedattore' ){
                         $query->where('titolo','<>','bozza');
                         $query->where('titolo','<>','inviata');
@@ -152,19 +154,21 @@ class RicettaController extends Controller
             $query->where('titolo','like', $arr[0].'%')
             ->orWhere('calorie','like', $arr[0].'%')
             ->orWhere('difficolta','like', $arr[0].'%')
-            ->orWhereHas('user',function($query) use($arr) {
-                $query->where('nome',$arr[0])
-                ->orWhere('cognome',$arr[0])
-                ->orWhere('nome','like',$arr[0].'%')
-                ->orWhere('cognome','like',$arr[0].'%')
-                ->orWhere(function($query) use($arr) {
-                    if(count($arr)==2)
-                        $query->where('cognome','like',$arr[0].' '.$arr[1].'%');
-                })
-                ->orWhere(function($query) use($arr) {
-                    if(isset($arr[1]))
-                        $query->where('cognome','like',$arr[1].'%')
-                        ->where('nome','like',$arr[0].'%');
+            ->orWhereHas('autore',function($query) use($arr) {
+                $query->whereHas('user', function($query) use($arr) {
+                    $query->where('nome',$arr[0])
+                    ->orWhere('cognome',$arr[0])
+                    ->orWhere('nome','like',$arr[0].'%')
+                    ->orWhere('cognome','like',$arr[0].'%')
+                    ->orWhere(function($query) use($arr) {
+                        if(count($arr)==2)
+                            $query->where('cognome','like',$arr[0].' '.$arr[1].'%');
+                    })
+                    ->orWhere(function($query) use($arr) {
+                        if(isset($arr[1]))
+                            $query->where('cognome','like',$arr[1].'%')
+                            ->where('nome','like',$arr[0].'%');
+                    });
                 });
             });
         })
@@ -302,15 +306,15 @@ class RicettaController extends Controller
 
         else if( $ricetta->id_fase=='4' && Auth::check() && $user->ruolo->titolo =='caporedattore' ){
 
-            $verifica = Verifica::where('id_ricetta',$ricetta->id);
             $idFase = 6;
 
-            $check = $verifica->exists();
-
-            if($check)
-                $verifica->update([
-                    'id_fase' => $idFase
-                ]);
+            // ridondante
+            // $verifica = Verifica::where('id_ricetta',$ricetta->id);
+            // $check = $verifica->exists();
+            // if($check)
+            //     $verifica->update([
+            //         'id_fase' => $idFase
+            //     ]);
 
             $ricetta->update(['id_fase' => $idFase]);
         }
@@ -429,11 +433,12 @@ class RicettaController extends Controller
             if(!$check)
                 $verifica->insert([
                     'id_ricetta' => $ricetta->id,
-                    'id_redattore' => $user->redattore->id,
-                    'id_fase' => $arrayRicetta['id_fase']
+                    'id_redattore' => $user->redattore->id
+                    //'id_fase' => $arrayRicetta['id_fase'] ridondante
                 ]);
             else{
-                $update = [ 'id_fase' => $arrayRicetta['id_fase'] ];
+                //$update = [ 'id_fase' => $arrayRicetta['id_fase'] ]; ridondante
+                $update = [];
                 date_default_timezone_set("Europe/Rome");
                 if($arrayRicetta['id_fase'] == 7)
                    $update = array_merge($update, ['data_approvazione' => Carbon::now()] );

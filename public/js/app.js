@@ -81745,78 +81745,139 @@ function (_Component) {
         return a + b;
       }) : 0; //console.log(this.props);
 
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", {
-        className: "container-fluid blog"
-      }, this.state.loader ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "text-center"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "img-loader active"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-        src: this.props.url + '/img/loader.gif'
-      }))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, kcalSelcted.id.length > 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row mb-5"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-12"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Ricette selezionate: "), "| ", titoloKcal.map(function (t, id) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-          key: id
-        }, t, " | ");
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "kcal totali: "), totKcal))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
-      }, data.ricette.map(function (rc, key) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "col-md-4",
-          key: key
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "card mb-5 box-shadow"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_3__["default"], {
-          style: {
-            right: '4px'
-          },
-          divClassName: "position-absolute p-2",
-          name: 'ingrediente_' + key,
-          value: JSON.stringify({
-            id: rc.id,
-            titolo: rc.titolo,
-            kcal: rc.calorie
-          }),
-          checked: kcalSelcted.id.includes(rc.id),
-          handleChange: _this3.handleKcalSelected
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
-          to: _this3.props.url + '/blog/' + rc.id
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-          className: "card-img-top",
-          src: rc.img,
-          alt: "Card image cap"
-        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "card-body"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
-          to: _this3.props.url + '/blog/' + rc.id
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
-          className: "card-title"
-        }, rc.titolo)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-          className: "card-text"
-        }, html_react_parser__WEBPACK_IMPORTED_MODULE_2___default()(rc.intro))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "card-footer bg-transparent"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      return (
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("section", {
+          className: "container-fluid blog"
+        }, this.state.loader ?
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "text-center"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "img-loader active"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          src: this.props.url + '/img/loader.gif'
+        }))) :
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, kcalSelcted.id.length > 0 &&
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row mb-5"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-12"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Ricette selezionate: "), "| ", titoloKcal.map(function (t, id) {
+          return (
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+              key: id
+            }, t, " | ")
+          );
+        }),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "kcal totali: "), totKcal))),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "row"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "info col-sm-3 col-md-3 text-center px-1"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fa fa-star-half-o",
-          "aria-hidden": "true"
-        }), "\xA0", rc.difficolta), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "info col-sm-3 col-md-4 text-center px-1"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fa fa-clock-o",
-          "aria-hidden": "true"
-        }, " "), "\xA0", rc.tempo_preparazione + rc.tempo_cottura, " min"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "info col-sm-6 col-md-5 text-center px-1"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fa fa-free-code-camp",
-          "aria-hidden": "true"
-        }), "\xA0", rc.calorie, " Kcal")))));
-      }))));
+        }, data.ricette.map(function (rc, key) {
+          return (
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+              className: "col-md-4",
+              key: key
+            },
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+              className: "card mb-5 box-shadow"
+            },
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_3__["default"], {
+              style: {
+                right: '4px'
+              },
+              divClassName: "position-absolute p-2",
+              name: 'ingrediente_' + key,
+              value: JSON.stringify({
+                id: rc.id,
+                titolo: rc.titolo,
+                kcal: rc.calorie
+              }),
+              checked: kcalSelcted.id.includes(rc.id),
+              handleChange: _this3.handleKcalSelected
+            }),
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+              to: _this3.props.url + '/blog/' + rc.id
+            },
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+              className: "card-img-top",
+              src: rc.img,
+              alt: "Card image cap"
+            })),
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+              className: "card-body"
+            },
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+              to: _this3.props.url + '/blog/' + rc.id
+            },
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
+              className: "card-title"
+            }, rc.titolo)),
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
+              className: "card-text"
+            }, html_react_parser__WEBPACK_IMPORTED_MODULE_2___default()(rc.intro))),
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+              className: "card-footer bg-transparent"
+            },
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+              className: "row"
+            },
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+              className: "info col-sm-3 col-md-3 text-center px-1"
+            },
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+              className: "fa fa-star-half-o",
+              "aria-hidden": "true"
+            }), "\xA0", rc.difficolta),
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+              className: "info col-sm-3 col-md-4 text-center px-1"
+            },
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+              className: "fa fa-clock-o",
+              "aria-hidden": "true"
+            }, " "), "\xA0", rc.tempo_preparazione + rc.tempo_cottura, " min"),
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+              className: "info col-sm-6 col-md-5 text-center px-1"
+            },
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+              className: "fa fa-free-code-camp",
+              "aria-hidden": "true"
+            }), "\xA0", rc.calorie, " Kcal")))))
+          );
+        }))))
+      );
     }
   }]);
 
@@ -82253,20 +82314,27 @@ var COLUMNS = [{
   title: 'Approvazione',
   field: 'actions',
   render: function render(cell, row, handle) {
-    if (row.attivo == '0') return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_3__["Button"], {
-      className: "btn-light",
-      title: "Rimuovi Ricetta",
-      onClick: function onClick(e) {
-        e.stopPropagation();
+    return (
+      /*#__PURE__*/
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, row.attivo == '0' &&
+      /*#__PURE__*/
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_3__["Button"], {
+        className: "btn-light mr-3",
+        title: "Approva",
+        onClick: function onClick(e) {
+          e.stopPropagation();
 
-        if (confirm("Sicuro di volerlo approvare?")) {
-          handle(row, 'approva');
+          if (confirm("Sicuro di volerlo approvare?")) {
+            handle(row, 'approva');
+          }
         }
-      }
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-      className: "fa fa-gavel",
-      "aria-hidden": "true"
-    }, " Approva"));
+      },
+      /*#__PURE__*/
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fa fa-gavel",
+        "aria-hidden": "true"
+      }, " Approva")))
+    );
   }
 }].map(function (a) {
   if (a != null) return a;
@@ -82336,7 +82404,7 @@ function (_Component) {
     }
   }, {
     key: "setRemoteData",
-    value: function setRemoteData($id) {
+    value: function setRemoteData($id, type) {
       var _this2 = this;
 
       var url = this.props.url + '/ingredienti/' + $id;
@@ -82348,7 +82416,7 @@ function (_Component) {
       };
       var sendData = {};
       sendData.approva = 1;
-      sendData._method = 'put';
+      sendData._method = type == 'elimina' ? 'delete' : 'put';
       sendData._token = CSRF_TOKEN; //console.log(sendData);return;
 
       return axios.post(url, sendData, headers).then(function (result) {
@@ -82380,46 +82448,69 @@ function (_Component) {
 
       var user = Object(_Env__WEBPACK_IMPORTED_MODULE_1__["User"])();
       var history = this.props.router.history;
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "container-fluid pl-3 constraint"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row mb-3 px-2"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_SearchField__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        showList: false,
-        url: this.url + '/search',
-        callback: this._handleSearchFieldCallback
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-6 text-right"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_3__["AddButton"], {
-        onClick: this._handleShowModal
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-plus-circle",
-        "aria-hidden": "true"
-      }), "\xA0Nuovo Ingrediente"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modal_IngredienteModal__WEBPACK_IMPORTED_MODULE_5__["default"], {
-        url: this.props.url,
-        show: this.state.show,
-        onHide: this._handleCloseModal,
-        callback: function callback(row) {
-          _this3.setState({
-            reloadInfiniteTable: ++_this3.state.reloadInfiniteTable
-          });
-        }
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-12"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_InfiniteTable__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        id: "tb-ingredienti",
-        reload: this.state.reloadInfiniteTable,
-        url: this.url,
-        columns: COLUMNS,
-        externalRows: this.state.rows,
-        onActions: function onActions(row, type) {
-          return _this3.setRemoteData(row.id);
-        }
-      }))));
+      return (
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "container-fluid pl-3 constraint"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row mb-3 px-2"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-6"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_SearchField__WEBPACK_IMPORTED_MODULE_2__["default"], {
+          showList: false,
+          url: this.url + '/search',
+          callback: this._handleSearchFieldCallback
+        })),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-6 text-right"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_3__["AddButton"], {
+          onClick: this._handleShowModal
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fa fa-plus-circle",
+          "aria-hidden": "true"
+        }), "\xA0Nuovo Ingrediente"),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modal_IngredienteModal__WEBPACK_IMPORTED_MODULE_5__["default"], {
+          url: this.props.url,
+          show: this.state.show,
+          onHide: this._handleCloseModal,
+          callback: function callback(row) {
+            _this3.setState({
+              reloadInfiniteTable: ++_this3.state.reloadInfiniteTable
+            });
+          }
+        }))),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-12"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_InfiniteTable__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          id: "tb-ingredienti",
+          reload: this.state.reloadInfiniteTable,
+          url: this.url,
+          columns: COLUMNS,
+          externalRows: this.state.rows,
+          onActions: function onActions(row, type) {
+            return _this3.setRemoteData(row.id, type);
+          }
+        }))))
+      );
     }
   }]);
 
@@ -82872,149 +82963,325 @@ function (_Component) {
       var bread = 'home';
       if (url.includes('blog')) bread = 'blog';else if (url.includes('gestione-ricette')) bread = 'gestione ricette';else if (url.includes('verifiche')) bread = 'verifiche';
       var errorRegMessage = this.state.errorRegMessage;
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, errorRegMessage != '' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, errorRegMessage) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row constraint article"
-      }, this.state.loader ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-8 text-center"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "img-loader active"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-        src: this.props.url + '/img/loader.gif'
-      }))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("article", {
-        className: "col-md-8 pr-4"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-        className: "breadcrumbs"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-        href: "",
-        onClick: function onClick(e) {
-          e.preventDefault();
-          var dir = '';
-          if (bread == 'gestione ricette') dir = '/gestione-ricette';else if (bread == 'verifiche') dir = '/verifiche';
-          history.push(_this4.props.url + dir); //history.goBack()}
-        }
-      }, bread, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-angle-right",
-        "aria-hidden": "true"
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, "Ricetta")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
-        className: "font-weight-bold mb-4"
-      }, data.titolo), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row mb-3 content"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-4 info"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "pl-2"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-user-circle",
-        "aria-hidden": "true"
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "title"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Autore")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.autore))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-4 info"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "pl-2"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-folder-open-o",
-        "aria-hidden": "true"
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "title"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Tipologia")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.tipologia.titolo))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-4 info"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "pl-2"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-star-half-o",
-        "aria-hidden": "true"
-      }, " ")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "title"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Difficolt\xE0")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.difficolta)))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "content"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "intro mb-5"
-      }, html_react_parser__WEBPACK_IMPORTED_MODULE_1___default()(data.intro)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "image mb-4"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-        src: data.img
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row mb-3 "
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-4 info px-4 pl-5"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: ""
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-cutlery",
-        "aria-hidden": "true"
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "title"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "porzioni")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.porzioni))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-4 info px-3"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: ""
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-clock-o",
-        "aria-hidden": "true"
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "title"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "preparazione")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.tempo_preparazione, " min"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-sm-4 info px-4"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: ""
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-clock-o",
-        "aria-hidden": "true"
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "title"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "cottura")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.tempo_cottura, " min")))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "ingredienti mb-5"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Ingredienti")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, data.ingredienti.map(function (i, k) {
-        var checked = _this4.state.checked;
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          key: k //className="form-control"
+      return (
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, errorRegMessage != '' ?
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, errorRegMessage) :
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row constraint article"
+        }, this.state.loader ?
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-8 text-center"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "img-loader active"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          src: this.props.url + '/img/loader.gif'
+        }))) :
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("article", {
+          className: "col-md-8 pr-4"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+          className: "breadcrumbs"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null,
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "",
+          onClick: function onClick(e) {
+            e.preventDefault();
+            var dir = '';
+            if (bread == 'gestione ricette') dir = '/gestione-ricette';else if (bread == 'verifiche') dir = '/verifiche';
+            history.push(_this4.props.url + dir); //history.goBack()}
+          }
+        }, bread, " ",
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fa fa-angle-right",
+          "aria-hidden": "true"
+        }))),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, "Ricetta")),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
+          className: "font-weight-bold mb-4"
+        }, data.titolo),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row mb-3 content"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-sm-4 info"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "pl-2"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fa fa-user-circle",
+          "aria-hidden": "true"
+        })),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "title"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Autore")),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.autore))),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-sm-4 info"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "pl-2"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fa fa-folder-open-o",
+          "aria-hidden": "true"
+        })),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "title"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Tipologia")),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.tipologia.titolo))),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-sm-4 info"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "pl-2"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fa fa-star-half-o",
+          "aria-hidden": "true"
+        }, " ")),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "title"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Difficolt\xE0")),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.difficolta)))),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "content"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "intro mb-5"
+        }, html_react_parser__WEBPACK_IMPORTED_MODULE_1___default()(data.intro)),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "image mb-4"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          src: data.img
+        })),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "row mb-3 "
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-sm-4 info px-4 pl-5"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: ""
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fa fa-cutlery",
+          "aria-hidden": "true"
+        })),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "title"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "porzioni")),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.porzioni))),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-sm-4 info px-3"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: ""
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fa fa-clock-o",
+          "aria-hidden": "true"
+        })),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "title"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "preparazione")),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.tempo_preparazione, " min"))),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-sm-4 info px-4"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: ""
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fa fa-clock-o",
+          "aria-hidden": "true"
+        })),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "title"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "cottura")),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, data.tempo_cottura, " min")))),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "ingredienti mb-5"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null,
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Ingredienti")),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, data.ingredienti.map(function (i, k) {
+          var checked = _this4.state.checked;
+          return (
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+              key: k //className="form-control"
 
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_3__["default"], {
-          name: 'ingrediente_' + k,
-          divClassName: checked[k] ? 'checked' : '',
-          className: "mr-3",
-          value: "",
-          checked: _this4.state.checked[k],
-          handleChange: function handleChange() {
-            checked[k] = !checked[k];
+            },
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_CheckField__WEBPACK_IMPORTED_MODULE_3__["default"], {
+              name: 'ingrediente_' + k,
+              divClassName: checked[k] ? 'checked' : '',
+              className: "mr-3",
+              value: "",
+              checked: _this4.state.checked[k],
+              handleChange: function handleChange() {
+                checked[k] = !checked[k];
 
-            _this4.setState({
-              checked: checked
-            });
-          } //className="custom-control custom-checkbox"
-          ,
-          label: react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, i.quantita + '  ' + i.unita_misura + ' di ', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, " \xA0", i.titolo))
-        }));
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "body mb-5"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Modalit\xE0 Preparazione")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null)), html_react_parser__WEBPACK_IMPORTED_MODULE_1___default()(data.modalita_preparazione)), data.fase != 'approvata' && user.ruolo != 'autore' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "body mb-3"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "alert alert-secondary"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Note per il redattore")), data.note))), (user.ruolo == 'redattore' && data.fase == 'validazione' || user.ruolo == 'caporedattore' && data.fase == 'approvazione') && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Validazione, {
-        state: this.state,
-        onClick: this.setRemoteData,
-        user: user,
-        url: this.props.url,
-        className: "my-3"
-      }), this.state.validationMessage != '' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "alert alert-success",
-        role: "alert"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.state.validationMessage))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("aside", {
-        className: "col-md-4 "
-      }, bread == 'gestione ricette' || bread == 'verifiche' ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Impostazioni, {
-        user: user,
-        data: data,
-        url: this.props.url,
-        router: this.props.router
-      }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ValoriNutrizionali, {
-        data: data
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(UltimeRicette, {
-        history: history,
-        url: this.props.url,
-        data: data
-      })))));
+                _this4.setState({
+                  checked: checked
+                });
+              } //className="custom-control custom-checkbox"
+              ,
+              label:
+              /*#__PURE__*/
+              react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, i.quantita + '  ' + i.unita_misura + ' di ',
+              /*#__PURE__*/
+              react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, " \xA0", i.titolo))
+            }))
+          );
+        }))),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "body mb-5"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null,
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Modalit\xE0 Preparazione")),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null)), html_react_parser__WEBPACK_IMPORTED_MODULE_1___default()(data.modalita_preparazione)), data.fase != 'approvata' && user.ruolo != 'autore' &&
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "body mb-3"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "alert alert-secondary"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", null,
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Note per il redattore")), data.note))), (user.ruolo == 'redattore' && data.fase == 'validazione' || user.ruolo == 'caporedattore' && data.fase == 'approvazione') &&
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Validazione, {
+          state: this.state,
+          onClick: this.setRemoteData,
+          user: user,
+          url: this.props.url,
+          className: "my-3"
+        }), this.state.validationMessage != '' &&
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "alert alert-success",
+          role: "alert"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.state.validationMessage))),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("aside", {
+          className: "col-md-4 "
+        }, bread == 'gestione ricette' || bread == 'verifiche' ?
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Impostazioni, {
+          user: user,
+          data: data,
+          url: this.props.url,
+          router: this.props.router
+        }) :
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ValoriNutrizionali, {
+          data: data
+        }),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(UltimeRicette, {
+          history: history,
+          url: this.props.url,
+          data: data
+        })))))
+      );
     }
   }]);
 
@@ -83029,25 +83296,36 @@ var Validazione = function Validazione(props) {
   };
   var fase = props.user.ruolo == 'redattore' ? 'idonea' : 'approvata';
   var classValid = props.user.ruolo == 'redattore' ? 'validazione ' : '';
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_2__["CloseButton"] //style={style}
-  , {
-    className: "w-100 py-2 ",
-    onClick: function onClick(a) {
-      return props.onClick(props.state.ricetta.id, 'scartata');
-    }
-  }, "Scarta", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-    className: "loader-2" + (props.state.verificationLoader == true ? ' d-inline-block' : ''),
-    src: props.url + "/img/loader_2.gif"
-  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_2__["ConfirmButton"] //style={style}
-  , {
-    className: "w-100 " + classValid + props.className,
-    onClick: function onClick(a) {
-      return props.onClick(props.state.ricetta.id, fase);
-    }
-  }, props.user.ruolo == 'redattore' ? 'Valida' : 'Approva', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-    className: "loader-2" + (props.state.verificationLoader == true ? ' d-inline-block' : ''),
-    src: props.url + "/img/loader_2.gif"
-  })));
+  return (
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_2__["CloseButton"] //style={style}
+    , {
+      className: "w-100 py-2 ",
+      onClick: function onClick(a) {
+        return props.onClick(props.state.ricetta.id, 'scartata');
+      }
+    }, "Scarta",
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+      className: "loader-2" + (props.state.verificationLoader == true ? ' d-inline-block' : ''),
+      src: props.url + "/img/loader_2.gif"
+    })),
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_2__["ConfirmButton"] //style={style}
+    , {
+      className: "w-100 " + classValid + props.className,
+      onClick: function onClick(a) {
+        return props.onClick(props.state.ricetta.id, fase);
+      }
+    }, props.user.ruolo == 'redattore' ? 'Valida' : 'Approva',
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+      className: "loader-2" + (props.state.verificationLoader == true ? ' d-inline-block' : ''),
+      src: props.url + "/img/loader_2.gif"
+    })))
+  );
 };
 
 var Impostazioni = function Impostazioni(props) {
@@ -83056,58 +83334,105 @@ var Impostazioni = function Impostazioni(props) {
   var history = props.router.history;
   var idRicetta = props.router.match.params.ricetta;
   var stati = ['inviata', 'validazione', 'idonea', 'scartata', 'approvazione', 'approvata'];
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "gestione p-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
-    className: "mb-3"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Impostazioni")), user.ruolo == 'autore' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_2__["EditButton"], {
-    className: "w-100",
-    onClick: function onClick(a) {
-      return history.push(props.url + '/gestione-ricette/' + idRicetta + '/edit');
+  return (
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "gestione p-4"
     },
-    disabled: data.fase != 'bozza' && data.fase != 'inviata'
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "fa fa-pencil-square-o",
-    "aria-hidden": "true"
-  }), "\xA0Modifica"), data.fase != 'bozza' && data.fase != 'inviata' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "error-div"
-  }, "non puoi effettuare modifiche")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "my-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Fase")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
-    className: "mt-1 mb-4"
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "row"
-  }, stati.map(function (st, key) {
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      key: key,
-      className: st + " stato col-md-6 mb-2 text-center " + (st == data.fase ? 'active' : '')
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-      className: " p-2"
-    }, st));
-  }))));
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+      className: "mb-3"
+    },
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Impostazioni")), user.ruolo == 'autore' &&
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_2__["EditButton"], {
+      className: "w-100",
+      onClick: function onClick(a) {
+        return history.push(props.url + '/gestione-ricette/' + idRicetta + '/edit');
+      },
+      disabled: data.fase != 'bozza' && data.fase != 'inviata'
+    },
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fa fa-pencil-square-o",
+      "aria-hidden": "true"
+    }), "\xA0Modifica"), data.fase != 'bozza' && data.fase != 'inviata' &&
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "error-div"
+    }, "non puoi effettuare modifiche")),
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "my-4"
+    },
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Fase")),
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
+      className: "mt-1 mb-4"
+    }),
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "row"
+    }, stati.map(function (st, key) {
+      return (
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          key: key,
+          className: st + " stato col-md-6 mb-2 text-center " + (st == data.fase ? 'active' : '')
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: " p-2"
+        }, st))
+      );
+    }))))
+  );
 };
 
 var ValoriNutrizionali = function ValoriNutrizionali(props) {
   var data = props.data;
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "blog border border-dark p-4 mb-5"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
-    className: "mb-3 "
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Valori Nutrizionali")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "mb-2 info"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "fa fa-cutlery",
-    "aria-hidden": "true"
-  }), " ", data.porzioni, " porzioni"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
-    style: {
-      borderTop: '1rem solid #333'
-    }
-  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "mb-2 info"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    className: "fa fa-free-code-camp",
-    "aria-hidden": "true"
-  }), " ", data.calorie, " Kcal"));
+  return (
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "blog border border-dark p-4 mb-5"
+    },
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+      className: "mb-3 "
+    },
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Valori Nutrizionali")),
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "mb-2 info"
+    },
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fa fa-cutlery",
+      "aria-hidden": "true"
+    }), " ", data.porzioni, " porzioni"),
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
+      style: {
+        borderTop: '1rem solid #333'
+      }
+    }),
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "mb-2 info"
+    },
+    /*#__PURE__*/
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+      className: "fa fa-free-code-camp",
+      "aria-hidden": "true"
+    }), " ", data.calorie, " Kcal"))
+  );
 };
 
 var UltimeRicette =
@@ -83151,9 +83476,8 @@ function (_Component2) {
         var remoteData = result.data;
         var data = _this6.state.data;
 
-        (_data$ricette = data.ricette).push.apply(_data$ricette, _toConsumableArray(remoteData.data));
+        (_data$ricette = data.ricette).push.apply(_data$ricette, _toConsumableArray(remoteData.data)); //console.log(data);
 
-        console.log(data);
 
         _this6.setState({
           data: data
@@ -83169,25 +83493,55 @@ function (_Component2) {
     value: function render() {
       var _this7 = this;
 
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "blog p-1 mb-3 bg-transparent ultime-ricette"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
-        className: "mb-3 "
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Ricette Recenti")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.state.data.ricette.map(function (r, k) {
-        if (_this7.props.data.id == r.id) return;
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "clearfix",
-          key: k
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "image float-left mb-3 mr-3"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-          href: _this7.props.url + '/blog/' + r.id
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-          src: r.img
-        }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-          href: _this7.props.url + '/blog/' + r.id
-        }, r.titolo, " "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "di ", r.autore)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null));
-      })));
+      var history = this.props.history; //console.log(history)
+
+      return (
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "blog p-1 mb-3 bg-transparent ultime-ricette"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", {
+          className: "mb-3 "
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Ricette Recenti")),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.state.data.ricette.map(function (r, k) {
+          if (_this7.props.data.id == r.id) return;
+          return (
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+              className: "clearfix",
+              key: k
+            },
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+              className: "image float-left mb-3 mr-3"
+            },
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+              href: _this7.props.url + '/blog/' + r.id //onClick={(a) => history.push(this.props.url+'/blog/'+r.id)}
+
+            },
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+              src: r.img
+            }))),
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+              href: _this7.props.url + '/blog/' + r.id //onClick={(a) => history.push(this.props.url+'/blog/'+r.id)}
+
+            }, r.titolo, " "),
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "di ", r.autore)),
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null))
+          );
+        })))
+      );
     }
   }]);
 
@@ -83606,7 +83960,11 @@ var COLUMNS_VALIDATE = [{
         year: "numeric",
         month: "2-digit",
         day: "2-digit"
-      }))))
+      })),
+      /*#__PURE__*/
+      react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        style: style
+      }, "fase: ", row.fase)))
     );
   }
 }, {
@@ -83805,8 +84163,8 @@ function (_Component) {
       //console.log(sendData);return;
 
       return axios.post(url, sendData, headers).then(function (result) {
-        var base64 = result.data;
-        console.log(base64);
+        var base64 = result.data; //console.log(base64);
+
         var linkSource = 'data:application/pdf;base64,' + base64;
         var downloadLink = document.createElement("a");
         var fileName = 'ricetta.pdf';
@@ -84003,6 +84361,7 @@ function (_Component) {
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_SearchField__WEBPACK_IMPORTED_MODULE_3__["default"], {
           showList: false,
           url: this.props.url + '/verifiche/search',
+          query: "only=validate",
           callback: this._handleSearchFieldValidateCallback
         })),
         /*#__PURE__*/

@@ -11,17 +11,12 @@ class Verifica extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'id_ricetta', 'id_redattore', 'id_fase', 'data_creazione', 'data_approvazione'
+        'id_ricetta', 'id_redattore', 'data_creazione', 'data_approvazione'
     ];
 
     public function ricetta()
     {
         return $this->belongsTo('App\Ricetta','id_ricetta');
-    }
-
-    public function fase()
-	{
-        return $this->belongsTo('App\Fase','id_fase');
     }
 
     public function redattore()

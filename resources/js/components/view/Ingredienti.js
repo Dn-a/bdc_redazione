@@ -16,24 +16,39 @@ const COLUMNS = [
     { title: 'Calorie', field: 'calorie'},
     { title: 'Unità di misura', field: 'unita_misura'},
     { title: 'Fase', field: 'fase', style: {textTransform:'capitalize'}},
-    { title: 'Approvazione', field:'actions', render:(cell,row,handle) => 
-        {   
-            if(row.attivo=='0')
-                return(
-                    <Button className='btn-light' title="Rimuovi Ricetta"
-                        onClick={ (e) => {
-                            e.stopPropagation();
-                            if(confirm("Sicuro di volerlo approvare?")){
-                                handle(row,'approva')
-                            }
-                        }}
-                    >
-                        <i className="fa fa-gavel" aria-hidden="true"> Approva</i>
+    { title: 'Approvazione', field:'actions', render:(cell,row,handle) =>
+        {
 
-                    </Button>
-                )
+            return(
+                <Fragment>
+                    {row.attivo=='0' &&
+                        <Button className='btn-light mr-3' title="Approva"
+                            onClick={ (e) => {
+                                e.stopPropagation();
+                                if(confirm("Sicuro di volerlo approvare?")){
+                                    handle(row,'approva')
+                                }
+                            }}
+                        >
+                            <i className="fa fa-gavel" aria-hidden="true"> Approva</i>
+
+                        </Button>
+                    }
+                        {/* {<Button className='btn-light' title="Rimuovi Ingrediente"
+                                onClick={ (e) => {
+                                    e.stopPropagation();
+                                    if(confirm("Confermi?")){
+                                        handle(row,'elimina')
+                                    }
+                                }}
+                            >
+                            <i className="fa fa-trash-o" aria-hidden="true"> Elimina</i>
+
+                        </Button>} */}
+                </Fragment>
+            )
         }
-    }, 
+    },
   ].map((a) => { if(a!=null) return a; return false; } );;
 
 
@@ -51,10 +66,10 @@ export default  class Ingredienti extends Component {
         };
 
         this.url = this.props.url+'/ingredienti';
-        
+
         this._handleCloseModal = this._handleCloseModal.bind(this);
         this._handleShowModal = this._handleShowModal.bind(this);
-        this._handleSearchFieldCallback = this._handleSearchFieldCallback.bind(this);   
+        this._handleSearchFieldCallback = this._handleSearchFieldCallback.bind(this);
 
     }
 
@@ -67,8 +82,8 @@ export default  class Ingredienti extends Component {
     }
     _handleShowModal (){
         this.setState({show : true});
-    }    
-    
+    }
+
     _handleSearchFieldCallback(data,reset){
 
         //console.log(rows);
@@ -85,7 +100,7 @@ export default  class Ingredienti extends Component {
 
     }
 
-    setRemoteData($id){
+    setRemoteData($id, type){
 
         let url = this.props.url+'/ingredienti/'+$id;
 
@@ -97,8 +112,8 @@ export default  class Ingredienti extends Component {
         let sendData = {};
 
         sendData.approva = 1;
-        sendData._method = 'put';
-        sendData._token = CSRF_TOKEN;        
+        sendData._method = type=='elimina'? 'delete' : 'put';
+        sendData._token = CSRF_TOKEN;
 
         //console.log(sendData);return;
 
@@ -118,7 +133,7 @@ export default  class Ingredienti extends Component {
                     msg = error.response.data.errors;
                 else if(error.response.data.msg)
                     msng = error.response.data.msg;
-            } 
+            }
             this.setState({errorRegMessage: msg});
             throw error;
         });
@@ -147,9 +162,9 @@ export default  class Ingredienti extends Component {
                         <i className="fa fa-plus-circle" aria-hidden="true"></i>
                         &nbsp;Nuovo Ingrediente</AddButton>
 
-                        <IngredienteModal 
+                        <IngredienteModal
                         url={this.props.url}
-                        show={this.state.show} 
+                        show={this.state.show}
                         onHide={this._handleCloseModal}
                         callback={
                             (row) => {
@@ -164,10 +179,10 @@ export default  class Ingredienti extends Component {
                         <InfiniteTable
                             id='tb-ingredienti'
                             reload={this.state.reloadInfiniteTable}
-                            url={this.url}                            
+                            url={this.url}
                             columns={COLUMNS}
-                            externalRows={this.state.rows}                            
-                            onActions={ (row,type) => this.setRemoteData(row.id) }
+                            externalRows={this.state.rows}
+                            onActions={ (row,type) => this.setRemoteData(row.id,type) }
                         />
                     </div>
                 </div>
