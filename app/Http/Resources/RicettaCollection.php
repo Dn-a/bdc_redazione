@@ -76,10 +76,7 @@ class RicettaCollection extends ResourceCollection
             }
             $item['ingredienti'] = $ingredienti;
         }
-        if(in_array('redattore',$fields)){
-            $redattore = ucfirst($item->redattore->nome).' '.ucfirst($item->redattore->cognome);
-            $item['redattore'] = $redattore;
-        }
+
         if(in_array('fase',$fields)){
             $fase = $item->fase->titolo;
             $item['fase'] = $fase;

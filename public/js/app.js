@@ -80809,7 +80809,7 @@ function (_Component) {
               data[f].unita_misura[k] = i.unita_misura;
             });
           } else if (f == 'id_tipologia') data[f] = remoteData['tipologia'].id;else data[f] = remoteData[f] == null ? '' : remoteData[f];
-        }); //console.log(remoteData); 
+        }); //console.log(remoteData);
         //console.log(data);
 
         _this2.setState({
@@ -80961,7 +80961,6 @@ function (_Component) {
       var checked = true;
       Object.keys(error).map(function (key, id) {
         //console.log(key)
-        //console.log(data[key])
         if (key == 'ingredienti') {
           if (_typeof(error[key]) === 'object') {
             var obj = Object.keys(error[key]);
@@ -80972,7 +80971,10 @@ function (_Component) {
               }
             });
           }
-        } else if (error[key] != '' || data[key] == '' || data[key] == null) checked = false;
+        } else if (error[key] != '' || data[key] === '' || data[key] == null) checked = false;
+
+        console.log(data[key]);
+        console.log(checked);
       }); //console.log(checked);
 
       this.setState({
@@ -80984,9 +80986,12 @@ function (_Component) {
     value: function showError(field, id) {
       var error = this.state.error[field] !== undefined ? this.state.error[field] : '';
       if (id === undefined && field == 'ingredienti' && Object.keys(error).length == 0) error = _utils_form_InfoError__WEBPACK_IMPORTED_MODULE_7__["default"]['ingredienti'];else if (_typeof(error) === 'object' && Object.keys(error).length > 0) error = error['ingrediente_' + id];
-      if (error != '') return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "error-div"
-      }, error);
+      if (error != '') return (
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "error-div"
+        }, error)
+      );
     }
   }, {
     key: "getSelectionText",
@@ -81057,307 +81062,445 @@ function (_Component) {
       var objFid2 = JSON.parse(user.tipologie);
       var styleHR = {
         margin: '35px 0 20px'
-      }; //console.log(objFid2)        
+      }; //console.log(objFid2)
 
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("article", {
-        className: "col-md-12 constraint"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
-        className: "breadcrumbs mb-2"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-        href: "",
-        onClick: function onClick(e) {
-          e.preventDefault();
-          history.push(_this4.props.url + '/gestione-ricette');
-        }
-      }, breadcrumbs, " ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-angle-right",
-        "aria-hidden": "true"
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, this.isEdit ? 'modifica ricetta' : 'nuova ricetta')), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        className: "py-5 px-4 bg-light"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "form-group mb-0"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        label: "Titolo",
-        name: "titolo",
-        divClassName: divClassName,
-        className: "form-control",
-        placeholder: "max 50 caratteri",
-        value: data.titolo,
-        helperText: this.showError('titolo'),
-        handleChange: this._handleChange
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_TextAreaField__WEBPACK_IMPORTED_MODULE_10__["default"], {
-        label: "Breve Introduzione",
-        name: "intro",
-        divClassName: divClassName,
-        className: "form-control",
-        placeholder: "max 255 caratteri",
-        value: data.intro,
-        helperText: this.showError('intro'),
-        handleChange: this._handleChange
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
-        style: styleHR
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "form-group row mb-0"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_DropdownSelect__WEBPACK_IMPORTED_MODULE_6__["default"], {
-        placeholder: "Scegli un valore",
-        name: "difficolta",
-        className: "form-control",
-        divClassName: "col-md-5 " + divClassName,
-        label: "Difficolt\xE0",
-        values: objFid,
-        selected: data.difficolta != '' ? data.difficolta : 'Scegli un valore' //defaultSelected='Scegli un valore'
-        ,
-        handleChange: this._handleChange
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_DropdownSelect__WEBPACK_IMPORTED_MODULE_6__["default"], {
-        placeholder: "Scegli un valore",
-        name: "id_tipologia",
-        className: "form-control",
-        divClassName: "col-md-5 " + divClassName,
-        label: "Tipologia",
-        values: objFid2,
-        selected: data.id_tipologia != '' ? data.id_tipologia : 'Scegli un valore' //defaultSelected='Scegli un valore'
-        ,
-        handleChange: this._handleChange
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
-        style: styleHR
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "form-group row mb-0"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        label: "Tempo Preparazione",
-        name: "tempo_preparazione",
-        divClassName: "col-md-5 " + divClassName,
-        className: "form-control",
-        placeholder: "Tempo preparazione (min)",
-        value: data.tempo_preparazione,
-        helperText: this.showError('tempo_preparazione'),
-        handleChange: this._handleChange
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        label: "Tempo Cottura",
-        name: "tempo_cottura",
-        divClassName: "col-md-5 " + divClassName,
-        className: "form-control ",
-        placeholder: "Tempo cottura (min)",
-        value: data.tempo_cottura,
-        helperText: this.showError('tempo_cottura'),
-        handleChange: this._handleChange
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        label: "Porzioni",
-        name: "porzioni",
-        divClassName: "col-md-5 " + divClassName,
-        className: "form-control ",
-        placeholder: "Porzioni",
-        value: data.porzioni,
-        helperText: this.showError('porzioni'),
-        handleChange: this._handleChange
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        label: "Calorie",
-        name: "calorie",
-        divClassName: "col-md-5 " + divClassName,
-        className: "form-control ",
-        placeholder: "Kcal",
-        value: data.calorie,
-        helperText: this.showError('calorie'),
-        handleChange: this._handleChange
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
-        style: styleHR
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "form-group mb-0"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
-        label: "Link immagine",
-        name: "img",
-        divClassName: divClassName,
-        className: "form-control ",
-        placeholder: "es: https://www.images.com/image.jpg",
-        value: data.img,
-        helperText: this.showError('img'),
-        handleChange: this._handleChange
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
-        style: styleHR
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "form-group mb-5"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "position-absolute",
-        style: {
-          right: '35px'
-        }
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-        className: "btn btn-link",
-        onClick: this.addH3
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Titolo 3")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-        className: "btn btn-link",
-        onClick: this.addStrong
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Strong")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
-        className: "btn btn-link",
-        onClick: this.addP
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Paragrafo"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_TextAreaField__WEBPACK_IMPORTED_MODULE_10__["default"], {
-        label: "Modalit\xE0 preparazione",
-        style: {
-          height: '200px'
+      return (
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("article", {
+          className: "col-md-12 constraint"
         },
-        name: "modalita_preparazione",
-        divClassName: divClassName,
-        className: "form-control",
-        placeholder: "",
-        value: data.modalita_preparazione,
-        helperText: this.showError('modalita_preparazione'),
-        handleChange: this._handleChange,
-        onMouseUp: this.getSelectionText,
-        onKeyUp: this.getSelectionText
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
-        style: styleHR
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "form-group mb-0 row"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "md-col-4 pl-3 pr-2"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_SearchField__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        label: "Ingredienti",
-        placeholder: "Cerca e aggiungi un Ingrediente",
-        searchClassName: "w-100",
-        showList: true,
-        url: this.props.url + '/ingredienti/search',
-        loaderPath: _Env__WEBPACK_IMPORTED_MODULE_2__["ASSETS"].loader_gif,
-        patternList: {
-          id: 'id',
-          fields: {
-            titolo: [],
-            calorie: []
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+          className: "breadcrumbs mb-2"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null,
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          href: "",
+          onClick: function onClick(e) {
+            e.preventDefault();
+            history.push(_this4.props.url + '/gestione-ricette');
           }
-        } //id di ritorno; i fields vengono usati come titolo
-        ,
-        reloadOnClick: false,
-        resetAfterClick: true,
-        onClick: function onClick(val) {
-          var data = _this4.state.data;
-          var error = _this4.state.error;
-          data.ingredienti.id.push(val.id);
-          data.ingredienti.titolo.push(val.titolo);
-          data.ingredienti.unita_misura.push(val.unita_misura);
-          data.ingredienti.quantita.push(0);
-          var id = Object.keys(error.ingredienti).length;
-          error.ingredienti['ingrediente_' + id] = '';
-          _this4.state.data = data;
-          _this4.state.error = error;
-
-          _this4.checked(); //this.setState({data,error},() => this.checked());
-
-        }
-      }), this.showError('ingredienti')), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "col-md-8 mb-5",
-        style: {
-          paddingTop: '34px'
-        }
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Se non trovi un ingrediente, crealo! "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "\xE8 necessario attendere l'approvazione da parte della redazione prima di poterlo inserire nella tua ricetta. "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_9__["Button"], {
-        className: "btn-light",
-        onClick: this._handleShowModal
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-        className: "fa fa-plus-circle",
-        "aria-hidden": "true"
-      }), "\xA0Nuovo Ingrediente"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modal_IngredienteModal__WEBPACK_IMPORTED_MODULE_11__["default"], {
-        url: this.props.url,
-        show: this.state.show,
-        onHide: this._handleCloseModal,
-        callback: function callback(row) {//this.setState({reloadInfiniteTable:++(this.state.reloadInfiniteTable)});
-        }
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "ml-3"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, data.ingredienti.id.map(function (id, key) {
-        //console.log(key); return;
-        var titolo = data.ingredienti.titolo[key];
-        var unita = data.ingredienti.unita_misura[key];
-        var quantita = data.ingredienti.quantita[key];
-        var cnt = key + 1; //console.log(cnt); return;
-
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-          key: key,
-          className: "mb-3"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, cnt, "."), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
-          name: "ingrediente_" + key,
-          value: quantita,
-          placeholder: "quantit\xE0",
-          divClassName: "d-inline-block ml-3 mr-1 px-1 col-sm-3",
-          className: " form-control d-inline",
-          helperText: _this4.showError("ingredienti", key),
-          handleChange: function handleChange(e) {
-            return _this4._handleChange(e, key);
-          }
-        }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        }, breadcrumbs, " ",
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fa fa-angle-right",
+          "aria-hidden": "true"
+        }))),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, this.isEdit ? 'modifica ricetta' : 'nuova ricetta')),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+          className: "py-5 px-4 bg-light"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "form-group mb-0"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          label: "Titolo",
+          name: "titolo",
+          divClassName: divClassName,
+          className: "form-control",
+          placeholder: "max 50 caratteri",
+          value: data.titolo,
+          helperText: this.showError('titolo'),
+          handleChange: this._handleChange
+        }),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_TextAreaField__WEBPACK_IMPORTED_MODULE_10__["default"], {
+          label: "Breve Introduzione",
+          name: "intro",
+          divClassName: divClassName,
+          className: "form-control",
+          placeholder: "max 255 caratteri",
+          value: data.intro,
+          helperText: this.showError('intro'),
+          handleChange: this._handleChange
+        })),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
+          style: styleHR
+        }),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "form-group row mb-0"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_DropdownSelect__WEBPACK_IMPORTED_MODULE_6__["default"], {
+          placeholder: "Scegli un valore",
+          name: "difficolta",
+          className: "form-control",
+          divClassName: "col-md-5 " + divClassName,
+          label: "Difficolt\xE0",
+          values: objFid,
+          selected: data.difficolta != '' ? data.difficolta : 'Scegli un valore' //defaultSelected='Scegli un valore'
+          ,
+          handleChange: this._handleChange
+        }),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_DropdownSelect__WEBPACK_IMPORTED_MODULE_6__["default"], {
+          placeholder: "Scegli un valore",
+          name: "id_tipologia",
+          className: "form-control",
+          divClassName: "col-md-5 " + divClassName,
+          label: "Tipologia",
+          values: objFid2,
+          selected: data.id_tipologia != '' ? data.id_tipologia : 'Scegli un valore' //defaultSelected='Scegli un valore'
+          ,
+          handleChange: this._handleChange
+        })),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
+          style: styleHR
+        }),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "form-group row mb-0"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          label: "Tempo Preparazione",
+          name: "tempo_preparazione",
+          divClassName: "col-md-5 " + divClassName,
+          className: "form-control",
+          placeholder: "Tempo preparazione (min)",
+          value: data.tempo_preparazione,
+          helperText: this.showError('tempo_preparazione'),
+          handleChange: this._handleChange
+        }),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          label: "Tempo Cottura",
+          name: "tempo_cottura",
+          divClassName: "col-md-5 " + divClassName,
+          className: "form-control ",
+          placeholder: "Tempo cottura (min)",
+          value: data.tempo_cottura,
+          helperText: this.showError('tempo_cottura'),
+          handleChange: this._handleChange
+        }),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          label: "Porzioni",
+          name: "porzioni",
+          divClassName: "col-md-5 " + divClassName,
+          className: "form-control ",
+          placeholder: "Porzioni",
+          value: data.porzioni,
+          helperText: this.showError('porzioni'),
+          handleChange: this._handleChange
+        }),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          label: "Calorie",
+          name: "calorie",
+          divClassName: "col-md-5 " + divClassName,
+          className: "form-control ",
+          placeholder: "Kcal",
+          value: data.calorie,
+          helperText: this.showError('calorie'),
+          handleChange: this._handleChange
+        })),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
+          style: styleHR
+        }),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "form-group mb-0"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          label: "Link immagine",
+          name: "img",
+          divClassName: divClassName,
+          className: "form-control ",
+          placeholder: "es: https://www.images.com/image.jpg",
+          value: data.img,
+          helperText: this.showError('img'),
+          handleChange: this._handleChange
+        })),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
+          style: styleHR
+        }),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "form-group mb-5"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "position-absolute",
           style: {
-            color: '#aaa'
+            right: '35px'
+          }
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          className: "btn btn-link",
+          onClick: this.addH3
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Titolo 3")),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          className: "btn btn-link",
+          onClick: this.addStrong
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Strong")),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+          className: "btn btn-link",
+          onClick: this.addP
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Paragrafo"))),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_TextAreaField__WEBPACK_IMPORTED_MODULE_10__["default"], {
+          label: "Modalit\xE0 preparazione",
+          style: {
+            height: '200px'
           },
-          className: "mr-3"
-        }, unita), "\xA0", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, titolo.charAt(0).toUpperCase() + titolo.slice(1)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "btn-clear d-inline-block ml-3 p-1",
-          onClick: function onClick(a) {
+          name: "modalita_preparazione",
+          divClassName: divClassName,
+          className: "form-control",
+          placeholder: "",
+          value: data.modalita_preparazione,
+          helperText: this.showError('modalita_preparazione'),
+          handleChange: this._handleChange,
+          onMouseUp: this.getSelectionText,
+          onKeyUp: this.getSelectionText
+        })),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
+          style: styleHR
+        }),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "form-group mb-0 row"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "md-col-4 pl-3 pr-2"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_SearchField__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          label: "Ingredienti",
+          placeholder: "Cerca e aggiungi un Ingrediente",
+          searchClassName: "w-100",
+          showList: true,
+          url: this.props.url + '/ingredienti/search',
+          loaderPath: _Env__WEBPACK_IMPORTED_MODULE_2__["ASSETS"].loader_gif,
+          patternList: {
+            id: 'id',
+            fields: {
+              titolo: [],
+              calorie: []
+            }
+          } //id di ritorno; i fields vengono usati come titolo
+          ,
+          reloadOnClick: false,
+          resetAfterClick: true,
+          onClick: function onClick(val) {
             var data = _this4.state.data;
             var error = _this4.state.error;
-            data.ingredienti.id.splice(key, 1);
-            data.ingredienti.titolo.splice(key, 1);
-            data.ingredienti.unita_misura.splice(key, 1);
-            data.ingredienti.quantita.splice(key, 1);
-            delete error.ingredienti['ingrediente_' + key]; //console.log(error.ingredienti)
-
+            data.ingredienti.id.push(val.id);
+            data.ingredienti.titolo.push(val.titolo);
+            data.ingredienti.unita_misura.push(val.unita_misura);
+            data.ingredienti.quantita.push(0);
+            var id = Object.keys(error.ingredienti).length;
+            error.ingredienti['ingrediente_' + id] = '';
             _this4.state.data = data;
             _this4.state.error = error;
 
-            _this4.checked();
+            _this4.checked(); //this.setState({data,error},() => this.checked());
+
           }
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fa fa-times",
+        }), this.showError('ingredienti')),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "col-md-8 mb-5",
+          style: {
+            paddingTop: '34px'
+          }
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Se non trovi un ingrediente, crealo! "),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "\xE8 necessario attendere l'approvazione da parte della redazione prima di poterlo inserire nella tua ricetta. "),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_9__["Button"], {
+          className: "btn-light",
+          onClick: this._handleShowModal
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "fa fa-plus-circle",
           "aria-hidden": "true"
-        })));
-      })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
-        style: styleHR
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "form-group mb-5"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_TextAreaField__WEBPACK_IMPORTED_MODULE_10__["default"], {
-        label: "Note",
-        name: "note",
-        divClassName: divClassName,
-        className: "form-control",
-        placeholder: "max 255 caratteri",
-        value: data.note,
-        helperText: this.showError('note'),
-        handleChange: this._handleChange
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "form-group mb-5 text-right"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_9__["Button"], {
-        className: "btn-light mr-3",
-        onClick: function onClick(e) {
-          return history.goBack();
-        }
-      }, "INDIETRO"), this.state.fase == 'bozza' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_9__["Button"], {
-        className: "btn-warning mr-3",
-        disabled: this.state.data.titolo == '' || this.state.error.titolo != '',
-        onClick: function onClick(e) {
-          return _this4._handleOnSubmit('bozza');
-        }
-      }, this.isEdit ? 'AGGIORNA BOZZA' : 'SALVA COME BOZZA', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-        className: "loader-2" + (this.state.loader == true ? ' d-inline-block' : ''),
-        src: this.props.url + "/img/loader_2.gif"
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_9__["AddButton"], {
-        className: "",
-        disabled: !this.state.checked,
-        onClick: function onClick() {
-          return _this4._handleOnSubmit('inviata');
-        }
-      }, this.isEdit && this.state.fase != 'bozza' ? 'AGGIORNA RICETTA' : 'INVIA RICETTA', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-        className: "loader-2" + (this.state.loader == true ? ' d-inline-block' : ''),
-        src: this.props.url + "/img/loader_2.gif"
-      }))), this.state.confirmMessage != '' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "alert alert-success",
-        role: "alert"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.state.confirmMessage)), _typeof(errorRegMessage) === 'object' && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "alert alert-danger",
-        role: "alert"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Attenzione!"), Object.keys(errorRegMessage).map(function (a, k1) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          key: k1
-        }, errorRegMessage[a].map(function (s, k2) {
-          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-            key: k2
-          }, s, " ");
-        }));
-      }))));
+        }), "\xA0Nuovo Ingrediente"),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modal_IngredienteModal__WEBPACK_IMPORTED_MODULE_11__["default"], {
+          url: this.props.url,
+          show: this.state.show,
+          onHide: this._handleCloseModal,
+          callback: function callback(row) {//this.setState({reloadInfiniteTable:++(this.state.reloadInfiniteTable)});
+          }
+        })),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "ml-3"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, data.ingredienti.id.map(function (id, key) {
+          //console.log(key); return;
+          var titolo = data.ingredienti.titolo[key];
+          var unita = data.ingredienti.unita_misura[key];
+          var quantita = data.ingredienti.quantita[key];
+          var cnt = key + 1; //console.log(cnt); return;
+
+          return (
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+              key: key,
+              className: "mb-3"
+            },
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, cnt, "."),
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_InputField__WEBPACK_IMPORTED_MODULE_4__["default"], {
+              name: "ingrediente_" + key,
+              value: quantita,
+              placeholder: "quantit\xE0",
+              divClassName: "d-inline-block ml-3 mr-1 px-1 col-sm-3",
+              className: " form-control d-inline",
+              helperText: _this4.showError("ingredienti", key),
+              handleChange: function handleChange(e) {
+                return _this4._handleChange(e, key);
+              }
+            }),
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+              style: {
+                color: '#aaa'
+              },
+              className: "mr-3"
+            }, unita), "\xA0",
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, titolo.charAt(0).toUpperCase() + titolo.slice(1)),
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+              className: "btn-clear d-inline-block ml-3 p-1",
+              onClick: function onClick(a) {
+                var data = _this4.state.data;
+                var error = _this4.state.error;
+                data.ingredienti.id.splice(key, 1);
+                data.ingredienti.titolo.splice(key, 1);
+                data.ingredienti.unita_misura.splice(key, 1);
+                data.ingredienti.quantita.splice(key, 1);
+                delete error.ingredienti['ingrediente_' + key]; //console.log(error.ingredienti)
+
+                _this4.state.data = data;
+                _this4.state.error = error;
+
+                _this4.checked();
+              }
+            },
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+              className: "fa fa-times",
+              "aria-hidden": "true"
+            })))
+          );
+        })))),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", {
+          style: styleHR
+        }),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "form-group mb-5"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_form_TextAreaField__WEBPACK_IMPORTED_MODULE_10__["default"], {
+          label: "Note",
+          name: "note",
+          divClassName: divClassName,
+          className: "form-control",
+          placeholder: "max 255 caratteri",
+          value: data.note,
+          helperText: this.showError('note'),
+          handleChange: this._handleChange
+        })),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "form-group mb-5 text-right"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_9__["Button"], {
+          className: "btn-light mr-3",
+          onClick: function onClick(e) {
+            return history.goBack();
+          }
+        }, "INDIETRO"), this.state.fase == 'bozza' &&
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_9__["Button"], {
+          className: "btn-warning mr-3",
+          disabled: this.state.data.titolo == '' || this.state.error.titolo != '',
+          onClick: function onClick(e) {
+            return _this4._handleOnSubmit('bozza');
+          }
+        }, this.isEdit ? 'AGGIORNA BOZZA' : 'SALVA COME BOZZA',
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          className: "loader-2" + (this.state.loader == true ? ' d-inline-block' : ''),
+          src: this.props.url + "/img/loader_2.gif"
+        })),
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_9__["AddButton"], {
+          className: "",
+          disabled: !this.state.checked,
+          onClick: function onClick() {
+            return _this4._handleOnSubmit('inviata');
+          }
+        }, this.isEdit && this.state.fase != 'bozza' ? 'AGGIORNA RICETTA' : 'INVIA RICETTA',
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          className: "loader-2" + (this.state.loader == true ? ' d-inline-block' : ''),
+          src: this.props.url + "/img/loader_2.gif"
+        }))), this.state.confirmMessage != '' &&
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "alert alert-success",
+          role: "alert"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.state.confirmMessage)), _typeof(errorRegMessage) === 'object' &&
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "alert alert-danger",
+          role: "alert"
+        },
+        /*#__PURE__*/
+        react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, "Attenzione!"), Object.keys(errorRegMessage).map(function (a, k1) {
+          return (
+            /*#__PURE__*/
+            react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+              key: k1
+            }, errorRegMessage[a].map(function (s, k2) {
+              return (
+                /*#__PURE__*/
+                react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+                  key: k2
+                }, s, " ")
+              );
+            }))
+          );
+        }))))
+      );
     }
   }]);
 
@@ -82867,7 +83010,8 @@ function (_Component) {
         ricetta = remoteData.data;
         ricetta.ingredienti.map(function (i, k) {
           return checked[k] = false;
-        }); //console.log(remoteData);
+        });
+        console.log(remoteData);
 
         _this2.setState({
           ricetta: ricetta,
@@ -82986,7 +83130,7 @@ function (_Component) {
         }))) :
         /*#__PURE__*/
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("article", {
-          className: "col-md-8 pr-4"
+          className: "col-md-8 pr-4 mb-5"
         },
         /*#__PURE__*/
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
@@ -83253,7 +83397,7 @@ function (_Component) {
         }), this.state.validationMessage != '' &&
         /*#__PURE__*/
         react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "alert alert-success",
+          className: "alert alert-success ",
           role: "alert"
         },
         /*#__PURE__*/
@@ -83298,7 +83442,9 @@ var Validazione = function Validazione(props) {
   var classValid = props.user.ruolo == 'redattore' ? 'validazione ' : '';
   return (
     /*#__PURE__*/
-    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null,
+    react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "mb-5"
+    },
     /*#__PURE__*/
     react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_utils_Button__WEBPACK_IMPORTED_MODULE_2__["CloseButton"] //style={style}
     , {

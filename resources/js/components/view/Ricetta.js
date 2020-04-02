@@ -69,7 +69,7 @@ export default class Ricetta extends Component {
 
                 ricetta.ingredienti.map((i,k) => checked[k] = false)
 
-                //console.log(remoteData);
+                console.log(remoteData);
 
                 this.setState({ ricetta: ricetta, checked: checked , loader:false })
 
@@ -175,7 +175,7 @@ export default class Ricetta extends Component {
                         {this.state.loader?
                             (<div className="col-md-8 text-center"><div className="img-loader active"><img src={this.props.url+'/img/loader.gif'} /></div></div>)
                         :
-                            (<article className="col-md-8 pr-4">
+                            (<article className="col-md-8 pr-4 mb-5">
 
                                 <ul className="breadcrumbs">
                                     <li>
@@ -329,7 +329,7 @@ export default class Ricetta extends Component {
                                 }
 
                                 {this.state.validationMessage!='' &&
-                                    <div className="alert alert-success" role="alert">
+                                    <div className="alert alert-success " role="alert">
                                         <div>{this.state.validationMessage}</div>
                                     </div>
                                 }
@@ -364,7 +364,7 @@ const Validazione = (props) => {
     let fase = props.user.ruolo=='redattore' ? 'idonea' : 'approvata';
     let classValid = props.user.ruolo=='redattore' ? 'validazione ': '';
     return(
-        <div >
+        <div className="mb-5">
             <CloseButton
             //style={style}
             className={"w-100 py-2 "}

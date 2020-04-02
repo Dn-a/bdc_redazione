@@ -116,11 +116,11 @@ export default class AddEditRicetta extends Component {
 
         return axios.get(url, headers )
 			.then(res => {
-                
-                let data = this.state.data;              
-                let error = this.state.error;              
+
+                let data = this.state.data;
+                let error = this.state.error;
                 let remoteData = res.data.data;
-                
+
                 //console.log(remoteData);
 
                 FIELDS.map((f,key) => {
@@ -139,10 +139,10 @@ export default class AddEditRicetta extends Component {
                     else
                         data[f] = remoteData[f]==null?'':remoteData[f];
                 });
-                                
-                //console.log(remoteData); 
+
+                //console.log(remoteData);
                 //console.log(data);
-                
+
                 this.setState({data: data, fase: remoteData.fase}, () => this.checked());
 
                 return res;
@@ -157,7 +157,7 @@ export default class AddEditRicetta extends Component {
     }
 
     setRemoteData(type) {
-        
+
         let url = this.props.url+'/ricette';
 
         let headers = {headers: {'Accept': 'application/json',
@@ -172,17 +172,17 @@ export default class AddEditRicetta extends Component {
         FIELDS.map((f,k) => {
             if(f=='ingredienti')
                 sendData[f] = data[f]
-            else 
+            else
                 if(typeof data[f] === 'string')
-                    sendData[f] = LOWER_CASE.includes(f) ?  data[f].trim().toLowerCase() : data[f].trim();                
+                    sendData[f] = LOWER_CASE.includes(f) ?  data[f].trim().toLowerCase() : data[f].trim();
                 else
                     sendData[f] = data[f]
         });
 
         //let sendData = JSON.parse(JSON.stringify(data));
 
-        sendData._token = CSRF_TOKEN;        
-        sendData.fase = type=='inviata'? 'inviata':'bozza';        
+        sendData._token = CSRF_TOKEN;
+        sendData.fase = type=='inviata'? 'inviata':'bozza';
         sendData.id_ingredienti = data.ingredienti.id;
         sendData.quantita_ingrediente = data.ingredienti.quantita;
 
@@ -219,7 +219,7 @@ export default class AddEditRicetta extends Component {
                     msg = error.response.data.errors;
                 else if(error.response.data.msg)
                     msng = error.response.data.msg;
-            } 
+            }
             this.setState({errorRegMessage: msg, loader:false});
             throw error;
         });
@@ -239,13 +239,13 @@ export default class AddEditRicetta extends Component {
         let data = this.state.data;
 
         if(value==''){
-            if(id!=null) 
+            if(id!=null)
                 error.ingredienti['ingrediente_'+id]= INFO_ERROR['vuoto'];
             else
                 error[field] = INFO_ERROR['vuoto'];
         }else{
-            if(id!=null) 
-                error.ingredienti['ingrediente_'+id]= '';            
+            if(id!=null)
+                error.ingredienti['ingrediente_'+id]= '';
             else
                 error[field] = '';
         }
@@ -285,7 +285,7 @@ export default class AddEditRicetta extends Component {
                 else if(value.length > 2048)
                     error.img = INFO_ERROR['limite_caratteri'];
                 else if(!url_reg_ex.test(value))
-                    error.img = INFO_ERROR['img'];                
+                    error.img = INFO_ERROR['img'];
                 break;
             case 'modalita_preparazione':
                 if(value.length > 0 && !whitespace_reg_ex.test(value))
@@ -304,15 +304,15 @@ export default class AddEditRicetta extends Component {
                     error.note = INFO_ERROR['limite_caratteri'];
                 break;
         }
-        
-        if(id!=null) 
+
+        if(id!=null)
             data.ingredienti.quantita[id] = value;
         else
             data[field] = value;
 
         this.state.data = data;
         this.state.error = error;
-        
+
         this.checked()
 
         //this.setState({data,error},()  => this.checked());
@@ -325,23 +325,26 @@ export default class AddEditRicetta extends Component {
         let checked = true;
         Object.keys(error).map((key,id) => {
             //console.log(key)
-            //console.log(data[key])
+
             if(key=='ingredienti'){
                 if(typeof error[key] === 'object'){
                     let obj = Object.keys(error[key]);
                     if(obj.length==0)
                         checked = false;
-                    else                
-                        Object.keys(error[key]).some((k2,id2) => {                        
-                            if(error[key][k2]!='' || data.ingredienti.quantita[id2]==0 
-                            || data.ingredienti.quantita[id2]=='' || data.ingredienti.quantita[id2]==null ){                                
+                    else
+                        Object.keys(error[key]).some((k2,id2) => {
+                            if(error[key][k2]!='' || data.ingredienti.quantita[id2]==0
+                            || data.ingredienti.quantita[id2]=='' || data.ingredienti.quantita[id2]==null ){
                                 checked = false;
                                 return true;
                             }
                         });
                 }
-            }else if(error[key]!='' || data[key]=='' || data[key]==null)
+            }else if(error[key]!='' || data[key]==='' || data[key]==null)
                 checked = false;
+
+            console.log(data[key])
+            console.log(checked)
         });
 
         //console.log(checked);
@@ -350,7 +353,7 @@ export default class AddEditRicetta extends Component {
 
     showError(field,id){
         let error = this.state.error[field]!== undefined ? this.state.error[field] : '';
-        
+
         if(id===undefined && field=='ingredienti' && Object.keys(error).length == 0)
             error = INFO_ERROR['ingredienti'];
         else if(typeof error ==='object' && Object.keys(error).length > 0)
@@ -369,7 +372,7 @@ export default class AddEditRicetta extends Component {
         let end = e.target.selectionEnd;
 
         let size = text.length>=0 ? text.length : 0;
-        
+
         let before = text.slice(0, start)
         let selected = text.slice(start,end);
         let after = end<size ? text.slice(end, size) : ''
@@ -380,14 +383,14 @@ export default class AddEditRicetta extends Component {
         selectedText.selected = selected;
         selectedText.after = after;
 
-        this.setState({ selectedText: selectedText });        
+        this.setState({ selectedText: selectedText });
     }
 
     addH3(){
         let selectedText = this.state.selectedText;
         let data = this.state.data;
 
-        if(selectedText.selected.length>0)        
+        if(selectedText.selected.length>0)
             data.modalita_preparazione = selectedText.before + '<h3>'+ selectedText.selected + '</h3>'+selectedText.after;
 
         this.setState({data:data});
@@ -396,7 +399,7 @@ export default class AddEditRicetta extends Component {
         let selectedText = this.state.selectedText;
         let data = this.state.data;
 
-        if(selectedText.selected.length>0)        
+        if(selectedText.selected.length>0)
             data.modalita_preparazione = selectedText.before + '<p>'+ selectedText.selected + '</p>'+selectedText.after;
 
         this.setState({data:data});
@@ -405,25 +408,25 @@ export default class AddEditRicetta extends Component {
         let selectedText = this.state.selectedText;
         let data = this.state.data;
 
-        if(selectedText.selected.length>0)        
+        if(selectedText.selected.length>0)
             data.modalita_preparazione = selectedText.before + '<strong>'+ selectedText.selected + '</strong>'+selectedText.after;
 
         this.setState({data:data});
     }
 
- 
+
     render() {
 
         let divClassName = 'mb-3';
-        
+
         let data = this.state.data;
         let router = this.props.router;
         let history = router.history;
-        
+
         let user = User();
 
         let breadcrumbs = 'gestione-ricette';
-                
+
         let errorRegMessage = this.state.errorRegMessage;
 
         let objFid = {'facile':'Facile','media':'Media','difficile':'Difficile'};
@@ -431,12 +434,12 @@ export default class AddEditRicetta extends Component {
         let objFid2 = JSON.parse(user.tipologie);
 
         let styleHR = {margin: '35px 0 20px'};
-        
-        //console.log(objFid2)        
-        
+
+        //console.log(objFid2)
+
         return (
             <article className="col-md-12 constraint">
-                        
+
                 <ul className="breadcrumbs mb-2">
                     <li><a href="" onClick={(e)=> {e.preventDefault();history.push(this.props.url+'/gestione-ricette')}}>{breadcrumbs} <i className="fa fa-angle-right" aria-hidden="true"></i></a></li>
                     <li>{this.isEdit? 'modifica ricetta' : 'nuova ricetta'}</li>
@@ -448,9 +451,9 @@ export default class AddEditRicetta extends Component {
                         <InputField label="Titolo" name="titolo" divClassName={divClassName} className="form-control" placeholder="max 50 caratteri"
                         value={data.titolo} helperText={this.showError('titolo')} handleChange={this._handleChange} />
                         <TextAreaField label="Breve Introduzione" name="intro" divClassName={divClassName} className="form-control" placeholder="max 255 caratteri"
-                        value={data.intro} helperText={this.showError('intro')} 
-                        handleChange={this._handleChange}                        
-                        /> 
+                        value={data.intro} helperText={this.showError('intro')}
+                        handleChange={this._handleChange}
+                        />
                     </div>
 
                     <hr style={styleHR}/>
@@ -473,7 +476,7 @@ export default class AddEditRicetta extends Component {
 
                     <hr style={styleHR}/>
 
-                    <div className="form-group row mb-0">                        
+                    <div className="form-group row mb-0">
                         <InputField label="Tempo Preparazione" name="tempo_preparazione" divClassName={"col-md-5 "+divClassName} className="form-control" placeholder="Tempo preparazione (min)"
                         value={data.tempo_preparazione} helperText={this.showError('tempo_preparazione')} handleChange={this._handleChange} />
                         <InputField label="Tempo Cottura" name="tempo_cottura" divClassName={"col-md-5 "+divClassName} className="form-control " placeholder="Tempo cottura (min)"
@@ -483,12 +486,12 @@ export default class AddEditRicetta extends Component {
                         <InputField label="Calorie" name="calorie" divClassName={"col-md-5 "+divClassName} className="form-control " placeholder="Kcal"
                         value={data.calorie} helperText={this.showError('calorie')} handleChange={this._handleChange} />
                     </div>
-                    
+
                     <hr style={styleHR}/>
 
-                    <div className="form-group mb-0">                        
+                    <div className="form-group mb-0">
                         <InputField label="Link immagine" name="img" divClassName={divClassName} className="form-control " placeholder="es: https://www.images.com/image.jpg"
-                        value={data.img} helperText={this.showError('img')} handleChange={this._handleChange} />                       
+                        value={data.img} helperText={this.showError('img')} handleChange={this._handleChange} />
                     </div>
 
                     <hr style={styleHR}/>
@@ -500,17 +503,17 @@ export default class AddEditRicetta extends Component {
                             <a className='btn btn-link' onClick={this.addP} ><strong>Paragrafo</strong></a>
                         </div>
                         <TextAreaField label="Modalità preparazione" style={{height:'200px'}} name="modalita_preparazione" divClassName={divClassName} className="form-control" placeholder=""
-                        value={data.modalita_preparazione} helperText={this.showError('modalita_preparazione')} handleChange={this._handleChange} 
+                        value={data.modalita_preparazione} helperText={this.showError('modalita_preparazione')} handleChange={this._handleChange}
                         onMouseUp = {this.getSelectionText}
                         onKeyUp = {this.getSelectionText}
-                        />   
+                        />
                     </div>
 
                     <hr style={styleHR}/>
 
                     <div className="form-group mb-0 row">
 
-                        <div className="md-col-4 pl-3 pr-2">                   
+                        <div className="md-col-4 pl-3 pr-2">
                             <SearchField
                                 label="Ingredienti"
                                 placeholder='Cerca e aggiungi un Ingrediente'
@@ -520,7 +523,7 @@ export default class AddEditRicetta extends Component {
                                 loaderPath={ASSETS.loader_gif}
                                 patternList={{id:'id', fields:{titolo:[],calorie:[]}} }//id di ritorno; i fields vengono usati come titolo
                                 reloadOnClick={false}
-                                resetAfterClick={true}                                
+                                resetAfterClick={true}
                                 onClick={(val) => {
 
                                         let data = this.state.data;
@@ -530,13 +533,13 @@ export default class AddEditRicetta extends Component {
                                         data.ingredienti.titolo.push(val.titolo)
                                         data.ingredienti.unita_misura.push(val.unita_misura)
                                         data.ingredienti.quantita.push(0)
-                                        
-                                        let id = Object.keys(error.ingredienti).length;                                        
-                                        error.ingredienti['ingrediente_'+id] = '';                                        
+
+                                        let id = Object.keys(error.ingredienti).length;
+                                        error.ingredienti['ingrediente_'+id] = '';
 
                                         this.state.data = data;
                                         this.state.error = error;
-                                        
+
                                         this.checked();
 
                                         //this.setState({data,error},() => this.checked());
@@ -565,7 +568,7 @@ export default class AddEditRicetta extends Component {
                                     (row) => {
                                         //this.setState({reloadInfiniteTable:++(this.state.reloadInfiniteTable)});
                                     }
-                                } 
+                                }
                             />
                         </div>
 
@@ -582,38 +585,38 @@ export default class AddEditRicetta extends Component {
                                         return(
                                             <li key={key} className="mb-3">
                                                 <span>{cnt}.</span>
-                                                <InputField  
+                                                <InputField
                                                 name={"ingrediente_"+key}
                                                 value={quantita}
                                                 placeholder='quantità'
                                                 divClassName="d-inline-block ml-3 mr-1 px-1 col-sm-3"
                                                 className=" form-control d-inline"
-                                                helperText={this.showError("ingredienti",key)} 
+                                                helperText={this.showError("ingredienti",key)}
                                                 handleChange={(e) => this._handleChange(e,key)}
                                                 />
-                                                <span style={{color:'#aaa'}} className="mr-3">{unita}</span>&nbsp;  
+                                                <span style={{color:'#aaa'}} className="mr-3">{unita}</span>&nbsp;
                                                 <span>{titolo.charAt(0).toUpperCase()+titolo.slice(1)}</span>
-                                                <div 
+                                                <div
                                                 className="btn-clear d-inline-block ml-3 p-1"
                                                 onClick={(a) => {
 
                                                     let data = this.state.data;
                                                     let error = this.state.error;
-                                                    
+
                                                     data.ingredienti.id.splice(key,1);
                                                     data.ingredienti.titolo.splice(key,1);
                                                     data.ingredienti.unita_misura.splice(key,1);
                                                     data.ingredienti.quantita.splice(key,1);
-                                                    
+
                                                     delete error.ingredienti['ingrediente_'+key];
 
                                                     //console.log(error.ingredienti)
                                                     this.state.data = data;
                                                     this.state.error = error;
-                                                    
+
                                                     this.checked();
 
-                                                }}   
+                                                }}
                                                 ><i className="fa fa-times" aria-hidden="true"></i></div>
                                             </li>
                                         )
@@ -623,24 +626,24 @@ export default class AddEditRicetta extends Component {
                         </div>
 
                     </div>
-                    
+
                     <hr style={styleHR}/>
 
-                    <div className="form-group mb-5">                        
+                    <div className="form-group mb-5">
                         <TextAreaField label="Note" name="note" divClassName={divClassName} className="form-control" placeholder="max 255 caratteri"
-                        value={data.note} helperText={this.showError('note')} handleChange={this._handleChange} />                        
+                        value={data.note} helperText={this.showError('note')} handleChange={this._handleChange} />
                     </div>
-                    
+
                     <div className="form-group mb-5 text-right">
 
-                        <Button 
+                        <Button
                             className="btn-light mr-3"
                             onClick={(e) => history.goBack()}
                         >
-                            INDIETRO            
+                            INDIETRO
                         </Button>
 
-                        {this.state.fase=='bozza' && 
+                        {this.state.fase=='bozza' &&
                             <Button
                             className="btn-warning mr-3"
                             disabled={this.state.data.titolo=='' || this.state.error.titolo!=''}
@@ -660,15 +663,15 @@ export default class AddEditRicetta extends Component {
                             <img className={"loader-2"+(this.state.loader==true?' d-inline-block':'')} src={this.props.url+"/img/loader_2.gif"}></img>
                         </AddButton>
 
-                    </div> 
+                    </div>
 
-                    {this.state.confirmMessage!='' && 
+                    {this.state.confirmMessage!='' &&
                         <div className="alert alert-success" role="alert">
                             <div>{this.state.confirmMessage}</div>
                         </div>
                     }
 
-                    { typeof errorRegMessage ==='object' && 
+                    { typeof errorRegMessage ==='object' &&
                         <div className="alert alert-danger" role="alert">
                             <strong>Attenzione!</strong>
                             {

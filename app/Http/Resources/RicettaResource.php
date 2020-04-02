@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Verifica;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class RicettaResource extends JsonResource
@@ -46,6 +47,12 @@ class RicettaResource extends JsonResource
             $tipologia = $item->tipologia;
             $item['tipologia'] = $tipologia;
         }
+        // if(in_array('redattore',$fields)){
+        //     $verifica = Verifica::where('id_ricetta',$item->id)->first();
+        //     $redattore = $verifica;
+        //     //.' '.ucfirst($item->verifica->redattore->user->cognome);
+        //     $item['redattore'] = $redattore;
+        // }
         if(in_array('ingredienti',$fields)){
             $ingredienti = $item->ingredienti;
             for($i=0; $i < count($ingredienti); $i++)

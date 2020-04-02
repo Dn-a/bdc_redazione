@@ -202,7 +202,7 @@ class RicettaController extends Controller
 
         if($viewRicetta)
         $moreFields =  array_merge($moreFields,
-            ['note']
+            ['note','redattore']
         );
 
         if($isCaporedattore)

@@ -30,6 +30,11 @@ class Ricetta extends Model
         return $this->belongsToMany('App\Ingrediente','ricette_ingredienti','id_ricetta','id_ingrediente')->withPivot('quantita');
     }
 
+    public function verifica()
+    {
+        return $this->hasOne('App\Verifica','id_ricetta');
+    }
+
     public function fase()
 	{
         return $this->belongsTo('App\Fase','id_fase');
